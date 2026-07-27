@@ -1,0 +1,30 @@
+# Training dependencies for QLoRA fine-tuning
+#
+# Step 1 - generate real training data (uses Gemini's free tier - no credit
+# card, get a key at https://aistudio.google.com/apikey, put it in .env as
+# GEMINI_API_KEY=...):
+#   pip install google-genai python-dotenv
+#   python generate_training_data.py --count 150
+#
+# Step 2 - train. Two options:
+#
+# Option A (RECOMMENDED for 4GB VRAM cards): Unsloth
+#   ~2x faster, meaningfully lower memory, one-call GGUF export.
+#   pip install unsloth
+#   python train_unsloth.py
+#
+# Option B: plain transformers + peft + bitsandbytes (train.py)
+#   Works but is slower and tighter on VRAM than Unsloth for the same config.
+#   pip install -r requirements-training.txt
+#   python train.py
+
+torch>=2.1.0
+transformers>=4.36.0
+accelerate>=0.25.0
+peft>=0.7.0
+bitsandbytes>=0.41.0
+trl>=0.7.0
+datasets>=2.16.0
+sentencepiece>=0.1.99
+google-genai>=0.3.0
+python-dotenv>=1.0.0

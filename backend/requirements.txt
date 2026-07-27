@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+openai
+sentence-transformers
+scikit-learn
+duckduckgo_search
+pydantic
+python-multipart
+httpx
+sqlalchemy
+aiosqlite
+python-jose[cryptography]
+bcrypt
+python-dotenv

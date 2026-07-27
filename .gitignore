@@ -1,0 +1,59 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+*.egg
+.eggs/
+
+# --- Virtual environments ---
+venv/
+.venv/
+train_env/
+env/
+.env/
+
+# --- Node ---
+node_modules/
+
+# --- Build output ---
+frontend/dist/
+*.tsbuildinfo
+.vite/
+
+# --- Environment files (keep .env.example) ---
+.env
+backend/.env
+
+# --- IDE / Editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# --- Model files (large, downloaded separately) ---
+*.gguf
+models/
+
+# --- Database (local dev) ---
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# --- User uploads ---
+backend/uploads/
+backend/qwen-finetuned-lora/
+
+# --- Training / cache ---
+unsloth_compiled_cache/
+wandb/
+runs/
+
+# --- llama.cpp (separate repo — clone manually) ---
+llama.cpp/

@@ -1,0 +1,37 @@
+services:
+  backend:
+    build: ./backend
+    container_name: zenith-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=/models/qwen2.5-coder-7b-instruct-q4_k_m.gguf
+      # Must comfortably exceed the max_tokens used per request (system
+      # prompt + few-shot example + history all count against this too).
+      - N_CTX=16384
+      # 0 = CPU-only, which is dramatically slower for a 7B model. This
+      # only works with -1 (all layers on GPU) if the container actually has
+      # GPU passthrough configured (e.g. nvidia-container-toolkit + a CUDA
+      # base image) - plain `docker-compose up` does not give you that for
+      # free. Set to -1 once GPU passthrough is set up; leave at 0 only if
+      # you're intentionally running CPU-only.
+      - N_GPU_LAYERS=-1
+    volumes:
+      # Mount your GGUF model directory
+      # On Windows with WSL, use: \\wsl.localhost\Ubuntu\home\amey\models
+      # On Linux: /home/amey/models
+      # On macOS: /Users/amey/models
+      - /path/to/your/models:/models:ro
+    restart: unless-stopped
+
+  frontend:
+    image: nginx:alpine
+    container_name: zenith-frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
