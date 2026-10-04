@@ -1,0 +1,25 @@
+{
+  "id": "container",
+  "category": "layout",
+  "name": "Container",
+  "description": "A responsive container with max-width constraints",
+  "component": "export default function Container({ children, className = '', size = 'lg', ...props }) {\n  const sizes = {\n    sm: 'max-w-2xl',\n    md: 'max-w-4xl',\n    lg: 'max-w-6xl',\n    xl: 'max-w-7xl',\n    full: 'max-w-full'\n  };\n  \n  return (\n    <div className={`mx-auto px-4 sm:px-6 lg:px-8 ${sizes[size]} ${className}`} {...props}>\n      {children}\n    </div>\n  );\n}",
+  "props": {
+    "children": "React node - container content",
+    "size": "string - 'sm' | 'md' | 'lg' | 'xl' | 'full'",
+    "className": "string - additional Tailwind classes"
+  },
+  "usage_examples": [
+    "<Container><h1>Content</h1></Container>",
+    "<Container size=\"md\"><p>Narrower content</p></Container>",
+    "<Container size=\"xl\" className=\"py-12\">...</Container>"
+  ],
+  "design_tokens": {
+    "max_width": "max-w-6xl (default)",
+    "horizontal_padding": "px-4 sm:px-6 lg:px-8",
+    "centering": "mx-auto"
+  },
+  "accessibility": {
+    "landmark": "Use role=\"main\" or role=\"region\" with aria-label for semantic containers"
+  }
+}

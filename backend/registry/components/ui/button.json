@@ -1,0 +1,29 @@
+{
+  "id": "button",
+  "category": "ui",
+  "name": "Button",
+  "description": "A reusable button component with variants and sizes",
+  "component": "export default function Button({ children, variant = 'primary', size = 'md', className = '', ...props }) {\n  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';\n  \n  const variants = {\n    primary: 'bg-gradient-to-r from-violet-600 to-cyan-600 text-white hover:from-violet-700 hover:to-cyan-700 focus:ring-violet-500',\n    secondary: 'bg-white/10 border border-white/20 text-white hover:bg-white/20 focus:ring-white',\n    outline: 'border-2 border-violet-500 text-violet-400 hover:bg-violet-500/10 focus:ring-violet-500',\n    ghost: 'text-gray-300 hover:text-white hover:bg-white/10 focus:ring-white'\n  };\n  \n  const sizes = {\n    sm: 'px-3 py-1.5 text-sm',\n    md: 'px-4 py-2 text-base',\n    lg: 'px-6 py-3 text-lg'\n  };\n  \n  return (\n    <button\n      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}\n      {...props}\n    >\n      {children}\n    </button>\n  );\n}",
+  "props": {
+    "children": "React node - button content",
+    "variant": "string - 'primary' | 'secondary' | 'outline' | 'ghost'",
+    "size": "string - 'sm' | 'md' | 'lg'",
+    "className": "string - additional Tailwind classes"
+  },
+  "usage_examples": [
+    "<Button variant=\"primary\">Click me</Button>",
+    "<Button variant=\"secondary\" size=\"lg\">Large Button</Button>",
+    "<Button variant=\"outline\" className=\"w-full\">Full Width</Button>"
+  ],
+  "design_tokens": {
+    "primary_gradient": "from-violet-600 to-cyan-600",
+    "border_radius": "rounded-lg",
+    "transition": "duration-200",
+    "focus_ring": "focus:ring-2 focus:ring-offset-2"
+  },
+  "accessibility": {
+    "focus_visible": "true",
+    "keyboard_navigable": "true",
+    "aria_support": "Add aria-label for icon-only buttons"
+  }
+}

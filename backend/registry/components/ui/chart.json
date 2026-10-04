@@ -1,0 +1,51 @@
+{
+  "id": "chart",
+  "category": "ui",
+  "name": "Chart Components",
+  "description": "Recharts-based chart components: LineChart, BarChart, AreaChart, PieChart with dark theme",
+  "component": "import { forwardRef } from 'react';\nimport {\n  LineChart as RCLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,\n  BarChart as RCBarChart, Bar,\n  AreaChart as RCAreaChart, Area,\n  PieChart as RCPieChart, Pie, Cell\n} from 'recharts';\nimport { TrendingUp, TrendingDown } from 'lucide-react';\n\nconst COLORS = ['#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#ec4899'];\nconst CHART_CONTAINER = 'backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6';\nconst TOOLTIP_STYLE = {\n  backgroundColor: 'rgba(15, 23, 42, 0.95)',\n  border: '1px solid rgba(255, 255, 255, 0.1)',\n  borderRadius: '12px',\n  boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',\n};\nconst GRID_STROKE = 'rgba(255, 255, 255, 0.05)';\nconst AXIS_STROKE = 'rgba(255, 255, 255, 0.15)';\nconst TEXT_COLOR = '#94a3b8';\n\ninterface ChartData {\n  name: string;\n  [key: string]: string | number;\n}\n\ninterface BaseChartProps {\n  data: ChartData[];\n  xKey: string;\n  yKeys: string[];\n  colors?: string[];\n  height?: number;\n  showLegend?: boolean;\n  showGrid?: boolean;\n  className?: string;\n}\n\nexport const LineChart = forwardRef<HTMLDivElement, BaseChartProps & { smooth?: boolean }>(\n  ({ className = '', data, xKey, yKeys, colors = COLORS, height = 300, showLegend = true, showGrid = true, smooth = true, ...props }, ref) => (\n    <div ref={ref} className={`${CHART_CONTAINER} ${className}`} {...props}>\n      <ResponsiveContainer width=\"100%\" height={height}>\n        <RCLineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>\n          {showGrid && <CartesianGrid strokeDasharray=\"3 3\" stroke={GRID_STROKE} vertical={false} />}\n          <XAxis dataKey={xKey} stroke={AXIS_STROKE} tick={{ fill: TEXT_COLOR, fontSize: 12 }} axisLine={false} tickLine={false} />\n          <YAxis stroke={AXIS_STROKE} tick={{ fill: TEXT_COLOR, fontSize: 12 }} axisLine={false} tickLine={false} />\n          <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: '#e2e8f0' }} itemStyle={{ color: '#e2e8f0' }} />\n          {showLegend && <Legend wrapperStyle={{ paddingTop: 20 }} />}\n          {yKeys.map((key, i) => (\n            <Line\n              key={key}\n              type={smooth ? 'monotone' : 'linear'}\n              dataKey={key}\n              stroke={colors[i % colors.length]}\n              strokeWidth={2}\n              dot={{ r: 4, strokeWidth: 2, fill: '#0a0e1a' }}\n              activeDot={{ r: 6, strokeWidth: 2 }}\n            />\n          ))}\n        </RCLineChart>\n      </ResponsiveContainer>\n    </div>\n  )\n);\nLineChart.displayName = 'LineChart';\n\nexport const BarChart = forwardRef<HTMLDivElement, BaseChartProps & { stacked?: boolean }>(\n  ({ className = '', data, xKey, yKeys, colors = COLORS, height = 300, showLegend = true, showGrid = true, stacked = false, ...props }, ref) => (\n    <div ref={ref} className={`${CHART_CONTAINER} ${className}`} {...props}>\n      <ResponsiveContainer width=\"100%\" height={height}>\n        <RCBarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>\n          {showGrid && <CartesianGrid strokeDasharray=\"3 3\" stroke={GRID_STROKE} vertical={false} />}\n          <XAxis dataKey={xKey} stroke={AXIS_STROKE} tick={{ fill: TEXT_COLOR, fontSize: 12 }} axisLine={false} tickLine={false} />\n          <YAxis stroke={AXIS_STROKE} tick={{ fill: TEXT_COLOR, fontSize: 12 }} axisLine={false} tickLine={false} />\n          <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: '#e2e8f0' }} itemStyle={{ color: '#e2e8f0' }} />\n          {showLegend && <Legend wrapperStyle={{ paddingTop: 20 }} />}\n          {yKeys.map((key, i) => (\n            <Bar\n              key={key}\n              dataKey={key}\n              fill={colors[i % colors.length]}\n              radius={[6, 6, 0, 0]}\n              stackId={stacked ? 'a' : undefined}\n            />\n          ))}\n        </RCBarChart>\n      </ResponsiveContainer>\n    </div>\n  )\n);\nBarChart.displayName = 'BarChart';\n\nexport const AreaChart = forwardRef<HTMLDivElement, BaseChartProps & { stacked?: boolean }>(\n  ({ className = '', data, xKey, yKeys, colors = COLORS, height = 300, showLegend = true, showGrid = true, stacked = false, ...props }, ref) => (\n    <div ref={ref} className={`${CHART_CONTAINER} ${className}`} {...props}>\n      <ResponsiveContainer width=\"100%\" height={height}>\n        <RCAreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>\n          {showGrid && <CartesianGrid strokeDasharray=\"3 3\" stroke={GRID_STROKE} vertical={false} />}\n          <XAxis dataKey={xKey} stroke={AXIS_STROKE} tick={{ fill: TEXT_COLOR, fontSize: 12 }} axisLine={false} tickLine={false} />\n          <YAxis stroke={AXIS_STROKE} tick={{ fill: TEXT_COLOR, fontSize: 12 }} axisLine={false} tickLine={false} />\n          <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: '#e2e8f0' }} itemStyle={{ color: '#e2e8f0' }} />\n          {showLegend && <Legend wrapperStyle={{ paddingTop: 20 }} />}\n          {yKeys.map((key, i) => (\n            <Area\n              key={key}\n              type=\"monotone\"\n              dataKey={key}\n              stroke={colors[i % colors.length]}\n              fill={colors[i % colors.length]}\n              fillOpacity={0.3}\n              strokeWidth={2}\n              stackId={stacked ? 'a' : undefined}\n            />\n          ))}\n        </RCAreaChart>\n      </ResponsiveContainer>\n    </div>\n  )\n);\nAreaChart.displayName = 'AreaChart';\n\nexport const PieChart = forwardRef<HTMLDivElement, { data: ChartData[]; nameKey: string; valueKey: string; colors?: string[]; height?: number; className?: string }>(\n  ({ className = '', data, nameKey, valueKey, colors = COLORS, height = 300, ...props }, ref) => (\n    <div ref={ref} className={`${CHART_CONTAINER} ${className}`} {...props}>\n      <ResponsiveContainer width=\"100%\" height={height}>\n        <RCPieChart>\n          <Pie\n            data={data}\n            cx=\"50%\"\n            cy=\"50%\"\n            innerRadius={60}\n            outerRadius={100}\n            dataKey={valueKey}\n            nameKey={nameKey}\n            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}\n            labelLine={false}\n            labelStyle={{ fill: '#e2e8f0', fontSize: 12 }}\n          >\n            {data.map((_, i) => (\n              <Cell key={`cell-${i}`} fill={colors[i % colors.length]} />\n            ))}\n          </Pie>\n          <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: '#e2e8f0' }} itemStyle={{ color: '#e2e8f0' }} formatter={(value: number) => [value.toLocaleString(), '']} />\n        </RCPieChart>\n      </ResponsiveContainer>\n    </div>\n  )\n);\nPieChart.displayName = 'PieChart';\n\n// Metric Trend Component\nexport const MetricTrend = ({ value, trend, label }: { value: string | number; trend?: number; label?: string }) => (\n  <div className=\"flex items-center gap-2\">\n    <span className=\"text-2xl font-bold text-white\">{value}</span>\n    {trend !== undefined && (\n      <span className={`flex items-center gap-1 text-sm font-medium ${trend > 0 ? 'text-emerald-400' : trend < 0 ? 'text-rose-400' : 'text-gray-500'}`}>\n        {trend > 0 ? <TrendingUp className=\"w-4 h-4\" /> : trend < 0 ? <TrendingDown className=\"w-4 h-4\" /> : null}\n        {Math.abs(trend)}%\n      </span>\n    )}\n    {label && <span className=\"text-xs text-gray-500\">{label}</span>}\n  </div>\n);",
+  "props": {
+    "LineChart": "{ data, xKey, yKeys, colors?, height?, showLegend?, showGrid?, smooth? }",
+    "BarChart": "{ data, xKey, yKeys, colors?, height?, showLegend?, showGrid?, stacked? }",
+    "AreaChart": "{ data, xKey, yKeys, colors?, height?, showLegend?, showGrid?, stacked? }",
+    "PieChart": "{ data, nameKey, valueKey, colors?, height? }",
+    "MetricTrend": "{ value, trend?, label? }"
+  },
+  "usage_examples": [
+    "<LineChart data={[{name: 'Jan', revenue: 4000, users: 2400}, ...]} xKey=\"name\" yKeys={[\"revenue\", \"users\"]} />",
+    "<BarChart data={[{name: 'Mon', sales: 120}, ...]} xKey=\"name\" yKeys={[\"sales\"]} />",
+    "<AreaChart data={data} xKey=\"date\" yKeys={[\"visits\"]} stacked />",
+    "<PieChart data={[{browser: 'Chrome', share: 65}, ...]} nameKey=\"browser\" valueKey=\"share\" />",
+    "<MetricTrend value=\"$127,430\" trend={12.5} label=\"vs last month\" />"
+  ],
+  "design_tokens": {
+    "container": "backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6",
+    "grid": "stroke: rgba(255,255,255,0.05), dash: 3 3",
+    "axis": "stroke: rgba(255,255,255,0.15), text: #94a3b8",
+    "tooltip": "bg: rgba(15,23,42,0.95), border: rgba(255,255,255,0.1)",
+    "colors": [
+      "#8b5cf6",
+      "#06b6d4",
+      "#10b981",
+      "#f59e0b",
+      "#ef4444",
+      "#ec4899"
+    ],
+    "line_width": 2,
+    "dot_radius": 4,
+    "bar_radius": [
+      6,
+      6,
+      0,
+      0
+    ],
+    "area_opacity": 0.3,
+    "pie_inner_radius": 60,
+    "pie_outer_radius": 100
+  },
+  "accessibility": {
+    "aria": "Charts should have descriptive titles and aria-labels",
+    "color": "Don't rely solely on color - use patterns/labels",
+    "data": "Provide data table alternative for screen readers"
+  }
+}

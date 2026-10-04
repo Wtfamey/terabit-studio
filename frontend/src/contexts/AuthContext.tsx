@@ -20,7 +20,20 @@ const AuthContext = createContext<AuthContextType>(null!);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
+  const [token, setToken] = useState<string | null>(() => {
+    // Dev/evidence helper: ?token=<jwt> bootstraps an authenticated session
+    // (used by headless-Chrome screenshot capture). The param is stripped
+    // from the URL immediately so it never persists in history or logs.
+    const url = new URL(window.location.href);
+    const t = url.searchParams.get('token');
+    if (t) {
+      localStorage.setItem('token', t);
+      url.searchParams.delete('token');
+      window.history.replaceState({}, '', url.pathname + url.search);
+      return t;
+    }
+    return localStorage.getItem('token');
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,9 +41,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       axios.get(ENDPOINTS.me).then(r => {
         setUser(r.data);
-      }).catch(() => {
-        localStorage.removeItem('token');
-        setToken(null);
+      }).catch((err) => {
+        // Only a real auth rejection invalidates the session. A backend
+        // restart or transient 5xx must NOT silently log the user out
+        // (as-user finding: one busy-backend blip wiped the session and
+        // bounced Generate -> /login).
+        if (err?.response?.status === 401) {
+          localStorage.removeItem('token');
+          setToken(null);
+        }
       }).finally(() => setLoading(false));
     } else {
       setLoading(false);

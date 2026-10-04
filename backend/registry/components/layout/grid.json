@@ -1,0 +1,26 @@
+{
+  "id": "grid",
+  "category": "layout",
+  "name": "Grid",
+  "description": "A responsive grid layout component",
+  "component": "export default function Grid({ children, cols = 1, gap = 4, className = '', ...props }) {\n  const colsMap = {\n    1: 'grid-cols-1',\n    2: 'grid-cols-1 md:grid-cols-2',\n    3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',\n    4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',\n    6: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6'\n  };\n  \n  return (\n    <div className={`grid ${colsMap[cols] || colsMap[1]} gap-${gap} ${className}`} {...props}>\n      {children}\n    </div>\n  );\n}",
+  "props": {
+    "children": "React node - grid items",
+    "cols": "number - 1 | 2 | 3 | 4 | 6 (responsive columns)",
+    "gap": "number - Tailwind gap value (default: 4)",
+    "className": "string - additional Tailwind classes"
+  },
+  "usage_examples": [
+    "<Grid cols={3}><Card>Item 1</Card><Card>Item 2</Card><Card>Item 3</Card></Grid>",
+    "<Grid cols={2} gap={6}>...</Grid>",
+    "<Grid cols={4} className=\"mt-8\">...</Grid>"
+  ],
+  "design_tokens": {
+    "responsive_breakpoints": "md: lg: xl:",
+    "gap": "gap-4 (default)"
+  },
+  "accessibility": {
+    "layout": "Grid items should be in logical order for screen readers",
+    "labels": "Add aria-label to grid if it represents a specific collection"
+  }
+}

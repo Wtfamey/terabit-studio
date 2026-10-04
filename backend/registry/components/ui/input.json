@@ -1,0 +1,30 @@
+{
+  "id": "input",
+  "category": "ui",
+  "name": "Input",
+  "description": "A styled input field with focus states",
+  "component": "export default function Input({ type = 'text', placeholder = '', className = '', ...props }) {\n  return (\n    <input\n      type={type}\n      placeholder={placeholder}\n      className={`w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200 ${className}`}\n      {...props}\n    />\n  );\n}",
+  "props": {
+    "type": "string - 'text' | 'email' | 'password' | 'number'",
+    "placeholder": "string - placeholder text",
+    "className": "string - additional Tailwind classes"
+  },
+  "usage_examples": [
+    "<Input placeholder=\"Enter your email\" />",
+    "<Input type=\"password\" placeholder=\"Password\" />",
+    "<Input type=\"number\" placeholder=\"Age\" className=\"w-32\" />"
+  ],
+  "design_tokens": {
+    "background": "bg-white/5",
+    "border": "border-white/10",
+    "focus_ring": "focus:ring-2 focus:ring-violet-500",
+    "radius": "rounded-lg",
+    "text_color": "text-white",
+    "placeholder_color": "placeholder-gray-400"
+  },
+  "accessibility": {
+    "labels": "Always use with <label> and matching htmlFor",
+    "aria": "Add aria-required, aria-invalid for validation states",
+    "autocomplete": "Use appropriate autocomplete attributes"
+  }
+}

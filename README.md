@@ -136,7 +136,7 @@ The app will be available at [http://localhost](http://localhost).
 ## Project Structure
 
 ```
-zenith/
+terabit-studio/
 ├── backend/
 │   ├── main.py                  # FastAPI server with all API routes
 │   ├── model_service.py         # OpenAI-compatible LLM client

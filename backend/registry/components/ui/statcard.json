@@ -1,0 +1,34 @@
+{
+  "id": "statcard",
+  "category": "ui",
+  "name": "StatCard",
+  "description": "A metric display card with icon, value, label, and optional trend",
+  "component": "import { TrendingUp, TrendingDown, Minus } from 'lucide-react';\n\ninterface StatCardProps {\n  label: string;\n  value: string | number;\n  icon: React.ReactNode;\n  trend?: number; // percentage change\n  trendLabel?: string;\n  className?: string;\n}\n\nexport default function StatCard({\n  label,\n  value,\n  icon,\n  trend,\n  trendLabel,\n  className = '',\n}: StatCardProps) {\n  const TrendIcon = trend && trend > 0 ? TrendingUp : trend && trend < 0 ? TrendingDown : Minus;\n  const trendColor = trend && trend > 0 ? 'text-emerald-400' : trend && trend < 0 ? 'text-rose-400' : 'text-gray-500';\n  \n  return (\n    <div className={`backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:border-white/20 ${className}`}>\n      <div className=\"flex items-start justify-between\">\n        <div>\n          <p className=\"text-xs font-medium text-gray-400 uppercase tracking-wider mb-1\">{label}</p>\n          <p className=\"text-3xl font-bold text-white\">{value}</p>\n          {trend !== undefined && (\n            <div className=\"flex items-center gap-1 mt-2\">\n              <TrendIcon className={`w-3.5 h-3.5 ${trendColor}`} />\n              <span className={`text-sm font-medium ${trendColor}`}>\n                {trend > 0 ? '+' : ''}{trend}%\n              </span>\n              {trendLabel && (\n                <span className=\"text-xs text-gray-500\">{trendLabel}</span>\n              )}\n            </div>\n          )}\n        </div>\n        <div className=\"p-3 bg-gradient-to-br from-violet-500/20 to-cyan-500/20 rounded-xl\">\n          {icon}\n        </div>\n      </div>\n    </div>\n  );\n}",
+  "props": {
+    "label": "string - metric label",
+    "value": "string | number - metric value",
+    "icon": "React.ReactNode - lucide-react icon component",
+    "trend": "number - optional percentage change",
+    "trendLabel": "string - optional trend timeframe",
+    "className": "string - additional Tailwind classes"
+  },
+  "usage_examples": [
+    "<StatCard label=\"Total Revenue\" value=\"$127,430\" icon={<DollarSign className=\"w-6 h-6\" />} trend={12.5} trendLabel=\"vs last month\" />",
+    "<StatCard label=\"Active Users\" value=\"2,847\" icon={<Users className=\"w-6 h-6\" />} trend={-2.1} trendLabel=\"vs last week\" />",
+    "<StatCard label=\"Conversion Rate\" value=\"3.24%\" icon={<TrendingUp className=\"w-6 h-6\" />} />"
+  ],
+  "design_tokens": {
+    "background": "backdrop-blur-xl bg-white/5 border border-white/10",
+    "hover": "hover:scale-[1.02] hover:shadow-xl hover:border-white/20",
+    "border_radius": "rounded-2xl",
+    "icon_bg": "bg-gradient-to-br from-violet-500/20 to-cyan-500/20",
+    "value_style": "text-3xl font-bold text-white",
+    "label_style": "text-xs font-medium text-gray-400 uppercase tracking-wider",
+    "trend_positive": "text-emerald-400",
+    "trend_negative": "text-rose-400"
+  },
+  "accessibility": {
+    "semantic": "Use <article> for each stat card",
+    "trend": "Include aria-label for trend direction"
+  }
+}

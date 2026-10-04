@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline';" />
+<title>Terabit Studio</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 28px 30px;
+    background: #0b0f1a; color: #dbe3f4;
+    font: 14px/1.5 "Segoe UI", system-ui, sans-serif;
+    display: flex; flex-direction: column; min-height: 100vh;
+  }
+  header { display: flex; align-items: baseline; gap: 10px; }
+  h1 { font-size: 17px; margin: 0; letter-spacing: .2px; }
+  .badge {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .8px;
+    color: #8fa0c4; border: 1px solid #24304d; border-radius: 999px;
+    padding: 2px 8px;
+  }
+  .status { display: flex; align-items: center; gap: 10px; margin: 18px 0 10px; }
+  .status p { margin: 0; font-size: 14px; }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto;
+    background: #7c9cff; box-shadow: 0 0 0 0 rgba(124,156,255,.6);
+    animation: pulse 1.6s infinite;
+  }
+  .dot.ok { background: #4ade80; animation: none; }
+  .dot.bad { background: #f87171; animation: none; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(124,156,255,.5); }
+    70% { box-shadow: 0 0 0 9px rgba(124,156,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(124,156,255,0); }
+  }
+  .issues {
+    margin: 6px 0 12px; padding: 12px 14px; border-radius: 10px;
+    background: #1a1320; border: 1px solid #3a2740;
+  }
+  .issues h2 { margin: 0 0 6px; font-size: 13px; color: #f0b8b8; }
+  .issues ul { margin: 0; padding-left: 18px; }
+  .issues li { margin: 3px 0; color: #e7d7ea; }
+  .issues.ok { background: #0f1d16; border-color: #22452f; }
+  .issues.ok h2 { color: #86efac; }
+  pre {
+    flex: 1 1 auto; overflow: auto; margin: 0; padding: 14px;
+    background: #070a12; border: 1px solid #1b2237; border-radius: 10px;
+    font: 11.5px/1.5 "Cascadia Mono", Consolas, monospace; color: #9fb0d0;
+    white-space: pre-wrap; word-break: break-word; min-height: 120px;
+  }
+  footer { display: flex; gap: 10px; align-items: center; margin-top: 14px; }
+  button {
+    font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 8px;
+    cursor: pointer;
+    background: #1b2438; color: #dbe3f4; border: 1px solid #2a3550;
+  }
+  button.primary { background: #3b5bdb; border-color: #4c6ef5; color: #fff; }
+  button:disabled { opacity: .5; cursor: default; }
+  .hint { color: #7787a8; font-size: 12px; margin-left: auto; text-align: right; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Terabit Studio</h1>
+    <span class="badge" id="ver">local-first</span>
+  </header>
+
+  <div class="status">
+    <span class="dot" id="dot"></span>
+    <p id="message">Starting up...</p>
+  </div>
+
+  <div class="issues" id="issues" hidden>
+    <h2 id="issues-title">Things to check</h2>
+    <ul id="issues-list"></ul>
+  </div>
+
+  <pre id="log">Waiting for the backend...</pre>
+
+  <footer>
+    <button id="retry" class="primary">Retry</button>
+    <button id="logs">Open log folder</button>
+    <span class="hint" id="hint">Everything stays on this machine.</span>
+  </footer>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const api = window.terabit || {};
+
+  function renderState(s) {
+    if (!s) return;
+    $('message').textContent = s.message || '';
+    const dot = $('dot');
+    dot.className = 'dot' + (s.phase === 'ready' ? ' ok' : s.phase === 'failed' ? ' bad' : '');
+    $('retry').disabled = s.phase === 'booting';
+    if (s.version) $('ver').textContent = 'v' + s.version;
+    if (s.env) renderEnv(s.env);
+  }
+
+  function renderEnv(env) {
+    const box = $('issues');
+    const list = $('issues-list');
+    list.replaceChildren();
+    box.hidden = false;
+    if (env.ok) {
+      box.className = 'issues ok';
+      $('issues-title').textContent = 'Ready';
+      const li = document.createElement('li');
+      const loaded = env.runtime && env.runtime.loaded && env.runtime.loaded[0];
+      li.textContent = loaded
+        ? 'Model loaded: ' + loaded
+        : 'Model runtime reachable.';
+      list.appendChild(li);
+      return;
+    }
+    box.className = 'issues';
+    $('issues-title').textContent = 'Things to check before the first build';
+    for (const issue of env.issues || []) {
+      const li = document.createElement('li');
+      li.textContent = issue;
+      list.appendChild(li);
+    }
+  }
+
+  const logBox = $('log');
+  logBox.textContent = '';
+  function appendLine(line) {
+    logBox.textContent += line + '\n';
+    logBox.scrollTop = logBox.scrollHeight;
+  }
+
+  if (api.onBootLog) api.onBootLog(appendLine);
+  if (api.onState) api.onState(renderState);
+  if (api.state) api.state().then(renderState);
+  if (api.bootLog) {
+    api.bootLog().then((text) => {
+      if (text) {
+        logBox.textContent = text + '\n';
+        logBox.scrollTop = logBox.scrollHeight;
+      }
+    });
+  }
+  $('retry').addEventListener('click', async () => {
+    $('retry').disabled = true;
+    $('message').textContent = 'Retrying...';
+    if (api.retry) renderState(await api.retry());
+  });
+  $('logs').addEventListener('click', () => api.openLogs && api.openLogs());
+</script>
+</body>
+</html>

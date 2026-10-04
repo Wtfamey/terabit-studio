@@ -34,8 +34,10 @@ import json
 import time
 import random
 import argparse
+import threading
 import traceback
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor
 
 from dotenv import load_dotenv
 
@@ -62,11 +64,22 @@ BUSINESS_TYPES = [
 ]
 
 COMPONENT_KINDS = [
-    "main dashboard/overview page", "data table with filters and search",
-    "detail/profile page", "settings page with multiple sections",
-    "onboarding/wizard flow (single step shown)", "analytics page with charts",
-    "kanban/board view", "pricing section", "landing page hero + features section",
-    "login/signup form", "notification center dropdown", "modal/dialog for creating an item",
+    "KPI stat-card row (4 cards with values, deltas, icons)",
+    "searchable data-table section with column filters",
+    "detail card with header, avatar, and metadata rows",
+    "settings panel with multiple collapsible form sections",
+    "multi-step wizard form (single step component with progress header)",
+    "line/bar chart panel with legend and range toggle",
+    "kanban column with task cards and quick-add",
+    "pricing tier card with feature checklist",
+    "login/signup form card with social buttons",
+    "notification dropdown panel with unread badges",
+    "modal dialog for creating an item (form + validation styling)",
+    "activity feed list with timestamps and icon bullets",
+    "profile header with stats row and follow button",
+    "empty-state card with illustration icon and CTA",
+    "horizontal filter-chip bar with active states",
+    "toast notification stack component",
 ]
 
 STYLE_RULES = """Follow these style rules exactly:
@@ -86,18 +99,49 @@ STYLE_RULES = """Follow these style rules exactly:
   `src/components/StatCard.jsx`, `src/pages/Dashboard.jsx`)
 """
 
-MODEL = "gemini-3.5-flash"
+MODEL = "gemini-3.6-flash"
+
+# Free-tier request quotas are PER MODEL per day (measured 2026-09-17:
+# gemini-3.6-flash free tier = 20 req/day; 2.5-flash retired for new users).
+# On 429 the generator rotates down this chain, multiplying the daily budget.
+MODELS = [
+    "gemini-3.6-flash",
+    "gemini-3.5-flash",
+    "gemini-3.7-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite",
+]
+_current_model = 0
+_model_lock = threading.Lock()
 
 SYSTEM_INSTRUCTION = (
     "You are an elite front-end developer producing polished, production-quality "
-    "React + Tailwind CSS components. Output exactly ONE file: its path in backticks "
-    "on its own line, immediately followed by a fenced code block with the full code. "
-    "No commentary before or after."
+    "React + Tailwind CSS components. You write dense, compact, information-rich "
+    "components and ALWAYS respect the requested size limit. Output exactly ONE file: "
+    "its path in backticks on its own line, immediately followed by a fenced code block "
+    "with the full code. No commentary before or after."
 )
 
 FILE_PATTERN = re.compile(r"`(.+?\.(?:jsx?|tsx?|css))`\s*\n```[\w]*\n([\s\S]*?)```")
 
 MAX_CONSECUTIVE_FAILURES = 15  # allow some natural failures before stopping
+
+# TRAINABLE SIZE STRATEGY (research findings, 2026-09-17):
+# Both v1 and v2 teacher runs produced 6-16k-token examples while the trainer
+# ran at MAX_SEQ_LENGTH=1024 -- i.e. EVERY example ever trained on was cut
+# mid-code (the root cause of the broken-entry-point/artifact pathologies).
+# Soft size limits don't work (flash ignores them at 19-24k chars); hard
+# max_output_tokens truncates mid-code. What works: SINGLE-COMPONENT SCOPE --
+# the teacher's natural floor is ~3.5k chars/component, ceiling ~12k, which
+# fits a 3072-token training window (chars/4 + template) on 4GB VRAM.
+SCOPE_RULE = (
+    "SCOPE: exactly ONE React component (the default export). NOT a full page: "
+    "no sidebar, no page shell, no navigation, no multiple screens. The named "
+    "component only, with its own small mock-data array inline. Target 80-200 "
+    "lines of code."
+)
+MAX_CODE_CHARS = 13000  # post-generation gate: ~3250 tokens + template fits MAX_SEQ_LENGTH=3584
+# (teacher's natural component ceiling measured at ~12.5k chars on modal forms)
 
 
 def build_prompt() -> tuple[str, str]:
@@ -105,6 +149,45 @@ def build_prompt() -> tuple[str, str]:
     component_kind = random.choice(COMPONENT_KINDS)
     user_prompt = f"Build the {component_kind} for a {business_type}."
     return business_type, user_prompt
+
+
+def generate_one_rotating(client, user_prompt: str, business_type: str = "",
+                          corrective_note: str = "") -> tuple[tuple[dict | None, str], str]:
+    """Call generate_one, rotating through MODELS on per-model quota (429)
+    or persistent high-demand (503). Returns ((example, raw), model_used).
+
+    Raises RuntimeError when every model in the chain is exhausted."""
+    global _current_model
+    last_err: Exception | None = None
+    tries_on_current = 0
+    while 0 <= _current_model < len(MODELS):
+        model = MODELS[_current_model]
+        try:
+            return generate_one(client, model, user_prompt, business_type, corrective_note), model
+        except Exception as e:
+            s = str(e)
+            last_err = e
+            if "429" in s or "RESOURCE_EXHAUSTED" in s:
+                with _model_lock:
+                    if MODELS[_current_model] == model:  # another worker may have rotated first
+                        _current_model += 1
+                        tries_on_current = 0
+                        print(f"[quota] {model} exhausted for today -> rotating to "
+                              f"{MODELS[_current_model] if _current_model < len(MODELS) else 'NOTHING LEFT'}")
+                continue
+            if "503" in s or "UNAVAILABLE" in s:
+                tries_on_current += 1
+                if tries_on_current >= 3:
+                    with _model_lock:
+                        if MODELS[_current_model] == model:
+                            _current_model += 1
+                            tries_on_current = 0
+                            print(f"[demand] {model} overloaded -> rotating")
+                    continue
+                time.sleep(15)
+                continue
+            raise  # anything else (auth, network) is a real failure
+    raise RuntimeError(f"All teacher models exhausted or unavailable. Last error: {last_err}")
 
 
 def extract_file(text: str) -> tuple[str, str] | None:
@@ -117,18 +200,23 @@ def extract_file(text: str) -> tuple[str, str] | None:
     return path, content
 
 
-def generate_one(client, business_type: str, user_prompt: str) -> tuple[dict | None, str]:
+def generate_one(client, model: str, user_prompt: str, business_type: str = "",
+                 corrective_note: str = "") -> tuple[dict | None, str]:
     """Returns (example_or_None, raw_response_text) - raw text is always
     returned so callers can show it on failure instead of guessing blind."""
+    prefix = f"{corrective_note}\n\n" if corrective_note else ""
     resp = client.models.generate_content(
-        model=MODEL,
-        config={"system_instruction": SYSTEM_INSTRUCTION, "temperature": 0.9},
-        contents=f"{user_prompt}\n\n{STYLE_RULES}",
+        model=model,
+        config={"system_instruction": SYSTEM_INSTRUCTION, "temperature": 0.85},
+        contents=f"{prefix}{SCOPE_RULE}\n\n{user_prompt}\n\n{STYLE_RULES}",
     )
     text = resp.text or ""
     extracted = extract_file(text)
     if extracted is None:
         return None, text
+    path, content = extracted
+    if len(content) > MAX_CODE_CHARS:
+        return None, f"OVERSIZE (gate: >{MAX_CODE_CHARS} chars, got {len(content)})\n{text[:300]}"
     path, content = extracted
     example = {
         "instruction": f"Build the {user_prompt[9:]}",
@@ -142,6 +230,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--count", type=int, default=150)
     parser.add_argument("--out", default="./training_data.jsonl")
+    parser.add_argument("--workers", type=int, default=1,
+                        help="parallel Gemini calls (3 keeps well under free-tier RPM)")
     args = parser.parse_args()
 
     api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
@@ -164,19 +254,28 @@ def main():
     # doesn't work, nothing else will either, so we stop here instead of
     # burning through retries.
     print("Running a single test generation to verify everything works...")
-    try:
-        test_example, test_raw = generate_one(client, "CRM", "Build the main dashboard/overview page for a CRM.")
-    except Exception:
-        print("\n--- TEST CALL FAILED ---")
-        traceback.print_exc()
-        print("------------------------")
-        print(
-            "\nThe API call itself raised an exception (see traceback above) - this is "
-            "almost always an invalid/expired API key, no internet access, or the "
-            "'google-genai' package not being installed correctly. Fix that and re-run."
-        )
-        sys.exit(1)
-
+    test_example = test_raw = None
+    for attempt in range(1, 4):  # transient 503s ("high demand") happen; retry
+        try:
+            (test_example, test_raw), _m = generate_one_rotating(
+                client, "Build the create-new-lead modal dialog for a CRM: form fields, validation styling, cancel/save buttons.", "CRM",
+                "" if attempt == 1 else "Your previous response exceeded the size limit and was rejected. Be compact.")
+            if test_example is not None:
+                break
+            # Gate rejection (oversize/unparseable) falls through to the retry below
+        except Exception:
+            if attempt == 3:
+                print("\n--- TEST CALL FAILED (3 attempts) ---")
+                traceback.print_exc()
+                print("------------------------")
+                print(
+                    "\nThe API call itself raised an exception - this is "
+                    "almost always an invalid/expired API key, no internet access, or the "
+                    "'google-genai' package not being installed correctly. Fix that and re-run."
+                )
+                sys.exit(1)
+            print(f"  attempt {attempt} failed (likely transient), retrying in 20s...")
+            time.sleep(20)
     if test_example is None:
         print("\n--- TEST CALL SUCCEEDED BUT PARSING FAILED ---")
         print("Raw response from Gemini:\n")
@@ -194,47 +293,94 @@ def main():
     print("Proceeding with full run...\n")
 
     out_path = Path(args.out)
-    written = 0
+    # Preserve any existing examples (the 20-example v1 set): the generator
+    # opens in "w" mode, which would silently discard them. Seed the new file
+    # with everything already there, then dedupe at write time on the exact
+    # instruction text so re-runs can't create duplicates.
+    existing = []
+    if out_path.exists():
+        with out_path.open("r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    existing.append(json.loads(line))
+                except json.JSONDecodeError:
+                    print(f"  warning: skipped corrupt line in existing {out_path}")
+    if existing:
+        print(f"Preserving {len(existing)} existing examples from {out_path}")
+    seen_instructions = {ex.get("instruction", "") for ex in existing}
+
+    written = len(existing)
     consecutive_failures = 0
+    stop = threading.Event()
+    lock = threading.Lock()  # guards written, seen_instructions, file handle, failures
 
     with out_path.open("w", encoding="utf-8") as f:
-        # Write the test example too, no need to waste it
-        f.write(json.dumps(test_example) + "\n")
+        for ex in existing:
+            f.write(json.dumps(ex) + "\n")
         f.flush()
-        written += 1
 
-        while written < args.count:
-            business_type, user_prompt = build_prompt()
-            print(f"[{written + 1}/{args.count}] {user_prompt}")
-            try:
-                example, raw = generate_one(client, business_type, user_prompt)
-            except Exception as e:
-                consecutive_failures += 1
-                print(f"  error: {e}")
-                if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
-                    print(f"\n{consecutive_failures} failures in a row - stopping instead of "
-                          f"grinding silently. Full traceback of the last error:")
-                    traceback.print_exc()
-                    sys.exit(1)
-                is_rate_limit = "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e)
-                time.sleep(30 if is_rate_limit else 5)
-                continue
+        def worker(worker_id: int) -> None:
+            nonlocal written, consecutive_failures
+            while not stop.is_set():
+                with lock:
+                    if written >= args.count:
+                        return
+                try:
+                    business_type, user_prompt = build_prompt()
+                    (example, raw), _used = generate_one_rotating(client, user_prompt, business_type)
+                    # Corrective retry: the teacher ignoring the size limit is the
+                    # dominant failure; one reinforced retry recovers most of them.
+                    if example is None and raw.startswith("OVERSIZE"):
+                        print(f"[w{worker_id}] oversize, retrying with correction...")
+                        (example, raw), _used = generate_one_rotating(
+                            client, user_prompt, business_type,
+                            "REMINDER: your previous version was far too long and was rejected. "
+                            "Output ONE screen section only - omit extra pages, side routes, "
+                            "and duplicated sections. Stay under the size limit.")
+                except Exception as e:
+                    with lock:
+                        consecutive_failures += 1
+                        n = consecutive_failures
+                        print(f"[w{worker_id}] error: {e}")
+                        if n >= MAX_CONSECUTIVE_FAILURES:
+                            stop.set()
+                            print(f"\n{n} consecutive failures - stopping.")
+                            traceback.print_exc()
+                    time.sleep(30 if ("429" in str(e) or "RESOURCE_EXHAUSTED" in str(e)) else 5)
+                    continue
 
-            if example is None:
-                consecutive_failures += 1
-                print(f"  skipped (couldn't parse a file from the response). Raw response:")
-                print(f"  {raw[:300]!r}")
-                if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
-                    print(f"\n{consecutive_failures} skips in a row - stopping. See raw "
-                          f"responses above to figure out why parsing keeps failing.")
-                    sys.exit(1)
-                continue
+                if example is None:
+                    with lock:
+                        consecutive_failures += 1
+                        n = consecutive_failures
+                        print(f"[w{worker_id}] skipped (unparseable). raw: {raw[:200]!r}")
+                        if n >= MAX_CONSECUTIVE_FAILURES:
+                            stop.set()
+                            print(f"\n{n} consecutive skips - stopping.")
+                    continue
 
-            consecutive_failures = 0
-            f.write(json.dumps(example) + "\n")
-            f.flush()
-            written += 1
-            time.sleep(7.0)
+                with lock:
+                    consecutive_failures = 0
+                    if example["instruction"] in seen_instructions:
+                        print("  duplicate instruction, skipping")
+                        continue
+                    if written >= args.count:
+                        return
+                    seen_instructions.add(example["instruction"])
+                    f.write(json.dumps(example) + "\n")
+                    f.flush()
+                    written += 1
+                    print(f"[{written}/{args.count}] {example['instruction'][:80]}")
+                time.sleep(3.0)  # spacing on top of ~100s call time; 3 workers ~2 RPM
+
+        if args.workers <= 1:
+            worker(0)
+        else:
+            with ThreadPoolExecutor(max_workers=args.workers) as pool:
+                list(pool.map(worker, range(args.workers)))
 
     print(f"\nWrote {written} real training examples to {out_path}")
 

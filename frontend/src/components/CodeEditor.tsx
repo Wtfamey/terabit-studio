@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 interface CodeEditorProps {
   file: FileItem | null;
+  onChange?: (value: string) => void;
 }
 
 function getLanguage(filename: string): string {
@@ -19,7 +20,7 @@ function getLanguage(filename: string): string {
   return map[ext || ''] || 'plaintext';
 }
 
-export function CodeEditor({ file }: CodeEditorProps) {
+export function CodeEditor({ file, onChange }: CodeEditorProps) {
   const monaco = useMonaco();
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export function CodeEditor({ file }: CodeEditorProps) {
           { token: 'function', foreground: '89b4fa' },
         ],
         colors: {
-          'editor.background': '#0a0e1a',
+          'editor.background': '#07070d',
           'editor.foreground': '#cdd6f4',
           'editor.lineHighlightBackground': '#1e1e2e',
           'editorCursor.foreground': '#cba6f7',
@@ -64,7 +65,7 @@ export function CodeEditor({ file }: CodeEditorProps) {
       value={file.content || ''}
       theme="terabitstudio-dark"
       options={{
-        readOnly: true,
+        readOnly: false,
         minimap: { enabled: false },
         fontSize: 13,
         fontFamily: "'JetBrains Mono', monospace",
@@ -74,6 +75,7 @@ export function CodeEditor({ file }: CodeEditorProps) {
         renderLineHighlight: 'line',
         padding: { top: 16 },
       }}
+      onChange={(value) => onChange?.(value ?? '')}
     />
   );
 }

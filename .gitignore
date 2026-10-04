@@ -4,27 +4,30 @@ __pycache__/
 *.pyo
 *.pyd
 *.egg-info/
-dist/
 *.egg
 .eggs/
+.pytest_cache/
 
 # --- Virtual environments ---
 venv/
 .venv/
 train_env/
 env/
-.env/
 
 # --- Node ---
 node_modules/
+frontend/.preview-work/
 
 # --- Build output ---
-frontend/dist/
+dist/
 *.tsbuildinfo
 .vite/
+app/release/
 
 # --- Environment files (keep .env.example) ---
 .env
+.env.*
+!.env.example
 backend/.env
 
 # --- IDE / Editor ---
@@ -36,9 +39,17 @@ backend/.env
 .DS_Store
 Thumbs.db
 
-# --- Model files (large, downloaded separately) ---
+# --- Model weights (multi-GB, produced locally) ---
 *.gguf
-models/
+*.safetensors
+*.bin
+models/*
+!models/Modelfile
+backend/models/
+backend/temp_merged_model/
+backend/qwen-finetuned-lora/
+backend/qwen2.5-7b-finetuned-gguf/
+backend/training_data_jsonl/
 
 # --- Database (local dev) ---
 *.db
@@ -47,13 +58,39 @@ models/
 *.db-shm
 
 # --- User uploads ---
+uploads/
 backend/uploads/
-backend/qwen-finetuned-lora/
 
-# --- Training / cache ---
+# --- Generated training data ---
+backend/training_data*.jsonl
+
+# --- Training / ML caches ---
 unsloth_compiled_cache/
 wandb/
 runs/
 
-# --- llama.cpp (separate repo — clone manually) ---
+# --- Vendored third-party checkouts ---
 llama.cpp/
+backend/.pylibs/
+backend/docs_build/
+
+# --- Generation run artifacts (captured locally for benchmarking) ---
+backend/comparison/
+
+# --- Local agent / tooling runtime ---
+.freebuff/
+
+# --- Logs and scratch output ---
+*.log
+backend/ab_out_*
+backend/bench_*
+backend/verify_repair*
+backend/ux_backend*
+backend/finetune_*.log
+backend/e2e_*.log
+backend/*_console*.log
+backend/*_console*.err
+backend/diag_*
+backend/e2e_ml_last.json
+backend/v2_dash.json
+backend/*_last.json

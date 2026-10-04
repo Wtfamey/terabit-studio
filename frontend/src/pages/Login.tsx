@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Cpu, Mail, Lock, LogIn, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, LogIn, AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { AuthLayout, Notice } from '../components/AuthLayout';
+import { ui } from '../theme';
 
 export function Login() {
   const navigate = useNavigate();
@@ -11,7 +13,9 @@ export function Login() {
   const template = searchParams.get('template') || '';
   const features = searchParams.get('features') || '';
   const assetsParam = searchParams.get('assets') || '';
+  const brandParam = searchParams.get('brand') || '';
   const savedAssets = assetsParam ? (() => { try { return JSON.parse(assetsParam); } catch { return null; } })() : null;
+  const savedBrand = brandParam ? (() => { try { return JSON.parse(brandParam); } catch { return undefined; } })() : undefined;
 
   const { login } = useAuth();
   const [email, setEmail] = useState('');
@@ -27,7 +31,7 @@ export function Login() {
     try {
       await login(email, password);
       navigate(redirect, {
-        state: prompt ? { prompt, template: template || null, features, assets: savedAssets } : undefined,
+        state: prompt ? { prompt, template: template || null, features, assets: savedAssets, brand: savedBrand } : undefined,
       });
     } catch (err: any) {
       setError(err?.response?.data?.detail || 'Invalid email or password');
@@ -36,91 +40,99 @@ export function Login() {
     }
   };
 
+  const carry = `&prompt=${encodeURIComponent(prompt)}&template=${encodeURIComponent(template)}&features=${encodeURIComponent(features)}` +
+    `${assetsParam ? `&assets=${encodeURIComponent(assetsParam)}` : ''}` +
+    `${brandParam ? `&brand=${encodeURIComponent(brandParam)}` : ''}`;
+
   return (
-    <div className="min-h-screen bg-[#030712] flex items-center justify-center p-6">
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] bg-violet-600/15 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-cyan-500/15 rounded-full blur-[100px]" />
-      </div>
-      <div className="relative w-full max-w-md">
-        <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8 backdrop-blur-xl shadow-2xl shadow-black/50">
-          <div className="text-center mb-8">
-            <div className="p-3 bg-gradient-to-br from-violet-600 via-fuchsia-500 to-cyan-500 rounded-xl inline-block mb-4 shadow-lg shadow-violet-500/20">
-              <Cpu className="w-7 h-7 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-100">Welcome back</h1>
-            <p className="text-sm text-gray-500 mt-1">Sign in to continue building with TerabitStudio</p>
-            {prompt && (
-              <p className="text-xs text-violet-400 mt-2 bg-violet-500/10 rounded-lg px-3 py-1.5 truncate max-w-full">
-                Prompt saved: "{prompt.slice(0, 60)}..."
-              </p>
-            )}
-            {savedAssets && (
-              <p className="text-xs text-emerald-400 mt-1 bg-emerald-500/10 rounded-lg px-3 py-1">
-                {savedAssets.length} asset{savedAssets.length !== 1 ? 's' : ''} attached
-              </p>
-            )}
-          </div>
-
-          {error && (
-            <div className="flex items-center gap-2 p-3 mb-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
-              {error}
-            </div>
+    <AuthLayout
+      title="Welcome back"
+      subtitle="Sign in to continue building with Terabit Studio."
+      notice={
+        <>
+          {prompt && (
+            <Notice>
+              <span className="font-medium">Prompt saved</span> — “{prompt.slice(0, 64)}
+              {prompt.length > 64 ? '…' : ''}”
+            </Notice>
           )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1.5">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-violet-500/50"
-                  required
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1.5">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-violet-500/50"
-                  required
-                />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400">
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-cyan-600 rounded-xl font-semibold text-white hover:shadow-xl hover:shadow-violet-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-            >
-              {loading ? 'Signing in...' : <><LogIn className="w-4 h-4" /> Sign In</>}
-            </button>
-          </form>
-
-          <p className="text-center text-sm text-gray-600 mt-6">
-            No account?{' '}
-            <Link
-              to={`/register?redirect=${encodeURIComponent(redirect)}&prompt=${encodeURIComponent(prompt)}&template=${encodeURIComponent(template)}&features=${encodeURIComponent(features)}${assetsParam ? `&assets=${encodeURIComponent(assetsParam)}` : ''}`}
-              className="text-violet-400 hover:text-violet-300 font-medium"
-            >
-              Create one
-            </Link>
-          </p>
+          {savedAssets && savedAssets.length > 0 && (
+            <Notice tone="success">
+              {savedAssets.length} asset{savedAssets.length !== 1 ? 's' : ''} attached to this build
+            </Notice>
+          )}
+        </>
+      }
+      footer={
+        <p className="text-sm text-slate-500">
+          No account?{' '}
+          <Link
+            to={`/register?redirect=${encodeURIComponent(redirect)}${carry}`}
+            className="font-medium text-brand-300 hover:text-brand-200 transition-colors"
+          >
+            Create one
+          </Link>
+        </p>
+      }
+    >
+      {error && (
+        <div className="flex items-center gap-2 mb-4 rounded-xl border border-red-500/25 bg-red-500/10 px-3 py-2.5 text-sm text-red-300 animate-slide-up">
+          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+          {error}
         </div>
-      </div>
-    </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="email" className={ui.label}>Email</label>
+          <div className="relative mt-1.5 group">
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 transition-colors group-focus-within:text-brand-300" />
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              autoComplete="email"
+              className={`${ui.input} pl-10`}
+              required
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="password" className={ui.label}>Password</label>
+          <div className="relative mt-1.5 group">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 transition-colors group-focus-within:text-brand-300" />
+            <input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="current-password"
+              className={`${ui.input} pl-10 pr-10`}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" disabled={loading} className={`${ui.btnPrimary} w-full py-3 text-sm`}>
+          {loading ? (
+            <><Loader2 className="w-4 h-4 animate-spin" /> Signing in…</>
+          ) : (
+            <><LogIn className="w-4 h-4" /> Sign in</>
+          )}
+        </button>
+      </form>
+    </AuthLayout>
   );
 }

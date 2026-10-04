@@ -4,25 +4,29 @@
 Write-Host "=== Zenith - Local Development ===" -ForegroundColor Cyan
 Write-Host ""
 
-# Check if the model file exists
-$modelPath = "C:\Users\win\Desktop\super project\zenith\models\qwen2.5-7b-q4_k_m.gguf"
-if (-not (Test-Path $modelPath)) {
-    Write-Host "Warning: Model not found at $modelPath" -ForegroundColor Yellow
-    Write-Host "Set the MODEL_PATH env var to your GGUF file location." -ForegroundColor Yellow
-}
+# IMPORTANT: this script intentionally does NOT set $env:MODEL_PATH / N_CTX /
+# N_GPU_LAYERS / MODEL_NAME / LORA_PATH anymore.
+#
+# It used to hardcode $env:MODEL_PATH to the base model and force N_CTX down
+# to 8192 - since backend/model_service.py loads .env via python-dotenv with
+# override=False, any environment variable already set when the Python
+# process starts (like the ones this script used to set) permanently wins
+# over the same key in .env. That meant .env's MODEL_PATH/MODEL_NAME/
+# LORA_PATH could never take effect no matter what you put in it - which is
+# exactly why the fine-tuned model never got picked up. Your zenith/.env file
+# is now the single source of truth for all of that; edit it, don't edit this
+# script.
 
-# Start backend
-Write-Host "Starting Backend (FastAPI)..." -ForegroundColor Green
-$env:MODEL_PATH = $modelPath
-$env:N_CTX = "16384"
-$env:N_GPU_LAYERS = "-1"
+Write-Host "Starting Backend (FastAPI) - configuration is read from zenith/.env" -ForegroundColor Green
 
 $backendJob = Start-Job -ScriptBlock {
-    param($mp)
-    $env:MODEL_PATH = $mp
     Set-Location "$using:pwd\backend"
     python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-} -ArgumentList $modelPath
+}
+
+Write-Host "Backend job started (id $($backendJob.Id)). Tail its output with:" -ForegroundColor DarkGray
+Write-Host "  Receive-Job -Id $($backendJob.Id) -Keep" -ForegroundColor DarkGray
+Write-Host ""
 
 # Start frontend
 Write-Host "Starting Frontend (Vite)..." -ForegroundColor Green

@@ -1,0 +1,36 @@
+{
+  "id": "tabs",
+  "category": "ui",
+  "name": "Tabs",
+  "description": "Accessible tab component with keyboard navigation, animated indicator, and multiple variants",
+  "component": "import { useState, forwardRef } from 'react';\nimport { forwardRef } from 'react';\n\ninterface TabItem {\n  label: string;\n  value: string;\n  icon?: React.ReactNode;\n  disabled?: boolean;\n  badge?: string | number;\n}\n\ninterface TabsProps {\n  tabs: TabItem[];\n  value: string;\n  onChange: (value: string) => void;\n  variant?: 'default' | 'underline' | 'pills';\n  className?: string;\n  fullWidth?: boolean;\n}\n\nexport default function Tabs({\n  tabs,\n  value,\n  onChange,\n  variant = 'default',\n  className = '',\n  fullWidth = false,\n}: TabsProps) {\n  return (\n    <div className={className} role=\"tablist\" aria-orientation=\"horizontal\">\n      <div\n        className={`flex ${fullWidth ? 'w-full' : ''} ${variant === 'underline' ? 'border-b border-white/10' : ''} ${variant === 'pills' ? 'bg-white/5 p-1 rounded-xl' : ''}`}\n      >\n        {tabs.map((tab, index) => (\n          <button\n            key={tab.value}\n            role=\"tab\"\n            aria-selected={value === tab.value}\n            aria-controls={`tabpanel-${tab.value}`}\n            id={`tab-${tab.value}`}\n            onClick={() => !tab.disabled && onChange(tab.value)}\n            disabled={tab.disabled}\n            className={\n              `relative flex flex-col items-center gap-1 px-4 py-3 text-sm font-medium transition-all duration-200 ${\n                fullWidth ? 'flex-1' : ''\n              } ${\n                tab.disabled\n                  ? 'opacity-50 cursor-not-allowed text-gray-500'\n                  : value === tab.value\n                  ? variant === 'pills'\n                    ? 'text-violet-300 bg-white/10 rounded-lg shadow-sm'\n                    : variant === 'underline'\n                    ? 'text-violet-300'\n                    : 'text-violet-300 bg-violet-500/10 rounded-t-lg'\n                  : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'\n              }`}\n            tabIndex={value === tab.value ? 0 : -1}\n          >\n            {tab.icon && <span className=\"w-4 h-4\">{tab.icon}</span>}\n            <span className=\"flex items-center gap-1\">{tab.label}</span>\n            {tab.badge && (\n              <span\n                className={`text-xs px-1.5 py-0.5 rounded-full ${value === tab.value ? 'bg-violet-500/30 text-violet-300' : 'bg-white/10 text-gray-400'}`}\n              >{tab.badge}</span>\n            )}\n          </button>\n        ))}\n        {variant === 'underline' && (\n          <div\n            className=\"absolute bottom-0 h-0.5 bg-gradient-to-r from-violet-500 to-cyan-500 transition-all duration-300 ease-out\"\n            style={{\n              width: `${100 / tabs.length}%`,\n              transform: `translateX(${tabs.findIndex(t => t.value === value) * (100 / tabs.length)}%)`,\n            }}\n            aria-hidden=\"true\"\n          />\n        )}\n      </div>\n      <div className=\"mt-4\">\n        {tabs.map(tab => (\n          <div\n            key={tab.value}\n            role=\"tabpanel\"\n            id={`tabpanel-${tab.value}`}\n            aria-labelledby={`tab-${tab.value}`}\n            hidden={value !== tab.value}\n            className=\"animate-fade-in\"\n          >\n            {value === tab.value && tab.children}\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}\n\n// Enhanced Tabs with panels built-in\ninterface TabsWithPanelsProps {\n  tabs: (TabItem & { children: React.ReactNode })[];\n  defaultValue?: string;\n  variant?: 'default' | 'underline' | 'pills';\n  className?: string;\n  fullWidth?: boolean;\n}\n\nexport function TabsWithPanels({\n  tabs,\n  defaultValue = tabs[0]?.value,\n  variant = 'default',\n  className = '',\n  fullWidth = false,\n}: TabsWithPanelsProps) {\n  const [value, setValue] = useState(defaultValue);\n\n  return (\n    <Tabs\n      tabs={tabs.map(t => ({ label: t.label, value: t.value, icon: t.icon, disabled: t.disabled, badge: t.badge }))}\n      value={value}\n      onChange={setValue}\n      variant={variant}\n      className={className}\n      fullWidth={fullWidth}\n    >\n      {tabs.map(tab => (\n        <div key={tab.value} role=\"tabpanel\" id={`tabpanel-${tab.value}`} aria-labelledby={`tab-${tab.value}`} hidden={value !== tab.value}>\n          {value === tab.value && tab.children}\n        </div>\n      ))}\n    </Tabs>\n  );\n}",
+  "props": {
+    "Tabs": "{ tabs: TabItem[], value, onChange, variant?, className?, fullWidth? }",
+    "TabsWithPanels": "{ tabs: TabItemWithChildren[], defaultValue?, variant?, className?, fullWidth? }",
+    "TabItem": "{ label, value, icon?, disabled?, badge?, children? }"
+  },
+  "usage_examples": [
+    "<Tabs tabs={[{label: 'Overview', value: 'overview'}, {label: 'Analytics', value: 'analytics'}, {label: 'Settings', value: 'settings'}]} value={activeTab} onChange={setActiveTab} variant=\"underline\" />",
+    "<TabsWithPanels tabs={[{label: 'Profile', value: 'profile', children: <Profile />}, {label: 'Billing', value: 'billing', children: <Billing />}]} variant=\"pills\" />"
+  ],
+  "design_tokens": {
+    "container": "flex",
+    "underline": "border-b border-white/10",
+    "pills": "bg-white/5 p-1 rounded-xl",
+    "tab_default": "flex flex-col items-center gap-1 px-4 py-3 text-sm font-medium",
+    "tab_active_underline": "text-violet-300",
+    "tab_active_pills": "text-violet-300 bg-white/10 rounded-lg shadow-sm",
+    "tab_active_default": "text-violet-300 bg-violet-500/10 rounded-t-lg",
+    "tab_inactive": "text-gray-400 hover:text-gray-200 hover:bg-white/5",
+    "tab_disabled": "opacity-50 cursor-not-allowed text-gray-500",
+    "indicator": "absolute bottom-0 h-0.5 bg-gradient-to-r from-violet-500 to-cyan-500",
+    "panel": "mt-4 animate-fade-in",
+    "badge": "text-xs px-1.5 py-0.5 rounded-full"
+  },
+  "accessibility": {
+    "roles": "role=tablist, role=tab, role=tabpanel",
+    "aria": "aria-selected, aria-controls, aria-labelledby, hidden",
+    "keyboard": "Arrow keys to navigate, Enter/Space to activate, Home/End for first/last",
+    "focus": "TabIndex management (0 for active, -1 for inactive)"
+  }
+}

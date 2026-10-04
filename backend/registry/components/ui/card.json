@@ -1,0 +1,33 @@
+{
+  "id": "card",
+  "category": "ui",
+  "name": "Card",
+  "description": "A versatile card component with multiple variants for content display",
+  "component": "import { forwardRef } from 'react';\n\ninterface CardProps extends React.HTMLAttributes<HTMLDivElement> {\n  variant?: 'default' | 'glass' | 'elevated' | 'outlined';\n  padding?: 'none' | 'sm' | 'md' | 'lg';\n  hover?: boolean;\n}\n\nexport const Card = forwardRef<HTMLDivElement, CardProps>(\n  ({ className = '', variant = 'default', padding = 'md', hover = false, children, ...props }, ref) => {\n    const variants = {\n      default: 'bg-white/5 border border-white/10',\n      glass: 'backdrop-blur-xl bg-white/5 border border-white/10',\n      elevated: 'bg-gray-900/50 shadow-2xl border border-white/5',\n      outlined: 'bg-transparent border-2 border-white/20',\n    };\n    const paddings = {\n      none: '',\n      sm: 'p-4',\n      md: 'p-6',\n      lg: 'p-8',\n    };\n    const hoverStyles = hover ? 'transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:border-white/20' : '';\n\n    return (\n      <div\n        ref={ref}\n        className={`rounded-2xl ${variants[variant]} ${paddings[padding]} ${hoverStyles} ${className}`}\n        {...props}\n      >\n        {children}\n      </div>\n    );\n  }\n);\nCard.displayName = 'Card';\n\ninterface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}\nexport const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(\n  ({ className = '', children, ...props }, ref) => (\n    <div ref={ref} className={`mb-4 ${className}`} {...props}>\n      {children}\n    </div>\n  )\n);\nCardHeader.displayName = 'CardHeader';\n\ninterface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}\nexport const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(\n  ({ className = '', children, ...props }, ref) => (\n    <h3 ref={ref} className={`text-xl font-bold text-white ${className}`} {...props}>\n      {children}\n    </h3>\n  )\n);\nCardTitle.displayName = 'CardTitle';\n\ninterface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}\nexport const CardDescription = forwardRef<HTMLParagraphElement, CardDescriptionProps>(\n  ({ className = '', children, ...props }, ref) => (\n    <p ref={ref} className={`text-sm text-gray-400 mt-1 ${className}`} {...props}>\n      {children}\n    </p>\n  )\n);\nCardDescription.displayName = 'CardDescription';\n\ninterface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}\nexport const CardContent = forwardRef<HTMLDivElement, CardContentProps>(\n  ({ className = '', children, ...props }, ref) => (\n    <div ref={ref} className={className} {...props}>\n      {children}\n    </div>\n  )\n);\nCardContent.displayName = 'CardContent';\n\ninterface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}\nexport const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(\n  ({ className = '', children, ...props }, ref) => (\n    <div ref={ref} className={`flex items-center mt-4 pt-4 border-t border-white/10 ${className}`} {...props}>\n      {children}\n    </div>\n  )\n);\nCardFooter.displayName = 'CardFooter';",
+  "props": {
+    "variant": "string - 'default' | 'glass' | 'elevated' | 'outlined'",
+    "padding": "string - 'none' | 'sm' | 'md' | 'lg'",
+    "hover": "boolean - enable hover effects",
+    "className": "string - additional Tailwind classes"
+  },
+  "usage_examples": [
+    "<Card variant=\"glass\" hover><CardHeader><CardTitle>Analytics</CardTitle><CardDescription>Overview of your metrics</CardDescription></CardHeader><CardContent>...</CardContent></Card>",
+    "<Card variant=\"elevated\" padding=\"lg\"><CardContent>Premium content area</CardContent></Card>",
+    "<Card variant=\"outlined\"><CardContent>Bordered card style</CardContent></Card>"
+  ],
+  "design_tokens": {
+    "default_bg": "bg-white/5 border border-white/10",
+    "glass_bg": "backdrop-blur-xl bg-white/5 border border-white/10",
+    "elevated_bg": "bg-gray-900/50 shadow-2xl border border-white/5",
+    "outlined_bg": "bg-transparent border-2 border-white/20",
+    "border_radius": "rounded-2xl",
+    "padding_md": "p-6",
+    "hover": "transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:border-white/20",
+    "title": "text-xl font-bold text-white",
+    "description": "text-sm text-gray-400"
+  },
+  "accessibility": {
+    "semantic": "Use appropriate heading levels in CardTitle",
+    "interactive": "Ensure hover states are keyboard accessible"
+  }
+}

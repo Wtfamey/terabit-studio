@@ -1,0 +1,88 @@
+{
+  "name": "terabit-studio-desktop",
+  "productName": "Terabit Studio",
+  "version": "1.1.0",
+  "description": "Local-first AI app and website generator. Everything runs on your machine.",
+  "main": "main.js",
+  "author": "Terabit Studio",
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "smoke": "electron . --smoke",
+    "test": "node test_boot.js",
+    "build:backend": "node scripts/build-backend.js",
+    "build:backend:verify": "node scripts/build-backend.js --verify-only",
+    "pack": "node scripts/build-backend.js && electron-builder --dir",
+    "dist": "node scripts/build-backend.js && electron-builder",
+    "postinstall": "node scripts/ensure-electron.js",
+    "electron:repair": "node scripts/ensure-electron.js --force"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "7zip-bin": "^5.2.0"
+  },
+  "build": {
+    "appId": "app.terabit.studio",
+    "productName": "Terabit Studio",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "boot.js",
+      "first-run.html",
+      "scripts/**",
+      "build/icon.ico"
+    ],
+    "extraResources": [
+      {
+        "from": "../backend/dist/terabit-backend",
+        "to": "backend",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "../frontend/dist",
+        "to": "web",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "../.env.example",
+        "to": ".env.example"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Terabit Studio"
+    },
+    "portable": {
+      "artifactName": "Terabit-Studio-${version}-portable.exe"
+    }
+  }
+}

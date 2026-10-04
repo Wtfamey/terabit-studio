@@ -1,0 +1,38 @@
+{
+  "id": "skeleton",
+  "category": "ui",
+  "name": "Skeleton Loaders",
+  "description": "Animated skeleton placeholders for cards, tables, text, and custom shapes",
+  "component": "import { forwardRef } from 'react';\n\nconst shimmer = `animation: shimmer 1.5s ease-in-out infinite;`;\n\nconst SkeletonBase = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { className?: string }>(\n  ({ className = '', style, ...props }, ref) => (\n    <div\n      ref={ref}\n      className={`bg-white/10 rounded ${shimmer} ${className}`}\n      style={{ background: 'linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%)', backgroundSize: '200% 100%', ...style }}\n      {...props}\n    />\n  )\n);\nSkeletonBase.displayName = 'Skeleton';\n\nexport const Skeleton = Object.assign(SkeletonBase, {\n  Text: ({ lines = 3, className = '', ...props }) => (\n    <div className={className} {...props}>\n      {Array.from({ length: lines }).map((_, i) => (\n        <SkeletonBase key={i} className=\"h-4 w-full max-w-[80%] mb-2\" />\n      ))}\n    </div>\n  ),\n  Card: ({ className = '', ...props }) => (\n    <div className={`backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4 ${className}`} {...props}>\n      <div className=\"flex items-center gap-4\">\n        <SkeletonBase className=\"w-12 h-12 rounded-full\" />\n        <div className=\"flex-1 space-y-2\">\n          <SkeletonBase className=\"h-5 w-3/4\" />\n          <SkeletonBase className=\"h-4 w-1/2\" />\n        </div>\n      </div>\n      <SkeletonBase className=\"h-4 w-full\" />\n      <SkeletonBase className=\"h-4 w-5/6\" />\n    </div>\n  ),\n  Table: ({ rows = 5, columns = 4, className = '', ...props }) => (\n    <div className={`backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl overflow-hidden ${className}`} {...props}>\n      <div className=\"overflow-x-auto\">\n        <table className=\"w-full\">\n          <thead className=\"bg-white/5\">\n            <tr>\n              {Array.from({ length: columns }).map((_, i) => (\n                <th key={i} className=\"p-3 text-left\"><SkeletonBase className=\"h-4 w-24\" /></th>\n              ))}\n            </tr>\n          </thead>\n          <tbody className=\"divide-y divide-white/5\">\n            {Array.from({ length: rows }).map((_, r) => (\n              <tr key={r}>\n                {Array.from({ length: columns }).map((_, c) => (\n                  <td key={c} className=\"p-3\"><SkeletonBase className=\"h-4 w-full\" /></td>\n                ))}\n              </tr>\n            ))}\n          </tbody>\n        </table>\n      </div>\n    </div>\n  ),\n  Avatar: ({ size = 'md', className = '', ...props }) => {\n    const sizes = { xs: 'w-6 h-6', sm: 'w-8 h-8', md: 'w-10 h-10', lg: 'w-12 h-12', xl: 'w-16 h-16' };\n    return <SkeletonBase className={`${sizes[size]} rounded-full ${className}`} {...props} />;\n  },\n  Button: ({ className = '', ...props }) => (\n    <SkeletonBase className=\"h-10 px-6 rounded-lg ${className}\" {...props} />\n  ),\n  Input: ({ className = '', ...props }) => (\n    <SkeletonBase className=\"h-10 w-full rounded-lg ${className}\" {...props} />\n  ),\n  Circle: ({ size = 40, className = '', ...props }) => (\n    <SkeletonBase className={`w-[${size}px] h-[${size}px] rounded-full ${className}`} {...props} />\n  ),\n  Rectangle: ({ width = 200, height = 100, className = '', ...props }) => (\n    <SkeletonBase className={`w-[${width}px] h-[${height}px] rounded-xl ${className}`} {...props} />\n  ),\n});",
+  "props": {
+    "Skeleton": "{ className?, style? } - base skeleton element",
+    "Skeleton.Text": "{ lines?, className? } - multi-line text placeholder",
+    "Skeleton.Card": "{ className? } - card layout placeholder",
+    "Skeleton.Table": "{ rows?, columns?, className? } - table placeholder",
+    "Skeleton.Avatar": "{ size?, className? } - avatar placeholder",
+    "Skeleton.Button": "{ className? } - button placeholder",
+    "Skeleton.Input": "{ className? } - input placeholder",
+    "Skeleton.Circle": "{ size?, className? } - circular placeholder",
+    "Skeleton.Rectangle": "{ width?, height?, className? } - rectangular placeholder"
+  },
+  "usage_examples": [
+    "<Skeleton.Card />",
+    "<Skeleton.Table rows={5} columns={4} />",
+    "<Skeleton.Text lines={3} />",
+    "<Skeleton.Avatar size=\"lg\" /><Skeleton.Text lines={2} />"
+  ],
+  "design_tokens": {
+    "base": "bg-white/10 rounded",
+    "shimmer": "linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%) background-size: 200% 100%",
+    "animation": "animation: shimmer 1.5s ease-in-out infinite",
+    "card": "backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4",
+    "avatar_sizes": "xs:w-6, sm:w-8, md:w-10, lg:w-12, xl:w-16",
+    "text_line": "h-4 w-full max-w-[80%] mb-2",
+    "button": "h-10 px-6 rounded-lg",
+    "input": "h-10 w-full rounded-lg"
+  },
+  "accessibility": {
+    "aria": "Add aria-busy=true to parent container while loading",
+    "semantic": "Skeletons should match the structure of actual content"
+  }
+}

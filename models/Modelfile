@@ -1,0 +1,28 @@
+# Ollama Modelfile - attaches your fine-tuned LoRA adapter to the base model.
+#
+# Your training run (train_unsloth.py / checkpoint-30) produced a LoRA
+# adapter, and it's been converted to a llama.cpp-format GGUF
+# (qwen2.5-7b-finetuned-lora.gguf, ~40MB). That file only contains the
+# *delta* weights from fine-tuning - it is NOT a standalone model and can't
+# be loaded by itself (that's part of why it "wasn't connecting": there was
+# no code path attaching it to anything). Ollama's ADAPTER instruction is
+# exactly for this: it loads the base model, then applies the adapter on top.
+#
+# Usage (run from inside this models/ folder so the relative paths below
+# resolve - the parent folder name has a space in it, which trips up some
+# tools if you reference it directly):
+#
+#   cd /path/to/terabit-studio/models
+#   ollama create terabit-finetuned -f Modelfile
+#
+# Then in zenith/.env, uncomment/set:
+#   MODEL_NAME=terabit-finetuned
+#
+# and restart the backend. Check the backend's startup logs / call
+# GET /api/health to confirm which model is actually being used.
+#
+# If you retrain and get a new checkpoint, re-run `ollama create` with the
+# same name to overwrite it - no .env changes needed.
+
+FROM qwen2.5-7b-q4_k_m.gguf
+ADAPTER qwen2.5-7b-finetuned-lora.gguf

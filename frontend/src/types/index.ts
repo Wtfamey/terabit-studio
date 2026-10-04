@@ -34,6 +34,13 @@ export interface UserAsset {
   created_at: string;
 }
 
+export interface BrandProfile {
+  name: string;
+  website: string;
+  primary_color: string;
+  logo_url: string;
+}
+
 export interface User {
   id: number;
   email: string;
@@ -88,5 +95,26 @@ export const BUSINESS_TEMPLATES: BusinessType[] = [
     description: 'Tailored management system for any business',
     icon: 'Briefcase',
     features: ['Custom dashboard', 'Data management', 'User roles', 'Reports', 'Settings'],
+  },
+  {
+    id: 'hospital',
+    name: 'Hospital Management',
+    description: 'Patients, appointments, doctors, billing',
+    icon: 'Stethoscope',
+    features: ['Patient records', 'Appointment scheduling', 'Doctor roster', 'Billing & invoices', 'Pharmacy stock'],
+  },
+  {
+    id: 'inventory',
+    name: 'Store Management',
+    description: 'Inventory, orders, suppliers, reports',
+    icon: 'Package',
+    features: ['Product & stock levels', 'Purchase orders', 'Supplier directory', 'Low-stock alerts', 'Sales reports'],
+  },
+  {
+    id: 'hr',
+    name: 'Employee Management',
+    description: 'Staff records, attendance, payroll, leave',
+    icon: 'IdCard',
+    features: ['Employee directory', 'Attendance tracking', 'Leave requests', 'Payroll summary', 'Performance reviews'],
   },
 ];
