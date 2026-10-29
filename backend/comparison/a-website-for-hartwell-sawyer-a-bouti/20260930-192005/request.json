@@ -1,0 +1,19 @@
+{
+  "prompt": "A website for Hartwell & Sawyer, a boutique law firm. Trustworthy and calm, with practice areas, team and consultation booking.",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "Hartwell & Sawyer",
+    "domain": "boutique law firm",
+    "offerings": [
+      "practice areas",
+      "team",
+      "consultation booking"
+    ],
+    "cta": "",
+    "business_type": "business-app"
+  },
+  "app_name": "Hartwell & Sawyer",
+  "archetype": "landing"
+}

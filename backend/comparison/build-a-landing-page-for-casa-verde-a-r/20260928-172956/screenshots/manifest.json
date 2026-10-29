@@ -1,0 +1,35 @@
+{
+  "run": "20260928-172956",
+  "slug": "build-a-landing-page-for-casa-verde-a-r",
+  "prompt": "Build a landing page for Casa Verde, a restaurant that serves seasonal Italian cooking, wood-fired pizza and natural wine. Include a menu and reservations section.",
+  "wall_s": 705.4,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": null,
+  "palette_adherence": null,
+  "theme": null,
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.jsx",
+    "src/components/Hero.jsx",
+    "src/components/Menu.jsx",
+    "src/components/Reservations.jsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 67305
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 36951
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

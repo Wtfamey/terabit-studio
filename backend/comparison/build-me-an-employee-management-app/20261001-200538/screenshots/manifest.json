@@ -1,0 +1,36 @@
+{
+  "run": "20261001-200538",
+  "slug": "build-me-an-employee-management-app",
+  "prompt": "Build me an employee management app",
+  "wall_s": 2416.9,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": "FAIL",
+  "palette_adherence": 1.0,
+  "theme": "product",
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.jsx",
+    "src/components/Dashboard.jsx",
+    "src/components/Orders.jsx",
+    "src/components/Products.jsx",
+    "src/components/Suppliers.jsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 59370
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 33375
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

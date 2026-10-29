@@ -1,0 +1,15 @@
+{
+  "captured": "20261003-044311",
+  "base": "http://127.0.0.1:8162",
+  "pages": {
+    "auth_login.jpg": true,
+    "home.jpg": true,
+    "builder.jpg": true,
+    "workspace.jpg": true,
+    "settings.jpg": true,
+    "mobile_home.jpg": true,
+    "mobile_builder.jpg": true,
+    "mobile_settings.jpg": true
+  },
+  "email": "research@terabit.dev"
+}

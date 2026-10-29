@@ -1,0 +1,26 @@
+[
+  {
+    "path": "src/components/Attorneys.jsx",
+    "content": "export default function Attorneys() {\n  return (\n    <section id=\"attorneys\" className=\"py-20\">\n      <div className=\"max-w-4xl mx-auto px-6 text-slate-700\">\n        <h2 className=\"text-3xl font-bold mb-4\">Attorneys</h2>\n      </div>\n    </section>\n  );\n}\n"
+  },
+  {
+    "path": "src/components/Faq.jsx",
+    "content": "export default function Faq() {\n  return (\n    <section id=\"faq\" className=\"py-20\">\n      <div className=\"max-w-4xl mx-auto px-6 text-slate-700\">\n        <h2 className=\"text-3xl font-bold mb-4\">Faq</h2>\n      </div>\n    </section>\n  );\n}\n"
+  },
+  {
+    "path": "src/components/Fees.jsx",
+    "content": "export default function Fees() {\n  return (\n    <section id=\"fees\" className=\"py-20\">\n      <div className=\"max-w-4xl mx-auto px-6 text-slate-700\">\n        <h2 className=\"text-3xl font-bold mb-4\">Fees</h2>\n      </div>\n    </section>\n  );\n}\n"
+  },
+  {
+    "path": "src/components/Hero.jsx",
+    "content": "export default function Hero() {\n  return (\n    <section id=\"hero\" className=\"py-20\">\n      <div className=\"max-w-4xl mx-auto px-6 text-slate-700\">\n        <h2 className=\"text-3xl font-bold mb-4\">Hero</h2>\n      </div>\n    </section>\n  );\n}\n"
+  },
+  {
+    "path": "src/components/PracticeAreas.jsx",
+    "content": "export default function PracticeAreas() {\n  return (\n    <section id=\"practiceareas\" className=\"py-20\">\n      <div className=\"max-w-4xl mx-auto px-6 text-slate-700\">\n        <h2 className=\"text-3xl font-bold mb-4\">PracticeAreas</h2>\n      </div>\n    </section>\n  );\n}\n"
+  },
+  {
+    "path": "src/components/Testimonials.jsx",
+    "content": "export default function Testimonials() {\n  return (\n    <section id=\"testimonials\" className=\"py-20\">\n      <div className=\"max-w-4xl mx-auto px-6 text-slate-700\">\n        <h2 className=\"text-3xl font-bold mb-4\">Testimonials</h2>\n      </div>\n    </section>\n  );\n}\n"
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "theme": "restaurant",
+  "palette_adherence": 0.023,
+  "color_classes": 87,
+  "neon_drift": 33,
+  "neon_families": [
+    "fuchsia",
+    "indigo",
+    "violet"
+  ],
+  "font_used": false,
+  "brand_present": true,
+  "animations": true,
+  "imagery": false,
+  "gradient": true,
+  "gate": "FAIL"
+}

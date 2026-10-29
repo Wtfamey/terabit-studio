@@ -1,0 +1,36 @@
+{
+  "run": "20260928-041354",
+  "slug": "build-a-landing-page-for-sterling-cole",
+  "prompt": "Build a landing page for Sterling & Cole, a law firm website with a solid UI \u2014 practice areas, attorney profiles, client testimonials, FAQ, and a free consultation CTA",
+  "wall_s": 995.2,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": null,
+  "palette_adherence": null,
+  "theme": null,
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.jsx",
+    "src/components/Faq.jsx",
+    "src/components/Features.jsx",
+    "src/components/Hero.jsx",
+    "src/components/Pricing.jsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 163005
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 57044
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

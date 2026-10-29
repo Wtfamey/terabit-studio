@@ -1,0 +1,142 @@
+[registry] Loaded 18 components
+[registry]   layout: 2 components
+[registry]   navigation: 2 components
+[registry]   ui: 14 components
+INFO:     Started server process [22724]
+INFO:     Waiting for application startup.
+Using existing local model server at localhost:11434
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8151 (Press CTRL+C to quit)
+INFO:     127.0.0.1:49753 - "GET /api/health HTTP/1.1" 200 OK
+[registry] Loaded 18 components
+[registry]   layout: 2 components
+[registry]   navigation: 2 components
+[registry]   ui: 14 components
+INFO:     Started server process [10828]
+INFO:     Waiting for application startup.
+Using existing local model server at localhost:11434
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8151 (Press CTRL+C to quit)
+INFO:     127.0.0.1:49884 - "GET /api/health HTTP/1.1" 200 OK
+[agent] provider: local
+[agent] mode: create (0 existing files)
+[agent] design: law / light / Libre Baskerville+Source Sans 3
+[agent] plan: ["src/App.jsx", "src/components/Hero.jsx", "src/components/PracticeAreas.jsx", "src/components/Fees.jsx", "src/components/Attorneys.jsx", "src/components/Testimonials.jsx", "src/components/Faq.jsx"]
+[agent] plan: src/App.jsx: deterministic composition (model ask skipped)
+[model] warm-up complete
+INFO:     127.0.0.1:49945 - "GET /api/health HTTP/1.1" 200 OK
+[agent] gen: src/components/Hero.jsx: 6498 chars
+[agent] gen: src/components/PracticeAreas.jsx: 4347 chars
+[agent] gen: src/components/Fees.jsx: 8918 chars
+[agent] gen: src/components/Attorneys.jsx: 13826 chars
+[agent] gen: src/components/Testimonials.jsx: 8028 chars
+[agent] gen: src/components/Faq.jsx: 4354 chars
+[agent] promote-tsx: TypeScript syntax in .jsx -> retagged: Hero.jsx->Hero.tsx, Faq.jsx->Faq.tsx
+[agent] compose-shell: App.jsx composed (5413 chars) over 4 healthy sections [PracticeAreas, Fees, Attorneys, Testimonials]
+[repair] injected core file: package.json
+[repair] injected core file: src/main.jsx
+[repair] injected core file: index.html
+[repair] injected core file: src/index.css
+[agent] promote-tsx: TypeScript syntax in .jsx -> retagged: App.jsx->App.tsx
+[agent] style-enforce: 261 classes -> theme: gradient->theme, indigo-500->blue-500, indigo-400->blue-400, indigo-500->blue-500
+[agent] name-fix: 1 placeholder name(s) -> Hartley & Rowe
+[agent] personalisation: name_used=True fact_used=False clean=True lang_ok=True hero_lang_ok=True score=1.0 copy_chars=5523
+[agent] motion-enrich: 13 cards, 0 buttons, 1 images given transitions (mode: standard)
+[agent] repair: src/App.tsx [render]:     at Object.<anonymous> (C:\Users\win\Desktop\super project\zenith\frontend\.preview-work\render-a8wgbxwc\project\render-bundle.cjs:36971:
+[agent] repair: src/App.tsx [render]:     at Object.<anonymous> (C:\Users\win\Desktop\super project\zenith\frontend\.preview-work\render-y7qas6pl\project\render-bundle.cjs:36971:
+[agent] repair: src/App.tsx [render]:     at Object.<anonymous> (C:\Users\win\Desktop\super project\zenith\frontend\.preview-work\render-bnujq_wj\project\render-bundle.cjs:36971:
+[agent] render-salvage: render error not localizable to a section:     at Object.<anonymous> (C:\Users\win\Desktop\super project\zenith\frontend\.preview-work\render-iuf745r9\project\rend
+[agent] fallback-scaffold: model bundle unrepairable after 3 repairs -> curated landing scaffold (bundled OK)
+[agent] verify: bundled OK
+[preview] tier1-bundled (5 files)
+[artifacts] design gate: FAIL (palette=0.621, theme=law)
+[artifacts] saved generate run -> C:\Users\win\Desktop\super project\zenith\backend\comparison\build-a-landing-page-for-a-family-law-pr\20261003-041938 (tier=tier1-bundled, 1219s)
+INFO:     127.0.0.1:49889 - "POST /api/generate HTTP/1.1" 200 OK
+[agent] provider: local
+[agent] mode: create (0 existing files)
+[agent] design: generic / light / Inter+Inter
+[agent] plan: ["src/App.jsx", "src/components/Dashboard.jsx", "src/components/KpiCardsMrr.jsx", "src/components/Churn.jsx", "src/components/ActiveUsers.jsx", "src/components/Reports.jsx"]
+[agent] plan: src/App.jsx: deterministic composition (model ask skipped)
+[artifacts] evidence shots: ['desktop', 'mobile']
+[agent] gen: src/components/Dashboard.jsx: 12659 chars
+[agent] gen: src/components/KpiCardsMrr.jsx: 9840 chars
+[agent] gen: src/components/Churn.jsx: 11235 chars
+[agent] gen: src/components/ActiveUsers.jsx: 17011 chars
+[agent] gen: src/components/Reports.jsx: 8473 chars
+[agent] promote-tsx: TypeScript syntax in .jsx -> retagged: Reports.jsx->Reports.tsx
+[agent] compose-shell: App.jsx composed (5461 chars) over 5 healthy sections [Dashboard, KpiCardsMrr, Churn, ActiveUsers, Reports]
+[repair] injected core file: package.json
+[repair] injected core file: src/main.jsx
+[repair] injected core file: index.html
+[repair] injected core file: src/index.css
+[agent] style-enforce: 388 classes -> theme: gradient->theme, violet-800->indigo-800, violet-800->indigo-800, rose-500->indigo-500
+[agent] name-fix: 3 placeholder name(s) -> MetricHive
+[agent] personalisation: name_used=True fact_used=False clean=False lang_ok=True hero_lang_ok=True score=0.75 copy_chars=4716
+[agent] motion-enrich: 12 cards, 0 buttons, 0 images given transitions (mode: standard)
+[agent] repair: src/App.jsx [render]: project\zenith\frontend\.preview-work\render-k23mc820\project\render-bundle.cjs:37811:58)
+RENDER_ERROR::Element type is invalid: expected a 
+[agent] repair: src/App.jsx [render]: project\zenith\frontend\.preview-work\render-ka5b66ey\project\render-bundle.cjs:37811:58)
+RENDER_ERROR::Element type is invalid: expected a 
+[agent] repair: src/App.jsx [render]: project\zenith\frontend\.preview-work\render-ugohp6_u\project\render-bundle.cjs:37811:58)
+RENDER_ERROR::Element type is invalid: expected a 
+[registry] Loaded 18 components
+[registry]   layout: 2 components
+[registry]   navigation: 2 components
+[registry]   ui: 14 components
+INFO:     Started server process [11228]
+INFO:     Waiting for application startup.
+Using existing local model server at 127.0.0.1:11434
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8151 (Press CTRL+C to quit)
+INFO:     127.0.0.1:49693 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49703 - "GET /api/app/env HTTP/1.1" 200 OK
+[agent] provider: local
+[agent] mode: create (0 existing files)
+[agent] design: law / light / Libre Baskerville+Source Sans 3
+[agent] plan: ["src/App.jsx", "src/components/Hero.jsx", "src/components/PracticeAreas.jsx", "src/components/Fees.jsx", "src/components/Attorneys.jsx", "src/components/Testimonials.jsx", "src/components/Faq.jsx"]
+[agent] plan: src/App.jsx: deterministic composition (model ask skipped)
+[model] warm-up complete
+[agent] gen: src/components/Hero.jsx: 5449 chars
+[agent] gen: src/components/PracticeAreas.jsx: 6300 chars
+[agent] gen: src/components/Fees.jsx: 6671 chars
+[registry] Loaded 18 components
+[registry]   layout: 2 components
+[registry]   navigation: 2 components
+[registry]   ui: 14 components
+INFO:     Started server process [26240]
+INFO:     Waiting for application startup.
+Using existing local model server at 127.0.0.1:11434
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8151 (Press CTRL+C to quit)
+INFO:     127.0.0.1:49693 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49698 - "GET /api/app/env HTTP/1.1" 200 OK
+[agent] provider: local
+[agent] mode: create (0 existing files)
+[agent] design: law / light / Libre Baskerville+Source Sans 3
+[agent] plan: ["src/App.jsx", "src/components/Hero.jsx", "src/components/PracticeAreas.jsx", "src/components/Fees.jsx", "src/components/Attorneys.jsx", "src/components/Testimonials.jsx", "src/components/Faq.jsx"]
+[agent] plan: src/App.jsx: deterministic composition (model ask skipped)
+[model] warm-up complete
+[agent] gen-empty-retry: src/components/Hero.jsx
+[registry] Loaded 18 components
+[registry]   layout: 2 components
+[registry]   navigation: 2 components
+[registry]   ui: 14 components
+INFO:     Started server process [29312]
+INFO:     Waiting for application startup.
+Using existing local model server at 127.0.0.1:11434
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8151 (Press CTRL+C to quit)
+INFO:     127.0.0.1:52411 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52417 - "GET /api/app/env HTTP/1.1" 200 OK
+[agent] provider: local
+[agent] mode: create (0 existing files)
+[agent] design: law / light / Libre Baskerville+Source Sans 3
+[agent] plan: ["src/App.jsx", "src/components/Hero.jsx", "src/components/PracticeAreas.jsx", "src/components/Fees.jsx", "src/components/Attorneys.jsx", "src/components/Testimonials.jsx", "src/components/Faq.jsx"]
+[agent] plan: src/App.jsx: deterministic composition (model ask skipped)
+[model] warm-up complete
+[agent] gen-empty-retry: src/components/Hero.jsx
+[agent] gen-fail: src/components/Hero.jsx: no fenced block (finish=stop); using skeleton
+[agent] gen: src/components/PracticeAreas.jsx: 6438 chars
+[agent] gen: src/components/Fees.jsx: 5107 chars
+[agent] gen: src/components/Attorneys.jsx: 9170 chars
+[agent] import-missing: src/components/Attorneys.jsx: uses Schedule but never defines it (would white-screen; left to the repair loop)

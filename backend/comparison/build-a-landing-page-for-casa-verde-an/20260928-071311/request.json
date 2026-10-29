@@ -1,0 +1,19 @@
+{
+  "prompt": "Build a landing page for Casa Verde, an Italian restaurant website with menu highlights, table reservations, and a warm family atmosphere",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "Casa Verde",
+    "domain": "italian restaurant",
+    "offerings": [
+      "menu highlights",
+      "table reservations",
+      "warm family atmosphere"
+    ],
+    "cta": "",
+    "business_type": "business-app"
+  },
+  "app_name": "Casa Verde",
+  "archetype": "landing"
+}

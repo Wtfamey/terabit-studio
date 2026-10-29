@@ -1,0 +1,18 @@
+{
+  "prompt": "I need you to build me a portfolio website for Mara Lindqvist, a product designer. Include projects, an about section, and a contact section. Use a warm minimal aesthetic.",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "Mara Lindqvist",
+    "domain": "product designer",
+    "offerings": [
+      "product designer. include projects",
+      "about section"
+    ],
+    "cta": "",
+    "business_type": "business-app"
+  },
+  "app_name": "Mara Lindqvist",
+  "archetype": "landing"
+}

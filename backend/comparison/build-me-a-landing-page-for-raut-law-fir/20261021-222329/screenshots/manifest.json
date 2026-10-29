@@ -1,0 +1,36 @@
+{
+  "run": "20261021-222329",
+  "slug": "build-me-a-landing-page-for-raut-law-fir",
+  "prompt": "build me a landing page for raut law firm use the logo i have provided and make sure site has all sections and seamless animation scrolling and a black and golden aesthetic",
+  "wall_s": 943.3,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": "PASS",
+  "palette_adherence": 1.0,
+  "theme": "law",
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.tsx",
+    "src/components/Attorneys.jsx",
+    "src/components/Faq.jsx",
+    "src/components/Testimonials.jsx",
+    "src/components/YourComponents.jsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 98224
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 48057
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

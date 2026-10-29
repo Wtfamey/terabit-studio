@@ -1,0 +1,38 @@
+{
+  "run": "20261024-122316",
+  "slug": "build-me-a-restaurant-website-for-grill",
+  "prompt": "build me a restaurant website for grill house an chinese restaurat make sure it has cool animations and has menu and reservation form and site should follow restaurant",
+  "wall_s": 664.7,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": "PASS",
+  "palette_adherence": 1.0,
+  "theme": "restaurant",
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.tsx",
+    "src/components/Faq.jsx",
+    "src/components/Hero.jsx",
+    "src/components/Menu.tsx",
+    "src/components/Reservations.jsx",
+    "src/components/Story.jsx",
+    "src/components/Testimonials.jsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 185309
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 49808
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

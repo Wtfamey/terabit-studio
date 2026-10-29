@@ -1,0 +1,113 @@
+{
+  "wall_s": 1050.2,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "agent_trace": [
+    {
+      "phase": "provider",
+      "detail": "local"
+    },
+    {
+      "phase": "mode",
+      "detail": "create (0 existing files)"
+    },
+    {
+      "phase": "design",
+      "detail": "restaurant / light / Playfair Display+Inter"
+    },
+    {
+      "phase": "plan",
+      "detail": "[\"src/App.jsx\", \"src/components/Hero.jsx\", \"src/components/Menu.jsx\", \"src/components/Reservations.jsx\", \"src/components/Faq.jsx\"]"
+    },
+    {
+      "phase": "plan",
+      "detail": "src/App.jsx: deterministic composition (model ask skipped)"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/Hero.jsx: 5816 chars"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/Menu.jsx: 10852 chars"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/Reservations.jsx: 14440 chars"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/Faq.jsx: 3777 chars"
+    },
+    {
+      "phase": "rescue-fail",
+      "detail": "src/components/Reservations.jsx: retry still implausible (9903 chars); dropping"
+    },
+    {
+      "phase": "shell-drop",
+      "detail": "src/components/Reservations.jsx: missing export"
+    },
+    {
+      "phase": "compose-shell",
+      "detail": "App.jsx composed (4766 chars) over 1 healthy sections [Menu]; dropped ['src/components/Reservations.jsx']"
+    },
+    {
+      "phase": "style-enforce",
+      "detail": "106 classes -> theme: gradient->theme, slate-900->stone-900, slate-800->stone-800, slate-100->stone-100"
+    },
+    {
+      "phase": "repair",
+      "detail": "src/components/Hero.jsx [bundle]:        ~~~~~~~~\n\n  The symbol \"Sparkles\" was originally declared here:\n\n    src/components/Hero.jsx:2:51:\n      2 â”‚ ...d, MapPin, Circle a"
+    },
+    {
+      "phase": "repair",
+      "detail": "src/components/Hero.jsx [bundle]:        ~~~~~~~~\n\n  The symbol \"Sparkles\" was originally declared here:\n\n    src/components/Hero.jsx:2:51:\n      2 â”‚ ...d, MapPin, Circle a"
+    },
+    {
+      "phase": "repair-skip",
+      "detail": "src/components/Hero.jsx: failed repair 2x already; trying salvage instead"
+    },
+    {
+      "phase": "render-salvage",
+      "detail": "dropping broken section src/components/Hero.jsx"
+    },
+    {
+      "phase": "render-salvage",
+      "detail": "dropping broken section src/components/Menu.jsx"
+    },
+    {
+      "phase": "render-salvage",
+      "detail": "recomposed page verified with src/components/Menu.jsx dropped; model sections shipped"
+    },
+    {
+      "phase": "verify",
+      "detail": "bundled OK"
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>Casa Verde</title>\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n    <link href=\"https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">\n  </head>\n  <body class=\"bg-[#faf6f0] text-stone-900 antialiased min-h-screen\">\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>"
+    },
+    {
+      "path": "package.json",
+      "content": "{\n  \"name\": \"zenith-app\",\n  \"private\": true,\n  \"version\": \"1.0.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"react\": \"^18.3.1\",\n    \"react-dom\": \"^18.3.1\",\n    \"lucide-react\": \"^0.464.0\"\n  },\n  \"devDependencies\": {\n    \"@vitejs/plugin-react\": \"^4.3.4\",\n    \"vite\": \"^6.0.1\"\n  }\n}"
+    },
+    {
+      "path": "src/App.jsx",
+      "content": "import { useEffect, useRef, useState } from 'react';\nimport { Menu as MenuIcon, X } from 'lucide-react';\nimport Faq from './components/Faq';\n\n// Domain design tokens (resolved server-side by the design system).\nconst tw = {\"page_bg\": \"bg-[#faf6f0]\", \"surface\": \"bg-white\", \"surface_2\": \"bg-[#f3ece2]\", \"heading_text\": \"text-stone-900\", \"body_text\": \"text-stone-600\", \"muted_text\": \"text-stone-500\", \"primary\": \"bg-amber-800\", \"primary_hover\": \"hover:bg-amber-900\", \"on_primary\": \"text-amber-50\", \"border\": \"border-stone-200\", \"accent_text\": \"text-amber-800\", \"accent_bg\": \"bg-amber-100\", \"gradient\": \"from-amber-700 to-orange-800\"};\nconst RADIUS = \"rounded-2xl\";\nconst GRAD = \"bg-gradient-to-br from-amber-700 to-orange-800\";\nconst FONT_CSS = \".font-display{font-family: 'Playfair Display', Georgia, serif;} .font-body{font-family: 'Inter', system-ui, sans-serif;} body{font-family: 'Inter', system-ui, sans-serif;}\";\nconst LOGO_URL = \"\";\n\n// Scroll-reveal wrapper: sections animate in as they enter the viewport\n// (IntersectionObserver; no-ops during server render).\nfunction Reveal({ children }) {\n  const ref = useRef(null);\n  const [visible, setVisible] = useState(false);\n  useEffect(() => {\n    const el = ref.current;\n    if (!el) return undefined;\n    const io = new IntersectionObserver((entries) => {\n      if (entries[0].isIntersecting) { setVisible(true); io.disconnect(); }\n    }, { threshold: 0.12 });\n    io.observe(el);\n    // Fallback: embedded/short viewports may never fire the observer\n    // (live: preview iframes without scroll) -- never leave content invisible.\n    const t = setTimeout(() => { setVisible(true); io.disconnect(); }, 1200);\n    return () => { clearTimeout(t); io.disconnect(); };\n  }, []);\n  return (\n    <div ref={ref} className={`reveal ${visible ? 'reveal-visible' : ''}`}>{children}</div>\n  );\n}\n\nexport default function App() {\n  const [menuOpen, setMenuOpen] = useState(false);\n  const links = [\n    { label: \"FAQ\", href: \"#faq\" },\n  ];\n  return (\n    <div className={`min-h-screen ${tw.page_bg} ${tw.heading_text} font-body`}>\n      <style>{FONT_CSS}</style>\n      <header className={`sticky top-0 z-50 backdrop-blur-xl border-b ${tw.page_bg} ${tw.border}`}>\n        <div className=\"max-w-6xl mx-auto px-6 h-16 flex items-center justify-between\">\n          <a href=\"#top\" className=\"flex items-center gap-2\">\n            {LOGO_URL ? (\n              <img src=\"\" alt=\"Casa Verde\" className=\"h-9 w-auto\" />\n            ) : (\n              <span className={`w-9 h-9 ${GRAD} flex items-center justify-center ${tw.on_primary} font-black text-sm tracking-tight ${RADIUS}`}>CV</span>\n            )}\n            <span className=\"font-display font-extrabold text-lg tracking-tight\">Casa Verde</span>\n          </a>\n          <nav className={`hidden md:flex items-center gap-8 text-sm font-medium ${tw.body_text}`}>\n            {links.map(l => <a key={l.href} href={l.href} className=\"hover:opacity-70 transition-opacity\">{l.label}</a>)}\n          </nav>\n          <div className=\"hidden md:flex items-center gap-3\">\n            <a href=\"#top\" className={`px-4 py-2 ${tw.primary} ${tw.primary_hover} ${tw.on_primary} text-sm font-semibold ${RADIUS} transition-colors`}>Get started</a>\n          </div>\n          <button className=\"md:hidden p-2\" onClick={() => setMenuOpen(!menuOpen)} aria-label=\"Menu\">\n            {menuOpen ? <X className=\"w-5 h-5\" /> : <MenuIcon className=\"w-5 h-5\" />}\n          </button>\n        </div>\n        {menuOpen && (\n          <div className={`md:hidden border-t px-6 py-4 space-y-3 ${tw.surface} ${tw.border}`}>\n            {links.map(l => <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)} className={`block font-medium ${tw.body_text}`}>{l.label}</a>)}\n            <a href=\"#top\" className={`block text-center px-4 py-2.5 ${tw.primary} ${tw.on_primary} font-semibold ${RADIUS}`}>Get started</a>\n          </div>\n        )}\n      </header>\n      <main id=\"top\">\n      <Reveal><Faq /></Reveal>\n      </main>\n      <footer className={`border-t py-10 text-center text-sm ${tw.border} ${tw.muted_text}`}>\n        <div className=\"flex items-center justify-center gap-2 mb-2\">\n          {LOGO_URL ? (\n            <img src=\"\" alt=\"Casa Verde\" className=\"h-7 w-auto\" />\n          ) : (\n            <span className={`w-7 h-7 ${GRAD} flex items-center justify-center ${tw.on_primary} font-black text-[11px] ${RADIUS}`}>CV</span>\n          )}\n          <span className=\"font-display font-bold\">Casa Verde</span>\n        </div>\n        &copy; 2026 Casa Verde. All rights reserved.\n      </footer>\n    </div>    );\n}\n"
+    },
+    {
+      "path": "src/components/Faq.jsx",
+      "content": "import React, { useState } from 'react';\nimport { Sparkles, ChevronRight, CheckCircle2, X } from 'lucide-react';\n\nconst initialFaq = [\n  {\n    id: 1,\n    question: 'Do you offer delivery?',\n    answer: 'Currently, we focus on dine-in experiences, but we are exploring delivery options for our most loyal customers.',\n    isOpen: false,\n  },\n  {\n    id: 2,\n    question: 'What types of wine do you serve?',\n    answer: 'We pride ourselves on a curated selection of natural and organic wines from small producers across Italy and the Mediterranean.',\n    isOpen: false,\n  },\n  {\n    id: 3,\n    question: 'Can I bring my own bottle?',\n    answer: 'Yes, we welcome guests to bring their own bottle for corkage. Please inform us ahead of your reservation.',\n    isOpen: false,\n  },\n  {\n    id: 4,\n    question: 'Do you accommodate dietary restrictions?',\n    answer: 'Absolutely! We work with many guests with special dietary needs. Please let us know in advance so we can tailor the menu.',\n    isOpen: false,\n  },\n  {\n    id: 5,\n    question: 'What time is last call?',\n    answer: 'Last call is at 10:00 PM. We aim to create a cozy atmosphere that extends into the evening, but we respect all our guests.',\n    isOpen: false,\n  },\n];\n\nexport default function Faq() {\n  const [currentFaq, setCurrentFaq] = useState(initialFaq);\n\n  const toggleAccordion = (id) => {\n    setCurrentFaq((prev) =>\n      prev.map((faq) => {\n        if (faq.id === id) {\n          return { ...faq, isOpen: !faq.isOpen };\n        }\n        return faq;\n      })\n    );\n  };\n\n  return (\n    <div className=\"w-full max-w-6xl mx-auto p-6 sm:p-10 bg-amber-900 text-stone-600\">\n      <div className=\"mb-12 text-center\">\n        <h2 className=\"text-2xl sm:text-3xl font-bold tracking-tight text-amber-400\">\n          Frequently Asked Questions\n        </h2>\n        <p className=\"mt-4 text-stone-600 max-w-md mx-auto\">\n          Here are some common questions and answers to help you plan your visit.\n        </p>\n      </div>\n\n      <div className=\"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6\">\n        {currentFaq.map((faq) => (\n          <div\n            key={faq.id}\n            className=\"group relative rounded-2xl bg-[#f3ece2] backdrop-blur-xl border border-stone-200 p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-amber/30\"\n          >\n            <div className=\"absolute -inset-0.5 bg-[#f3ece2] rounded-2xl border border-stone-200\" />\n            <div className=\"flex justify-between items-start mb-6\">\n              <div className=\"flex items-center gap-3 text-stone-600\">\n                <Sparkles className=\"w-5 h-5 text-amber-400\" />\n                {faq.question}\n              </div>\n              <button\n                onClick={() => toggleAccordion(faq.id)}\n                className=\"p-2 rounded-lg text-stone-500 hover:text-stone-600 transition-colors\"\n              >\n                <ChevronRight className=\"w-5 h-5\" />\n              </button>\n            </div>\n            {faq.isOpen && (\n              <div className=\"text-stone-600 max-w-md\">\n                <p className=\"mt-4\">{faq.answer}</p>\n                <div className=\"flex items-center justify-between mt-6\">\n                  <div className=\"flex items-center gap-2\">\n                    <CheckCircle2 className=\"w-5 h-5 text-emerald-400\" />\n                    <span>Got it!</span>\n                  </div>\n                  <button\n                    onClick={() => toggleAccordion(faq.id)}\n                    className=\"text-stone-500 hover:text-stone-600 transition-colors\"\n                  >\n                    <X className=\"w-5 h-5\" />\n                  </button>\n                </div>\n              </div>\n            )}\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
+    },
+    {
+      "path": "src/index.css",
+      "content": ".font-display { font-family: 'Playfair Display', Georgia, serif; }\n.font-body { font-family: 'Inter', system-ui, sans-serif; }\nbody { font-family: 'Inter', system-ui, sans-serif; }\n\n@keyframes reveal-up { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }\n.reveal { opacity: 0; }\n.reveal-visible { animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }\n@media (prefers-reduced-motion: reduce) {\n  .reveal { opacity: 1; }\n  .reveal-visible { animation: none; }\n}\n@keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }\n.animate-fade-up { animation: fade-up 0.7s ease-out both; }\n@keyframes float-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }\n.animate-float-slow { animation: float-slow 5s ease-in-out infinite; }\n@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }\n.animate-marquee { animation: marquee 30s linear infinite; }\n"
+    },
+    {
+      "path": "src/main.jsx",
+      "content": "import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport './index.css';\nimport App from './App';\n\nReactDOM.createRoot(document.getElementById('root')).render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);"
+    }
+  ]
+}

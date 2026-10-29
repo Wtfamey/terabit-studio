@@ -1,0 +1,25 @@
+{
+  "prompt": "nope what youve made is not what i have asked",
+  "business_type": "business-app",
+  "operation": "edit",
+  "provider": "auto",
+  "brief": {
+    "name": "",
+    "domain": "",
+    "subject": "",
+    "offerings": [
+      "asked",
+      "youve",
+      "nope"
+    ],
+    "cta": "",
+    "person": false,
+    "facts": [
+      "asked"
+    ],
+    "business_type": "business-app",
+    "language": "English"
+  },
+  "app_name": "NopeWhat",
+  "archetype": "saas"
+}

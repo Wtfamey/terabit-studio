@@ -1,0 +1,132 @@
+`src/components/Hero.jsx`
+```jsx
+import React, { useState } from 'react';
+import { Mail, Github, Link } from 'lucide-react';
+
+const initialBg = 'from-slate-950/20 via-slate-900/10 to-slate-900/20';
+const initialGradient = 'from-indigo-500/10 via-purple-500/10 to-transparent';
+
+export default function Hero() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 1500);
+  };
+
+  return (
+    <section id="hero" className="w-full min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col items-center justify-center p-6 sm:p-12">
+      <div className="relative w-full max-w-2xl rounded-3xl bg-slate-900/5 backdrop-blur-xl border border-white/10 p-8 shadow-2xl transition-all duration-500 hover:shadow-indigo-500/10">
+        
+        {/* Header with name and title */}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent fill-indigo-400 animate-fade-in-down">
+            Rahul Sharma
+          </h1>
+          <p className="text-sm sm:text-base mt-2 bg-clip-text text-transparent fill-white animate-fade-in-down">
+            Full Stack Developer | Build & Ship Scalable Solutions
+          </p>
+        </div>
+
+        {/* Background decorative gradient lines */}
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none animate-pulse" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse" />
+
+        {/* Animated bio details */}
+        <div className="w-full max-w-md grid grid-cols-2 gap-4 mb-8">
+          <div className="flex items-center gap-3 text-slate-400 animate-pulse">
+            <span className="p-2 rounded-xl bg-white/5 text-slate-300"><Mail size={18} /></span>
+            <span>rahulsharma@email.com</span>
+          </div>
+          <div className="flex items-center gap-3 text-slate-400 animate-pulse">
+            <span className="p-2 rounded-xl bg-white/5 text-slate-300"><Github size={18} /></span>
+            <span>@rahulsharma123</span>
+          </div>
+        </div>
+
+        {/* Contact form */}
+        <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
+          <div className="relative group">
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="Name"
+              className="w-full py-3 pl-4 pr-10 bg-slate-900/20 border border-white/10 rounded-lg focus:ring-2 focus:ring-indigo-500/30 outline-none transition-all duration-300 text-slate-300 placeholder:text-slate-500"
+              required
+            />
+            <span className="absolute right-3 top-3 text-slate-400 group-focus-within:text-indigo-400">Rahul Sharma</span>
+          </div>
+
+          <div className="relative group">
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              placeholder="Enter your email"
+              className="w-full py-3 pl-4 pr-10 bg-slate-900/20 border border-white/10 rounded-lg focus:ring-2 focus:ring-indigo-500/30 outline-none transition-all duration-300 text-slate-300 placeholder:text-slate-500"
+              required
+            />
+            <span className="absolute right-3 top-3 text-slate-400 group-focus-within:text-indigo-400">@gmail.com</span>
+          </div>
+
+          <textarea
+            name="message"
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            placeholder="Leave your message"
+            className="w-full py-3 pl-4 pr-10 bg-slate-900/20 border border-white/10 rounded-lg focus:ring-2 focus:ring-indigo-500/30 outline-none resize-none transition-all duration-300 text-slate-300 placeholder:text-slate-500"
+            rows="4"
+            required
+          ></textarea>
+
+          {/* Loading state */}
+          {isLoading ? (
+            <button disabled className="w-full py-3 rounded-lg bg-gradient-to-r from-indigo-600 via-purple-600 to-rose-600 text-slate-100 font-semibold hover:scale-105 transition-transform duration-300">
+              <span className="animate-pulse">Sending...</span>
+              <div className="w-4 h-4 rounded-full bg-white/10 animate-spin-slow border border-white/20" />
+            </button>
+          ) : (
+            <button type="submit" className="w-full py-3 rounded-lg bg-gradient-to-r from-indigo-600 via-purple-600 to-rose-600 text-slate-100 font-semibold hover:scale-105 transition-transform duration-300">
+              <span>Send Message</span>
+              <Mail className="w-5 h-5 ml-2" />
+            </button>
+          )}
+
+          {/* Success state with icon */}
+          {formData.name && !isLoading && (
+            <div className="mt-6 text-center text-slate-400 animate-fade-in-up">
+              <div className="inline-flex items-center gap-2 p-3 rounded-xl bg-slate-900/20 border border-indigo-500/30 text-indigo-400 shadow-lg">
+                <div className="w-5 h-5 bg-indigo-600/20 text-indigo-400 animate-pulse rounded-full flex items-center justify-center">
+                  <CheckCircle2 size={18} />
+                </div>
+                <p>Message sent successfully!</p>
+              </div>
+            </div>
+          )}
+        </form>
+
+        {/* Scroll to projects button */}
+        <div className="w-full max-w-md mt-12">
+          <button
+            onClick={() => window.scrollTo({ top: 800, behavior: 'smooth' })}
+            className="inline-flex items-center gap-2 py-3 px-6 rounded-3xl bg-slate-900/20 border border-slate-800/50 text-slate-300 font-semibold hover:bg-slate-900/30 transition-colors duration-300 hover:shadow-lg"
+          >
+            Check out the Projects
+            <ArrowDownRight size={16} className="w-4 h-4" />
+          </button>
+        </div>
+
+      </div>
+
+      {/* Background decorative waves */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none animate-pulse" />
+    </section>
+  );
+}
+```

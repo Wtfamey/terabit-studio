@@ -1,0 +1,38 @@
+{
+  "run": "20261020-034844",
+  "slug": "build-me-a-landing-page-for-raut-law-fir",
+  "prompt": "build me a landing page for raut law firm and add scales of justice animation to the hero also make sure all the sections are there and use provided image as logo and site bg",
+  "wall_s": 604.4,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": "PASS",
+  "palette_adherence": 1.0,
+  "theme": "law",
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.tsx",
+    "src/components/Attorneys.jsx",
+    "src/components/Faq.jsx",
+    "src/components/Fees.tsx",
+    "src/components/Hero.jsx",
+    "src/components/PracticeAreas.tsx",
+    "src/components/Testimonials.tsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 98613
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 45300
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

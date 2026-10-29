@@ -1,0 +1,18 @@
+{
+  "prompt": "mujhe mere portfolio ke liye website chaiye mera naam amey chikane hai me ek computer science engineer hu mera speciality aiml hai mujhe ek beutiful animation aur dark color theme wala portfolio website banake dedo",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "",
+    "domain": "portfolio",
+    "subject": "",
+    "offerings": [],
+    "cta": "",
+    "person": false,
+    "facts": [],
+    "business_type": "business-app"
+  },
+  "app_name": "MujheMere",
+  "archetype": "landing"
+}

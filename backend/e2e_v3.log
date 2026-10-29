@@ -1,0 +1,80 @@
+[registry] Loaded 18 components
+[registry]   layout: 2 components
+[registry]   navigation: 2 components
+[registry]   ui: 14 components
+brief record:
+  name       Rahul Sharma
+  domain     portfolio
+  subject    
+  offerings  []
+  cta        
+  person     True
+  facts      ['full stack developer']
+  language   Hinglish (romanised Hindi)
+
+generating (220 char prompt, local 7B, be patient)...
+[agent] provider: local
+[agent] mode: create (0 existing files)
+[agent] design-prefs: {"mode": "dark"}
+[agent] design: portfolio / dark / Space Grotesk+Inter
+[agent] plan: ["src/App.jsx", "src/components/Hero.jsx", "src/components/Work.jsx", "src/components/About.jsx", "src/components/Services.jsx", "src/components/Testimonials.jsx", "src/components/Faq.jsx"]
+[agent] plan: src/App.jsx: deterministic composition (model ask skipped)
+[agent] gen: src/components/Hero.jsx: 5308 chars
+[agent] gen: src/components/Work.jsx: 12431 chars
+[agent] gen: src/components/About.jsx: 9217 chars
+[agent] gen-empty-retry: src/components/Services.jsx
+[agent] gen: src/components/Services.jsx: 3942 chars
+[agent] gen: src/components/Testimonials.jsx: 9277 chars
+[agent] gen: src/components/Faq.jsx: 4235 chars
+[agent] promote-tsx: TypeScript syntax in .jsx -> retagged: Hero.jsx->Hero.tsx, Services.jsx->Services.tsx
+[agent] compose-shell: App.jsx composed (5344 chars) over 4 healthy sections [Work, About, Services, Testimonials]
+[repair] injected core file: package.json
+[repair] injected core file: src/main.jsx
+[repair] injected core file: index.html
+[repair] injected core file: src/index.css
+[agent] promote-tsx: TypeScript syntax in .jsx -> retagged: App.jsx->App.tsx
+[agent] style-enforce: 220 classes -> theme: slate-950->stone-950, slate-100->stone-100, slate-900->stone-900, slate-900->stone-900
+[agent] imagery-enforce: 1 placeholder urls rewritten, 0 empty image fields filled (theme: portfolio)
+[agent] personalisation: name_used=True fact_used=True clean=True lang_ok=True score=1.0 copy_chars=4827
+[agent] motion-enrich: 6 cards, 0 buttons, 2 images given transitions (mode: standard)
+[agent] verify: bundled OK
+[preview] tier1-bundled (11 files)
+
+wall: 985s | files: 11 | tier: tier1-bundled | devanagari ratio in App: 0.00
+personalisation: {'name_used': True, 'fact_used': True, 'clean': True, 'lang_ok': True, 'score': 1.0, 'copy_chars': 4827}
+agent trace:
+            provider  local
+                mode  create (0 existing files)
+        design-prefs  {"mode": "dark"}
+              design  portfolio / dark / Space Grotesk+Inter
+                plan  ["src/App.jsx", "src/components/Hero.jsx", "src/components/Work.jsx", "src/components/About.jsx", "src/compone
+                plan  src/App.jsx: deterministic composition (model ask skipped)
+                 gen  src/components/Hero.jsx: 5308 chars
+                 gen  src/components/Work.jsx: 12431 chars
+                 gen  src/components/About.jsx: 9217 chars
+     gen-empty-retry  src/components/Services.jsx
+                 gen  src/components/Services.jsx: 3942 chars
+                 gen  src/components/Testimonials.jsx: 9277 chars
+                 gen  src/components/Faq.jsx: 4235 chars
+         promote-tsx  TypeScript syntax in .jsx -> retagged: Hero.jsx->Hero.tsx, Services.jsx->Services.tsx
+       compose-shell  App.jsx composed (5344 chars) over 4 healthy sections [Work, About, Services, Testimonials]
+         promote-tsx  TypeScript syntax in .jsx -> retagged: App.jsx->App.tsx
+       style-enforce  220 classes -> theme: slate-950->stone-950, slate-100->stone-100, slate-900->stone-900, slate-900->stone-900
+     imagery-enforce  1 placeholder urls rewritten, 0 empty image fields filled (theme: portfolio)
+     personalisation  name_used=True fact_used=True clean=True lang_ok=True score=1.0 copy_chars=4827
+       motion-enrich  6 cards, 0 buttons, 2 images given transitions (mode: standard)
+              verify  bundled OK
+
+checks:
+  [x] bundle_ok
+  [x] preview tier1
+  [x] files produced
+  [x] name in output
+  [ ] >=1 stated fact used
+  [x] no placeholder names
+  [x] no generic filler lines
+  [ ] copy in Hinglish (romanised Hindi)
+  [x] gate score >= 0.75 (got 1.0)
+
+RESULT: FAIL
+artifacts: e2e_v3_hinglish.json

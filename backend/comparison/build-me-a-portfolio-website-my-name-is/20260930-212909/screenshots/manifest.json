@@ -1,0 +1,38 @@
+{
+  "run": "20260930-212909",
+  "slug": "build-me-a-portfolio-website-my-name-is",
+  "prompt": "build me a portfolio website my name is amey chikane i am a computer science graduate specializing in ai and ml tasks i am an ai engineer and consultant i have uploaded my image you can use it in site and also as my logo",
+  "wall_s": 40.5,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": "FAIL",
+  "palette_adherence": 1.0,
+  "theme": "portfolio",
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.jsx",
+    "src/components/About.jsx",
+    "src/components/Faq.jsx",
+    "src/components/Hero.jsx",
+    "src/components/Services.jsx",
+    "src/components/Testimonials.jsx",
+    "src/components/Work.jsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 174066
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 67314
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

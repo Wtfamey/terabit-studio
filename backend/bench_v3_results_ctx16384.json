@@ -1,0 +1,162 @@
+{
+  "model": "terabit-finetuned-v3",
+  "machine": {
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "ram_gb": null,
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "vram_gb": 6.0
+  },
+  "started": "2026-10-02T22:29:18.989263+00:00",
+  "cases": [
+    {
+      "id": "en_legal",
+      "label": "Family law practice, Leeds (English)",
+      "language": "en",
+      "prompt": "Build a landing page for a family law practice in Leeds called Hartley & Rowe. Include the practice areas (divorce, child custody, conveyancing), a fee structure table, two solicitor profiles, and a contact form with office hours. Write the copy in English.",
+      "wall_s": 1232.0,
+      "app_name": null,
+      "files": 5,
+      "file_paths": [
+        "index.html",
+        "package.json",
+        "src/App.jsx",
+        "src/index.css",
+        "src/main.jsx"
+      ],
+      "bytes": 20080,
+      "bundle_ok": true,
+      "preview_tier": "tier1-bundled",
+      "personalisation": null,
+      "agent_steps": 24,
+      "agent_trace": [
+        {
+          "phase": "provider",
+          "detail": "local"
+        },
+        {
+          "phase": "mode",
+          "detail": "create (0 existing files)"
+        },
+        {
+          "phase": "design",
+          "detail": "law / light / Libre Baskerville+Source Sans 3"
+        },
+        {
+          "phase": "plan",
+          "detail": "[\"src/App.jsx\", \"src/components/Hero.jsx\", \"src/components/PracticeAreas.jsx\", \"src/components/Fees.jsx\", \"src/components/Attorneys.jsx\", \"src/components/Testimonials.jsx\", \"src/components/Faq.jsx\"]"
+        },
+        {
+          "phase": "plan",
+          "detail": "src/App.jsx: deterministic composition (model ask skipped)"
+        },
+        {
+          "phase": "gen",
+          "detail": "src/components/Hero.jsx: 6498 chars"
+        },
+        {
+          "phase": "gen",
+          "detail": "src/components/PracticeAreas.jsx: 4347 chars"
+        },
+        {
+          "phase": "gen",
+          "detail": "src/components/Fees.jsx: 8918 chars"
+        },
+        {
+          "phase": "gen",
+          "detail": "src/components/Attorneys.jsx: 13826 chars"
+        },
+        {
+          "phase": "gen",
+          "detail": "src/components/Testimonials.jsx: 8028 chars"
+        },
+        {
+          "phase": "gen",
+          "detail": "src/components/Faq.jsx: 4354 chars"
+        },
+        {
+          "phase": "promote-tsx",
+          "detail": "TypeScript syntax in .jsx -> retagged: Hero.jsx->Hero.tsx, Faq.jsx->Faq.tsx"
+        },
+        {
+          "phase": "compose-shell",
+          "detail": "App.jsx composed (5413 chars) over 4 healthy sections [PracticeAreas, Fees, Attorneys, Testimonials]"
+        },
+        {
+          "phase": "promote-tsx",
+          "detail": "TypeScript syntax in .jsx -> retagged: App.jsx->App.tsx"
+        },
+        {
+          "phase": "style-enforce",
+          "detail": "261 classes -> theme: gradient->theme, indigo-500->blue-500, indigo-400->blue-400, indigo-500->blue-500"
+        },
+        {
+          "phase": "name-fix",
+          "detail": "1 placeholder name(s) -> Hartley & Rowe"
+        },
+        {
+          "phase": "personalisation",
+          "detail": "name_used=True fact_used=False clean=True lang_ok=True hero_lang_ok=True score=1.0 copy_chars=5523"
+        },
+        {
+          "phase": "motion-enrich",
+          "detail": "13 cards, 0 buttons, 1 images given transitions (mode: standard)"
+        },
+        {
+          "phase": "repair",
+          "detail": "src/App.tsx [render]:     at Object.<anonymous> (C:\\Users\\win\\Desktop\\super project\\zenith\\frontend\\.preview-work\\render-a8wgbxwc\\project\\render-bundle.cjs:36971:"
+        },
+        {
+          "phase": "repair",
+          "detail": "src/App.tsx [render]:     at Object.<anonymous> (C:\\Users\\win\\Desktop\\super project\\zenith\\frontend\\.preview-work\\render-y7qas6pl\\project\\render-bundle.cjs:36971:"
+        },
+        {
+          "phase": "repair",
+          "detail": "src/App.tsx [render]:     at Object.<anonymous> (C:\\Users\\win\\Desktop\\super project\\zenith\\frontend\\.preview-work\\render-bnujq_wj\\project\\render-bundle.cjs:36971:"
+        },
+        {
+          "phase": "render-salvage",
+          "detail": "render error not localizable to a section:     at Object.<anonymous> (C:\\Users\\win\\Desktop\\super project\\zenith\\frontend\\.preview-work\\render-iuf745r9\\project\\rend"
+        },
+        {
+          "phase": "fallback-scaffold",
+          "detail": "model bundle unrepairable after 3 repairs -> curated landing scaffold (bundled OK)"
+        },
+        {
+          "phase": "verify",
+          "detail": "bundled OK"
+        }
+      ],
+      "devanagari_chars": 0,
+      "expectations": {
+        "Hartley": true,
+        "Leeds": false,
+        "divorce": false,
+        "conveyancing": false,
+        "no stray devanagari": true
+      },
+      "expectations_met": 2,
+      "expectations_total": 5,
+      "headline": "\n            Counsel that<br />\n            <span className=\"bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-500 bg-clip-text text-transparent\">prote",
+      "gpu_samples": [
+        "terabit-finetuned-v3:latest    2e7f9df4c8a6    5.8 GB    27%/73% CPU/GPU    16384      2 minutes from now",
+        "terabit-finetuned-v3:latest    2e7f9df4c8a6    5.8 GB    27%/73% CPU/GPU    16384      3 minutes from now",
+        "terabit-finetuned-v3:latest    2e7f9df4c8a6    5.8 GB    27%/73% CPU/GPU    16384      4 minutes from now",
+        "terabit-finetuned-v3:latest    2e7f9df4c8a6    5.8 GB    27%/73% CPU/GPU    16384      41 seconds from now",
+        "terabit-finetuned-v3:latest    2e7f9df4c8a6    5.8 GB    27%/73% CPU/GPU    16384      56 seconds from now",
+        "terabit-finetuned-v3:latest    2e7f9df4c8a6    5.8 GB    27%/73% CPU/GPU    16384      About a minute from now"
+      ]
+    }
+  ],
+  "backend_health": {
+    "status": "ok",
+    "name": "TerabitStudio",
+    "version": "1.1.0",
+    "model_name": "terabit-finetuned-v3",
+    "model_path": "C:\\Users\\win\\Desktop\\super project\\zenith\\models\\qwen2.5-7b-q4_k_m.gguf",
+    "lora_path": "C:\\Users\\win\\Desktop\\super project\\zenith\\models\\qwen2.5-7b-finetuned-lora.gguf",
+    "lora_configured": true,
+    "llama_server_host": "localhost",
+    "llama_server_port": "11434",
+    "auth": true
+  }
+}

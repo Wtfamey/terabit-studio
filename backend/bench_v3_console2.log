@@ -1,0 +1,4 @@
+[04:56:27] starting backend on :8151 with N_CTX=8192
+[04:56:29] backend healthy; serving model 'terabit-finetuned-v3' at ctx=8192
+[04:56:29] effective context window from the backend: 8192
+[04:56:29] ── case en_legal: Family law practice, Leeds (English)

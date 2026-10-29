@@ -1,0 +1,19 @@
+{
+  "prompt": "Build a landing page for Casa Verde, a restaurant that serves seasonal Italian cooking, wood-fired pizza and natural wine. Include a menu and reservations section.",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "Casa Verde",
+    "domain": "restaurant",
+    "offerings": [
+      "wood-fired pizza",
+      "natural wine. include a menu",
+      "reservations section"
+    ],
+    "cta": "",
+    "business_type": "business-app"
+  },
+  "app_name": "Casa Verde",
+  "archetype": "landing"
+}

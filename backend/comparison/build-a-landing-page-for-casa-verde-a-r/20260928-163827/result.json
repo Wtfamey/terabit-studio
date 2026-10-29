@@ -1,0 +1,73 @@
+{
+  "wall_s": 895.1,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "agent_trace": [
+    {
+      "phase": "provider",
+      "detail": "local"
+    },
+    {
+      "phase": "mode",
+      "detail": "create (0 existing files)"
+    },
+    {
+      "phase": "plan",
+      "detail": "[\"src/App.jsx\", \"src/components/Hero.jsx\", \"src/components/Menu.jsx\", \"src/components/Reservations.jsx\", \"src/components/Faq.jsx\"]"
+    },
+    {
+      "phase": "plan",
+      "detail": "src/App.jsx: deterministic composition (model ask skipped)"
+    },
+    {
+      "phase": "gen-truncated",
+      "detail": "src/components/Hero.jsx"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/Menu.jsx: 25 chars"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/Reservations.jsx: 13691 chars"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/Faq.jsx: 4482 chars"
+    },
+    {
+      "phase": "compose-shell",
+      "detail": "App.jsx composed (2097 chars) over 0 healthy sections []; dropped ['src/components/Hero.jsx', 'src/components/Menu.jsx', 'src/components/Reservations.jsx']"
+    },
+    {
+      "phase": "verify",
+      "detail": "bundled OK"
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>Generated App</title>\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n  </head>\n  <body class=\"bg-slate-950 text-slate-100 antialiased min-h-screen\">\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>"
+    },
+    {
+      "path": "package.json",
+      "content": "{\n  \"name\": \"zenith-app\",\n  \"private\": true,\n  \"version\": \"1.0.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"react\": \"^18.3.1\",\n    \"react-dom\": \"^18.3.1\",\n    \"lucide-react\": \"^0.464.0\"\n  },\n  \"devDependencies\": {\n    \"@vitejs/plugin-react\": \"^4.3.4\",\n    \"vite\": \"^6.0.1\"\n  }\n}"
+    },
+    {
+      "path": "src/App.jsx",
+      "content": "import { useState } from 'react';\nimport { Menu as MenuIcon, X } from 'lucide-react';\nimport Faq from './components/Faq';\n\nexport default function App() {\n  const [menuOpen, setMenuOpen] = useState(false);\n  const links = [\n    { label: \"FAQ\", href: \"#faq\" },\n  ];\n  return (\n    <div className=\"min-h-screen bg-white text-slate-900\">\n      <header className=\"sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-slate-200/70\">\n        <div className=\"max-w-6xl mx-auto px-6 h-16 flex items-center justify-between\">\n          <a href=\"#top\" className=\"flex items-center gap-2\">\n            <span className=\"w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 inline-block\" />\n            <span className=\"font-extrabold text-lg tracking-tight\">Casa Verde</span>\n          </a>\n          <nav className=\"hidden md:flex items-center gap-8 text-sm font-medium text-slate-600\">\n            {links.map(l => <a key={l.href} href={l.href} className=\"hover:text-slate-900 transition-colors\">{l.label}</a>)}\n          </nav>\n          <div className=\"hidden md:flex items-center gap-3\">\n            <a href=\"#top\" className=\"px-4 py-2 rounded-xl bg-slate-900 text-white text-sm font-semibold hover:bg-slate-700 transition-colors\">Get started</a>\n          </div>\n          <button className=\"md:hidden p-2\" onClick={() => setMenuOpen(!menuOpen)} aria-label=\"Menu\">\n            {menuOpen ? <X className=\"w-5 h-5\" /> : <MenuIcon className=\"w-5 h-5\" />}\n          </button>\n        </div>\n        {menuOpen && (\n          <div className=\"md:hidden border-t border-slate-200 bg-white px-6 py-4 space-y-3\">\n            {links.map(l => <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)} className=\"block font-medium text-slate-700\">{l.label}</a>)}\n          </div>\n        )}\n      </header>\n      <main id=\"top\">\n      <Faq />\n      </main>\n      <footer className=\"border-t border-slate-200 py-10 text-center text-sm text-slate-500\">\n        <span className=\"font-bold text-slate-700\">Casa Verde</span> &copy; 2026. All rights reserved.\n      </footer>\n    </div>    );\n}"
+    },
+    {
+      "path": "src/components/Faq.jsx",
+      "content": "import React, { useState } from 'react';\nimport { Circle as Question, ChevronRight, ChevronDown, Sparkles } from 'lucide-react';\n\nconst FAQ_DATA = [\n  {\n    id: 1,\n    question: \"How do I make a reservation?\",\n    answer: \"Reservations can be made directly on our platform or via the 'Book Now' button on the table. We require a valid credit card for verification purposes only, and no-shows will result in a reservation fee. Our chefs are meticulous about timing, so please arrive within 10 minutes of your reservation time.\",\n    isExpanded: false\n  },\n  {\n    id: 2,\n    question: \"What kind of pizza do you offer?\",\n    answer: \"Our wood-fired oven is the heart of Casa Verde. We craft artisanal pizzas with heirloom tomatoes, fresh basil, and hand-selected cheeses. Each pie is cooked to perfection in under two minutes, ensuring a crispy crust and robust flavors.\",\n    isExpanded: false\n  },\n  {\n    id: 3,\n    question: \"Do you have a kids' menu?\",\n    answer: \"Absolutely! We believe food should be a joyful experience for the whole family. Our kids' menu features mini portions of our signature dishes, and we offer a special children's cocktail for the young sommeliers.\",\n    isExpanded: false\n  },\n  {\n    id: 4,\n    question: \"What is your natural wine list like?\",\n    answer: \"Our wine cellar is curated by sommeliers who focus on natural and biodynamic wines. Each bottle tells a story of sustainable farming and unique terroir. We recommend trying our house red blend, which pairs beautifully with our seasonal pasta courses.\",\n    isExpanded: false\n  },\n  {\n    id: 5,\n    question: \"Is your restaurant wheelchair accessible?\",\n    answer: \"Yes, Casa Verde is fully wheelchair accessible. Our dining area is spacious with wide aisles, and we have a dedicated accessible restroom. We also provide special menus for guests with dietary restrictions or allergies.\",\n    isExpanded: false\n  }\n];\n\nexport default function Faq() {\n  const [activeId, setActiveId] = useState(null);\n\n  const handleToggle = (id) => {\n    setActiveId(id === activeId ? null : id);\n  };\n\n  return (\n    <div className=\"min-h-screen bg-slate-950 p-4 sm:p-6 md:p-8 text-slate-100\">\n      <div className=\"max-w-7xl mx-auto\">\n        {/* Decorative gradient background overlay */}\n        <div className=\"absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-indigo-600/20 via-purple-600/10 to-transparent rounded-full blur-3xl pointer-events-none\" />\n\n        {/* Heading and accent bar */}\n        <div className=\"mb-8 text-center\">\n          <h2 className=\"text-3xl font-bold tracking-tight text-transparent bg-clip-text from-cyan-400 to-indigo-400 mb-4\">Frequently Asked Questions</h2>\n          <div className=\"w-16 h-1 bg-indigo-500 rounded-full border border-indigo-600\" />\n        </div>\n\n        {/* Accordion panel styles */}\n        <div className=\"space-y-5 max-w-md mx-auto\">\n          {FAQ_DATA.map((faq) => (\n            <div key={faq.id} className=\"group relative border border-white/10 rounded-2xl bg-white/5 p-6 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:border-white/20 hover:bg-white/10\">\n              <div className=\"flex items-center justify-between mb-4\">\n                <div className=\"flex items-center space-x-2 text-slate-400\">\n                  <Question className=\"w-5 h-5 animate-pulse text-indigo-400 group-hover:text-indigo-500\" />\n                  <div>\n                    <h3 className=\"text-sm font-semibold tracking-tight\">{faq.question}</h3>\n                    {activeId === faq.id && <p className=\"text-xs text-slate-500\">Expanded</p>}\n                  </div>\n                </div>\n                <button\n                  onClick={() => handleToggle(faq.id)}\n                  className=\"p-2 rounded-xl bg-white/5 text-slate-400 hover:text-white transition-colors\"\n                >\n                  {activeId === faq.id ? <ChevronDown className=\"w-5 h-5\" /> : <ChevronRight className=\"w-5 h-5\" />}\n                </button>\n              </div>\n              {activeId === faq.id && (\n                <div className=\"text-slate-400 text-sm tracking-wide\">\n                  {faq.answer}\n                  <br />\n                  <br />\n                  {faq.id === 4 && <div className=\"inline-flex items-center gap-1\"><Sparkles className=\"w-4 h-4 text-indigo-400\" />Pairing suggestions included.</div>}\n                </div>\n              )}\n            </div>\n          ))}\n        </div>\n      </div>\n    </div>\n  );\n}"
+    },
+    {
+      "path": "src/index.css",
+      "content": "@tailwind base;\n@tailwind components;\n@tailwind utilities;\n\n@layer base {\n  body {\n    background-color: #030712;\n    color: #f8fafc;\n  }\n}"
+    },
+    {
+      "path": "src/main.jsx",
+      "content": "import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport './index.css';\nimport App from './App';\n\nReactDOM.createRoot(document.getElementById('root')).render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);"
+    }
+  ]
+}

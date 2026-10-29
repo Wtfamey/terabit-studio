@@ -1,0 +1,76 @@
+INFO:     Started server process [36192]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8162 (Press CTRL+C to quit)
+[registry] Loaded 18 components
+[registry]   layout: 2 components
+[registry]   navigation: 2 components
+[registry]   ui: 14 components
+Using existing local model server at localhost:11434
+INFO:     127.0.0.1:54249 - "GET /api/models/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54475 - "GET /settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54475 - "GET /assets/index-CppO2NvD.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54476 - "GET /assets/index-BdSCd2f9.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54475 - "GET /api/app/env HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54479 - "GET /logo.svg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54476 - "GET /api/models/state HTTP/1.1" 200 OK
+[model] warm-up complete
+INFO:     127.0.0.1:57370 - "GET /builder HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57370 - "GET /assets/index-CppO2NvD.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57371 - "GET /assets/index-BdSCd2f9.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60373 - "GET /builder HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60373 - "GET /assets/index-DoAdzxdL.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60375 - "GET /assets/index-BdSCd2f9.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64417 - "GET /login?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZXhwIjoxNzkzNTc0ODAwfQ.BxQbLYbxBZMYwnsc4FdqN888qQLGNLxSAI8LMvZU5Fs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60744 - "GET /assets/index-BdSCd2f9.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64417 - "GET /assets/index-DckfOJe4.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61317 - "GET /logo.svg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63527 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64487 - "GET /?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZXhwIjoxNzkzNTc0ODAwfQ.BxQbLYbxBZMYwnsc4FdqN888qQLGNLxSAI8LMvZU5Fs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64487 - "GET /assets/index-DckfOJe4.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58803 - "GET /assets/index-BdSCd2f9.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64487 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58803 - "GET /logo.svg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63804 - "GET /builder?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZXhwIjoxNzkzNTc0ODAwfQ.BxQbLYbxBZMYwnsc4FdqN888qQLGNLxSAI8LMvZU5Fs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63804 - "GET /assets/index-DckfOJe4.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61814 - "GET /assets/index-BdSCd2f9.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63804 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61814 - "GET /logo.svg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61814 - "GET /api/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51738 - "GET /workspace?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZXhwIjoxNzkzNTc0ODAwfQ.BxQbLYbxBZMYwnsc4FdqN888qQLGNLxSAI8LMvZU5Fs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49328 - "GET /assets/index-BdSCd2f9.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51738 - "GET /assets/index-DckfOJe4.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51738 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49328 - "GET /logo.svg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61691 - "GET /settings?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZXhwIjoxNzkzNTc0ODAwfQ.BxQbLYbxBZMYwnsc4FdqN888qQLGNLxSAI8LMvZU5Fs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49913 - "GET /assets/index-BdSCd2f9.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61691 - "GET /assets/index-DckfOJe4.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61691 - "GET /api/app/env HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64826 - "GET /logo.svg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59748 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49913 - "GET /api/models/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63821 - "GET /?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZXhwIjoxNzkzNTc0ODAwfQ.BxQbLYbxBZMYwnsc4FdqN888qQLGNLxSAI8LMvZU5Fs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63821 - "GET /assets/index-DckfOJe4.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50673 - "GET /assets/index-BdSCd2f9.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63821 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50673 - "GET /logo.svg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60893 - "GET /builder?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZXhwIjoxNzkzNTc0ODAwfQ.BxQbLYbxBZMYwnsc4FdqN888qQLGNLxSAI8LMvZU5Fs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60893 - "GET /assets/index-DckfOJe4.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64915 - "GET /assets/index-BdSCd2f9.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60893 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60893 - "GET /logo.svg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60893 - "GET /api/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63137 - "GET /settings?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZXhwIjoxNzkzNTc0ODAwfQ.BxQbLYbxBZMYwnsc4FdqN888qQLGNLxSAI8LMvZU5Fs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63137 - "GET /assets/index-DckfOJe4.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54571 - "GET /assets/index-BdSCd2f9.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63137 - "GET /api/app/env HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65178 - "GET /logo.svg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57812 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54571 - "GET /api/models/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53849 - "GET /settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53849 - "GET /assets/index-DckfOJe4.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53850 - "GET /assets/index-BdSCd2f9.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53849 - "GET /api/app/env HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53850 - "GET /api/models/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55808 - "GET /api/app/env HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55809 - "GET /api/models/state HTTP/1.1" 200 OK

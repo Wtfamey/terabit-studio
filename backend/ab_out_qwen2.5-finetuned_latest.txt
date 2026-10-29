@@ -1,0 +1,204 @@
+`src/components/Hero.jsx`
+
+```jsx
+import React, { useState, useEffect } from 'react';
+import { 
+  Search, 
+  Code, 
+  Sparkles, 
+  Layers, 
+  Check, 
+  ChevronRight, 
+  ChevronLeft, 
+  Loader2, 
+  X,
+  Upload
+} from 'lucide-react';
+
+export default function Hero() {
+  const [isHovering, setIsHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [selected, setSelected] = useState('projects');
+  const [showSearch, setShowSearch] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [draggingIndex, setDraggingIndex] = useState(null);
+
+  // Emulate fetching data
+  useEffect(() => {
+    if (selected === 'projects') {
+      setSearchResults([
+        { 
+          id: 1, 
+          title: 'E-Commerce Platform', 
+          description: 'Built a robust e-commerce platform with real-time inventory sync and AI-driven recommendations.', 
+          technologies: ['Node.js', 'React', 'MongoDB', 'Redis']
+        },
+        { 
+          id: 2, 
+          title: 'Real Estate App', 
+          description: 'Developed a sleek, user-friendly real estate app that streamlines property listings and user interactions.', 
+          technologies: ['Next.js', 'Tailwind CSS', 'Prisma']
+        },
+        { 
+          id: 3, 
+          title: 'Finance Dashboard', 
+          description: 'Designed an interactive dashboard for financial analysts, integrating real-time stock data and advanced AI analytics.', 
+          technologies: ['React', 'D3.js', 'WebSocket']
+        }
+      ]);
+    }
+  }, [selected]);
+
+  const handleSearch = (e) => {
+    if (e.key === 'Enter') {
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        if (searchQuery.trim() === '') {
+          setSearchResults([
+            { 
+              id: 1, 
+              title: 'E-Commerce Platform', 
+              description: 'Built a robust e-commerce platform with real-time inventory sync and AI-driven recommendations.', 
+              technologies: ['Node.js', 'React', 'MongoDB', 'Redis']
+            }
+          ]);
+        } else {
+          // Simulate API search
+          setSearchResults([
+            { 
+              id: 1, 
+              title: 'E-Commerce Platform', 
+              description: 'Built a robust e-commerce platform with real-time inventory sync and AI-driven recommendations.', 
+              technologies: ['Node.js', 'React', 'MongoDB', 'Redis']
+            },
+            { 
+              id: 2, 
+              title: 'Real Estate App', 
+              description: 'Developed a sleek, user-friendly real estate app that streamlines property listings and user interactions.', 
+              technologies: ['Next.js', 'Tailwind CSS', 'Prisma']
+            }
+          ]);
+        }
+      }, 500);
+    }
+  };
+
+  const handleDragStart = (index) => {
+    setDraggingIndex(index);
+    setIsDragging(true);
+  };
+
+  const handleDragEnd = (index) => {
+    if (index === draggingIndex) {
+      return;
+    }
+    // Simulate drag drop
+    setSearchResults([
+      ...searchResults.map((item, i) => 
+        (i === index ? 
+          { ...item, position: draggingIndex + (draggingIndex > index ? 1 : 0) } 
+          : { ...item, position: i })
+      )
+    ]);
+    setIsDragging(false);
+    setDraggingIndex(null);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e, index) => {
+    e.preventDefault();
+    handleDragEnd(index);
+  };
+
+  return (
+    <div
+      id="hero"
+      className={`bg-[#24292e] relative overflow-hidden h-[80vh] flex items-center justify-center text-center sm:text-left text-white ${isDragging ? 'cursor-grabbing' : 'cursor-pointer'}`}
+      onDragOver={handleDragOver}
+      onDragLeave={() => setIsDragging(false)}
+    >
+      <div className="w-full max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className={`relative flex flex-col items-center justify-center text-center sm:text-left w-full h-full overflow-hidden ${isDragging ? 'animate-drag' : ''}`}
+          onDragLeave={() => setIsDragging(false)}
+        >
+          <div
+            className="absolute top-0 left-0 w-full h-full bg-[#1e2225] opacity-80 z-20"
+            style={{
+              boxShadow: '0 0 20px -5px #1e2225, 0 0 30px -10px #1e2225, 0 0 40px -15px #1e2225'
+            }}
+          ></div>
+          <div
+            className="absolute top-0 left-0 w-full h-full bg-[#2e3436] opacity-80 z-20"
+            style={{
+              boxShadow: '0 0 15px -5px #2e3436, 0 0 25px -10px #2e3436, 0 0 35px -15px #2e3436'
+            }}
+          ></div>
+          <div
+            className="absolute top-0 left-0 w-full h-full bg-[#3b4248] opacity-80 z-20"
+            style={{
+              boxShadow: '0 0 10px -3px #3b4248, 0 0 20px -8px #3b4248, 0 0 30px -12px #3b4248'
+            }}
+          ></div>
+          <div
+            className="absolute bottom-0 left-0 w-full h-full bg-[#1e2225] opacity-80 z-20"
+            style={{
+              boxShadow: '0 0 15px -5px #1e2225, 0 0 25px -10px #1e2225, 0 0 35px -15px #1e2225'
+            }}
+          ></div>
+          <div
+            className="absolute bottom-0 left-0 w-full h-full bg-[#2e3436] opacity-80 z-20"
+            style={{
+              boxShadow: '0 0 15px -5px #2e3436, 0 0 25px -10px #2e3436, 0 0 35px -15px #2e3436'
+            }}
+          ></div>
+          <div
+            className="absolute bottom-0 left-0 w-full h-full bg-[#3b4248] opacity-80 z-20"
+            style={{
+              boxShadow: '0 0 10px -3px #3b4248, 0 0 20px -8px #3b4248, 0 0 30px -12px #3b4248'
+            }}
+          ></div>
+
+          <div
+            className="relative z-50 flex flex-col items-center justify-center w-full h-full"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
+            <div className="relative w-full max-w-[400px] flex flex-col items-center justify-center">
+              <h1
+                className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 transition-colors duration-300 ${isHovering ? 'text-blue-500' : 'text-gray-100'}`}
+              >
+                Rahul Sharma
+                <span
+                  className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-10 h-10 bg-[#24292e] rounded-full animate-pulse"
+                  style={{
+                    boxShadow: '0 0 15px -5px #24292e, 0 0 25px -10px #24292e, 0 0 35px -15px #24292e'
+                  }}
+                ></span>
+              </h1>
+              <p
+                className={`text-lg md:text-xl lg:text-2xl mt-4 leading-relaxed text-gray-300 transition-colors duration-300 ${isHovering ? 'text-blue-500' : 'text-gray-100'}`}
+              >
+                Full Stack Developer | Crafting the Future with Code
+                <span
+                  className="absolute -bottom-2 -right-2 w-10 h-10 bg-[#24292e] rounded-full animate-pulse"
+                  style={{
+                    boxShadow: '0 0 15px -5px #24292e, 0 0 25px -10px #24292e, 0 0 35px -15px #24292e'
+                  }}
+                ></span>
+              </p>
+              <div
+                className="relative w-full max-w-[400px] mt-8 flex items-center justify-center"
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+              >
+                <div
+                  className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-1

@@ -1,0 +1,38 @@
+{
+  "run": "20261001-183424",
+  "slug": "build-a-modern-e-commerce-store-for-prem",
+  "prompt": "Build a modern e-commerce store for premium coffee beans with product catalog, cart, checkout, reviews and subscription plans",
+  "wall_s": 3048.7,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": "FAIL",
+  "palette_adherence": 1.0,
+  "theme": "restaurant",
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.jsx",
+    "src/components/CartModal.jsx",
+    "src/components/Checkout.jsx",
+    "src/components/Navbar.jsx",
+    "src/components/ProductCard.jsx",
+    "src/components/ProductCatalog.jsx",
+    "src/components/Subscriptions.jsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 99903
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 49584
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

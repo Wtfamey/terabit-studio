@@ -1,0 +1,15 @@
+{
+  "prompt": "i need you to build me a portfolio website for myself amey chikane an ai developer",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "",
+    "domain": "portfolio",
+    "offerings": [],
+    "cta": "",
+    "business_type": "business-app"
+  },
+  "app_name": "NeedYou",
+  "archetype": "landing"
+}

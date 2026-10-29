@@ -1,0 +1,38 @@
+{
+  "run": "20261020-191706",
+  "slug": "i-need-the-site-to-be-in-black-and-golde",
+  "prompt": "i need the site to be in black and golden aesthetic and also i need a scales of justice animation in the hero and the name should be raut law firm also use the assets please",
+  "wall_s": 9.8,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": "FAIL",
+  "palette_adherence": 0.027,
+  "theme": "law",
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.jsx",
+    "src/components/Attorneys.jsx",
+    "src/components/Faq.jsx",
+    "src/components/Fees.jsx",
+    "src/components/Hero.jsx",
+    "src/components/PracticeAreas.jsx",
+    "src/components/Testimonials.jsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 170897
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 63298
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

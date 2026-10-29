@@ -1,0 +1,38 @@
+{
+  "mode": "live",
+  "timestamp": "2026-09-25T23:12:37",
+  "summary": {
+    "n_runs": 1,
+    "s1_parse_success_pct": 100.0,
+    "s2_scaffold_completeness_pct": 0.0,
+    "s3_entry_point_valid_pct": 0.0,
+    "s4_import_resolution_avg": 1.0,
+    "s5_tier_distribution": {
+      "tier1-bundled": 1
+    },
+    "s6_tier1_build_pct": 100.0,
+    "s7_truncation_pct": 0.0,
+    "avg_wall_s": 275.0
+  },
+  "results": [
+    {
+      "id": "saas-dashboard-01",
+      "archetype": "saas",
+      "n_files_final": 6,
+      "n_files_model": 3,
+      "s1_parse_success": true,
+      "s2_core_files": false,
+      "s7_truncated": false,
+      "s3_entry_valid": false,
+      "import_resolution": {
+        "total": 1,
+        "resolved": 1,
+        "rate": 1.0
+      },
+      "preview_tier": "tier1-bundled",
+      "tier1_build_ok": true,
+      "preview_build_ms": 8702,
+      "wall_s": 275
+    }
+  ]
+}

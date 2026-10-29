@@ -1,0 +1,18 @@
+{
+  "prompt": "Build a website for Hartwell & Sawyer, a family law firm. Include practice areas, attorney profiles, and a consultation booking section. Keep it trustworthy and professional.",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "Hartwell & Sawyer",
+    "domain": "family law firm",
+    "offerings": [
+      "attorney profiles",
+      "professional"
+    ],
+    "cta": "",
+    "business_type": "business-app"
+  },
+  "app_name": "Hartwell & Sawyer",
+  "archetype": "landing"
+}

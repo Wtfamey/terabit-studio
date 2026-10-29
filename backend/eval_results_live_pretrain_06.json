@@ -1,0 +1,38 @@
+{
+  "mode": "live",
+  "timestamp": "2026-09-17T15:15:38",
+  "summary": {
+    "n_runs": 1,
+    "s1_parse_success_pct": 100.0,
+    "s2_scaffold_completeness_pct": 0.0,
+    "s3_entry_point_valid_pct": 0.0,
+    "s4_import_resolution_avg": null,
+    "s5_tier_distribution": {
+      "tier2-cdn": 1
+    },
+    "s6_tier1_build_pct": 0.0,
+    "s7_truncation_pct": 0.0,
+    "avg_wall_s": 281.0
+  },
+  "results": [
+    {
+      "id": "booking-06",
+      "archetype": "booking",
+      "n_files_final": 5,
+      "n_files_model": 2,
+      "s1_parse_success": true,
+      "s2_core_files": false,
+      "s7_truncated": false,
+      "s3_entry_valid": false,
+      "import_resolution": {
+        "total": 0,
+        "resolved": 0,
+        "rate": null
+      },
+      "preview_tier": "tier2-cdn",
+      "tier1_build_ok": false,
+      "preview_build_ms": 986,
+      "wall_s": 281
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "theme": "product",
+  "palette_adherence": 1.0,
+  "color_classes": 48,
+  "neon_drift": 0,
+  "neon_families": [],
+  "font_used": false,
+  "brand_present": true,
+  "animations": false,
+  "imagery": false,
+  "gradient": true,
+  "gate": "FAIL"
+}

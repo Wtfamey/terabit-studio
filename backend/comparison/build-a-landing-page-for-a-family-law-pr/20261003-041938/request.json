@@ -1,0 +1,26 @@
+{
+  "prompt": "Build a landing page for a family law practice in Leeds called Hartley & Rowe. Include the practice areas (divorce, child custody, conveyancing), a fee structure table, two solicitor profiles, and a contact form with office hours. Write the copy in English.",
+  "business_type": "general",
+  "operation": "create",
+  "provider": "local",
+  "brief": {
+    "name": "Hartley & Rowe",
+    "domain": "fee structure table",
+    "subject": "",
+    "offerings": [
+      "office hours write",
+      "child custody conveyancing",
+      "practice areas divorce",
+      "solicitor profiles",
+      "leeds called",
+      "family law"
+    ],
+    "cta": "",
+    "person": false,
+    "facts": [],
+    "business_type": "general",
+    "language": "English"
+  },
+  "app_name": "Hartley & Rowe",
+  "archetype": "landing"
+}

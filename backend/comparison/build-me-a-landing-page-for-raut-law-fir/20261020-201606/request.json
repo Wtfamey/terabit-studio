@@ -1,0 +1,26 @@
+{
+  "prompt": "build me a landing page for raut law firm use the logo i have provided and make sure site has all sections and seamless animation scrolling and a black and golden aesthetic",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "",
+    "domain": "law firm",
+    "subject": "",
+    "offerings": [
+      "golden aesthetic",
+      "black",
+      "scrolling",
+      "seamless",
+      "sure",
+      "provided"
+    ],
+    "cta": "",
+    "person": false,
+    "facts": [],
+    "business_type": "business-app",
+    "language": "English"
+  },
+  "app_name": "RautLaw",
+  "archetype": "landing"
+}

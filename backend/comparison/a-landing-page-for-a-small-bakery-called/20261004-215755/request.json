@@ -1,0 +1,21 @@
+{
+  "prompt": "A landing page for a small bakery called Flour & Salt, with a hero, a menu of pastries, and a contact section.",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "Flour & Salt",
+    "domain": "menu of pastries",
+    "subject": "",
+    "offerings": [
+      "small bakery called"
+    ],
+    "cta": "",
+    "person": false,
+    "facts": [],
+    "business_type": "business-app",
+    "language": "English"
+  },
+  "app_name": "Flour & Salt",
+  "archetype": "landing"
+}

@@ -1,0 +1,22 @@
+{
+  "prompt": "A website for raut law firm, a boutique law firm. Trustworthy and calm, with practice areas, team and consultation booking and use image i have atached as logo and site background",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "",
+    "domain": "boutique law firm",
+    "subject": "raut law firm",
+    "offerings": [
+      "practice areas",
+      "team"
+    ],
+    "cta": "",
+    "person": false,
+    "facts": [],
+    "business_type": "business-app",
+    "language": "English"
+  },
+  "app_name": "RautLaw",
+  "archetype": "landing"
+}

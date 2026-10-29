@@ -1,0 +1,35 @@
+{
+  "run": "20260930-174958",
+  "slug": "i-need-you-to-build-me-a-portfolio-websi",
+  "prompt": "I need you to build me a portfolio website for Mara Lindqvist, a product designer. Include projects, an about section, and a contact section. Use a warm minimal aesthetic.",
+  "wall_s": 1638.4,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": "PASS",
+  "palette_adherence": 1.0,
+  "theme": "portfolio",
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.jsx",
+    "src/components/About.jsx",
+    "src/components/Hero.jsx",
+    "src/components/Work.jsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 110138
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 49907
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

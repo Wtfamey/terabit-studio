@@ -1,0 +1,13 @@
+{
+  "theme": "law",
+  "palette_adherence": 1.0,
+  "color_classes": 247,
+  "neon_drift": 0,
+  "neon_families": [],
+  "font_used": true,
+  "brand_present": true,
+  "animations": true,
+  "imagery": true,
+  "gradient": true,
+  "gate": "PASS"
+}

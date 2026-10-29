@@ -1,0 +1,18 @@
+[
+  {
+    "path": "src/components/Dashboard.jsx",
+    "content": "export default function Dashboard() {\n  return (\n    <section id=\"dashboard\" className=\"py-20\">\n      <div className=\"max-w-4xl mx-auto px-6 text-slate-700\">\n        <h2 className=\"text-3xl font-bold mb-4\">Dashboard</h2>\n      </div>\n    </section>\n  );\n}\n"
+  },
+  {
+    "path": "src/components/Orders.jsx",
+    "content": "export default function Orders() {\n  return (\n    <section id=\"orders\" className=\"py-20\">\n      <div className=\"max-w-4xl mx-auto px-6 text-slate-700\">\n        <h2 className=\"text-3xl font-bold mb-4\">Orders</h2>\n      </div>\n    </section>\n  );\n}\n"
+  },
+  {
+    "path": "src/components/Products.jsx",
+    "content": "export default function Products() {\n  return (\n    <section id=\"products\" className=\"py-20\">\n      <div className=\"max-w-4xl mx-auto px-6 text-slate-700\">\n        <h2 className=\"text-3xl font-bold mb-4\">Products</h2>\n      </div>\n    </section>\n  );\n}\n"
+  },
+  {
+    "path": "src/components/Suppliers.jsx",
+    "content": "export default function Suppliers() {\n  return (\n    <section id=\"suppliers\" className=\"py-20\">\n      <div className=\"max-w-4xl mx-auto px-6 text-slate-700\">\n        <h2 className=\"text-3xl font-bold mb-4\">Suppliers</h2>\n      </div>\n    </section>\n  );\n}\n"
+  }
+]

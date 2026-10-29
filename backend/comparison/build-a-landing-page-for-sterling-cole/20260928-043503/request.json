@@ -1,0 +1,21 @@
+{
+  "prompt": "Build a landing page for Sterling & Cole, a law firm website with a solid UI \u2014 practice areas, attorney profiles, client testimonials, FAQ, and a free consultation CTA",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "Sterling & Cole",
+    "domain": "law firm",
+    "offerings": [
+      "practice areas",
+      "attorney profiles",
+      "client testimonials",
+      "faq",
+      "free consultation cta"
+    ],
+    "cta": "free consultation",
+    "business_type": "business-app"
+  },
+  "app_name": "Sterling & Cole",
+  "archetype": "landing"
+}

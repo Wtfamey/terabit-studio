@@ -1,0 +1,165 @@
+{
+  "wall_s": 943.3,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "agent_trace": [
+    {
+      "phase": "provider",
+      "detail": "local"
+    },
+    {
+      "phase": "mode",
+      "detail": "create (0 existing files)"
+    },
+    {
+      "phase": "design-prefs",
+      "detail": "logo: /uploads/66f97b5f46584ea4b98cd098a8ee0881.png"
+    },
+    {
+      "phase": "design",
+      "detail": "law / light / Libre Baskerville+Source Sans 3"
+    },
+    {
+      "phase": "plan",
+      "detail": "[\"src/App.jsx\", \"src/components/Hero.jsx\", \"src/components/PracticeAreas.jsx\", \"src/components/Fees.jsx\", \"src/components/Attorneys.jsx\", \"src/components/Testimonials.jsx\", \"src/components/Faq.jsx\"]"
+    },
+    {
+      "phase": "plan",
+      "detail": "src/App.jsx: deterministic composition (model ask skipped)"
+    },
+    {
+      "phase": "gen-empty-retry",
+      "detail": "src/components/Hero.jsx"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/Hero.jsx: 1594 chars"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/PracticeAreas.jsx: 1848 chars"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/Fees.jsx: 1193 chars"
+    },
+    {
+      "phase": "import-missing",
+      "detail": "src/components/Fees.jsx: uses Button, Card, CardContent, CardFooter, CardHeader, CardTitle but never defines it (would white-screen; left to the repair loop)"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/Attorneys.jsx: 1524 chars"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/Testimonials.jsx: 2014 chars"
+    },
+    {
+      "phase": "gen",
+      "detail": "src/components/Faq.jsx: 1771 chars"
+    },
+    {
+      "phase": "compose-shell",
+      "detail": "App.jsx composed (5421 chars) over 4 healthy sections [PracticeAreas, Fees, Attorneys, Testimonials]"
+    },
+    {
+      "phase": "promote-tsx",
+      "detail": "TypeScript syntax in .jsx -> retagged: App.jsx->App.tsx"
+    },
+    {
+      "phase": "style-enforce",
+      "detail": "11 classes -> theme: 1 heading(s) -> font-display, 1 heading(s) -> font-display, 1 heading(s) -> font-display, gray-400->slate-400"
+    },
+    {
+      "phase": "personalisation",
+      "detail": "name_used=False fact_used=False clean=False lang_ok=True hero_lang_ok=True score=0.67 copy_chars=2219"
+    },
+    {
+      "phase": "motion-enrich",
+      "detail": "7 cards, 1 buttons, 0 images given transitions (mode: standard)"
+    },
+    {
+      "phase": "repair",
+      "detail": "src/components/PracticeAreas.jsx [bundle]: ents/PracticeAreas.jsx:2:9:\n      2 â”‚ import { Card, Button, Grid } from './YourComponents';\n        â•µ          ~~~~\n\nX [ERROR] No match"
+    },
+    {
+      "phase": "repair-rejected",
+      "detail": "src/components/PracticeAreas.jsx"
+    },
+    {
+      "phase": "repair",
+      "detail": "src/components/PracticeAreas.jsx [bundle]: ents/PracticeAreas.jsx:2:9:\n      2 â”‚ import { Card, Button, Grid } from './YourComponents';\n        â•µ          ~~~~\n\nX [ERROR] No match"
+    },
+    {
+      "phase": "repair-rejected",
+      "detail": "src/components/PracticeAreas.jsx"
+    },
+    {
+      "phase": "repair-skip",
+      "detail": "src/components/PracticeAreas.jsx: failed repair 2x already; trying salvage instead"
+    },
+    {
+      "phase": "render-salvage",
+      "detail": "dropping broken section src/components/PracticeAreas.jsx"
+    },
+    {
+      "phase": "render-salvage",
+      "detail": "dropping broken section src/components/YourDesignSystem.jsx"
+    },
+    {
+      "phase": "render-salvage",
+      "detail": "dropping broken section src/components/Hero.jsx"
+    },
+    {
+      "phase": "render-salvage",
+      "detail": "dropping broken section src/components/Fees.jsx"
+    },
+    {
+      "phase": "render-salvage",
+      "detail": "recomposed page verified with src/components/Fees.jsx dropped; model sections shipped"
+    },
+    {
+      "phase": "verify",
+      "detail": "bundled OK"
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>RautLaw</title>\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n    <link href=\"https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">\n  </head>\n  <body class=\"bg-slate-50 text-slate-900 antialiased min-h-screen\">\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>"
+    },
+    {
+      "path": "package.json",
+      "content": "{\n  \"name\": \"zenith-app\",\n  \"private\": true,\n  \"version\": \"1.0.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"react\": \"^18.3.1\",\n    \"react-dom\": \"^18.3.1\",\n    \"lucide-react\": \"^0.464.0\"\n  },\n  \"devDependencies\": {\n    \"@vitejs/plugin-react\": \"^4.3.4\",\n    \"vite\": \"^6.0.1\"\n  }\n}"
+    },
+    {
+      "path": "src/App.tsx",
+      "content": "import { useEffect, useRef, useState } from 'react';\nimport { Menu as MenuIcon, X } from 'lucide-react';\nimport Attorneys from './components/Attorneys';\nimport Testimonials from './components/Testimonials';\nimport Faq from './components/Faq';\n\n// Domain design tokens (resolved server-side by the design system).\nconst tw = {\"page_bg\": \"bg-slate-50\", \"surface\": \"bg-white\", \"surface_2\": \"bg-slate-100\", \"heading_text\": \"text-slate-900\", \"body_text\": \"text-slate-600\", \"muted_text\": \"text-slate-500\", \"primary\": \"bg-blue-900\", \"primary_hover\": \"hover:bg-blue-950\", \"on_primary\": \"text-white\", \"border\": \"border-slate-200\", \"accent_text\": \"text-blue-900\", \"accent_bg\": \"bg-blue-50\", \"gradient\": \"from-blue-900 to-slate-800\"};\nconst RADIUS = \"rounded-xl\";\nconst GRAD = \"bg-gradient-to-br from-blue-900 to-slate-800\";\nconst FONT_CSS = \".font-display{font-family: 'Libre Baskerville', Georgia, serif;} .font-body{font-family: 'Source Sans 3', system-ui, sans-serif;} body{font-family: 'Source Sans 3', system-ui, sans-serif;}\";\nconst LOGO_URL = \"\";\n\n// Scroll-reveal wrapper: sections animate in as they enter the viewport\n// (IntersectionObserver; no-ops during server render).\nfunction Reveal({ children, delay = 0 }) {\n  const ref = useRef(null);\n  const [visible, setVisible] = useState(false);\n  useEffect(() => {\n    const el = ref.current;\n    if (!el) return undefined;\n    const io = new IntersectionObserver((entries) => {\n      if (entries[0].isIntersecting) { setVisible(true); io.disconnect(); }\n    }, { threshold: 0.12 });\n    io.observe(el);\n    // Fallback: embedded/short viewports may never fire the observer\n    // (live: preview iframes without scroll) -- never leave content invisible.\n    const t = setTimeout(() => { setVisible(true); io.disconnect(); }, 1200);\n    return () => { clearTimeout(t); io.disconnect(); };\n  }, []);\n  return (\n    <div\n      ref={ref}\n      style={{ animationDelay: delay ? `${delay}ms` : undefined }}\n      className={`reveal ${visible ? 'reveal-visible' : ''}`}\n    >{children}</div>\n  );\n}\n\nexport default function App() {\n  const [menuOpen, setMenuOpen] = useState(false);\n  const links = [\n    { label: \"Our Attorneys\", href: \"#attorneys\" },\n    { label: \"Client Outcomes\", href: \"#testimonials\" },\n    { label: \"FAQ\", href: \"#faq\" },\n  ];\n  return (\n    <div className={`min-h-screen ${tw.page_bg} ${tw.heading_text} font-body`}>\n      <style>{FONT_CSS}</style>\n      <header className={`sticky top-0 z-50 backdrop-blur-xl border-b ${tw.page_bg} ${tw.border}`}>\n        <div className=\"max-w-6xl mx-auto px-6 h-16 flex items-center justify-between\">\n          <a href=\"#top\" className=\"flex items-center gap-2\">\n            {LOGO_URL ? (\n              <img src={LOGO_URL} alt=\"RautLaw\" className=\"h-9 w-auto\" />\n            ) : (\n              <span className={`w-9 h-9 ${GRAD} flex items-center justify-center ${tw.on_primary} font-black text-sm tracking-tight ${RADIUS}`}>R</span>\n            )}\n            <span className=\"font-display font-extrabold text-lg tracking-tight\">RautLaw</span>\n          </a>\n          <nav className={`hidden md:flex items-center gap-8 text-sm font-medium ${tw.body_text}`}>\n            {links.map(l => <a key={l.href} href={l.href} className=\"hover:opacity-70 transition-opacity\">{l.label}</a>)}\n          </nav>\n          <div className=\"hidden md:flex items-center gap-3\">\n            <a href=\"#top\" className={`px-4 py-2 ${tw.primary} ${tw.primary_hover} ${tw.on_primary} text-sm font-semibold ${RADIUS} transition-colors`}>Get started</a>\n          </div>\n          <button className=\"md:hidden p-2\" onClick={() => setMenuOpen(!menuOpen)} aria-label=\"Menu\">\n            {menuOpen ? <X className=\"w-5 h-5\" /> : <MenuIcon className=\"w-5 h-5\" />}\n          </button>\n        </div>\n        {menuOpen && (\n          <div className={`md:hidden border-t px-6 py-4 space-y-3 ${tw.surface} ${tw.border}`}>\n            {links.map(l => <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)} className={`block font-medium ${tw.body_text}`}>{l.label}</a>)}\n            <a href=\"#top\" className={`block text-center px-4 py-2.5 ${tw.primary} ${tw.on_primary} font-semibold ${RADIUS}`}>Get started</a>\n          </div>\n        )}\n      </header>\n      <main id=\"top\">\n      <Reveal delay={0}><Attorneys /></Reveal>\n      <Reveal delay={110}><Testimonials /></Reveal>\n      <Reveal delay={220}><Faq /></Reveal>\n      </main>\n      <footer className={`border-t py-10 text-center text-sm ${tw.border} ${tw.muted_text}`}>\n        <div className=\"flex items-center justify-center gap-2 mb-2\">\n          {LOGO_URL ? (\n            <img src={LOGO_URL} alt=\"RautLaw\" className=\"h-7 w-auto\" />\n          ) : (\n            <span className={`w-7 h-7 ${GRAD} flex items-center justify-center ${tw.on_primary} font-black text-[11px] ${RADIUS}`}>R</span>\n          )}\n          <span className=\"font-display font-bold\">RautLaw</span>\n        </div>\n        &copy; 2026 RautLaw. All rights reserved.\n      </footer>\n    </div>    );\n}\n"
+    },
+    {
+      "path": "src/components/Attorneys.jsx",
+      "content": "import React from 'react';\nimport { Users, FileText, Landmark } from 'lucide-react';\n\nconst attorneys = [\n  {\n    initials: 'JD',\n    name: 'John Doe',\n    title: 'Senior Partner',\n    practice: 'Family Law',\n  },\n  {\n    initials: 'JW',\n    name: 'Jane White',\n    title: 'Partner',\n    practice: 'Criminal Law',\n  },\n  {\n    initials: 'SM',\n    name: 'Steve Matthews',\n    title: 'Partner',\n    practice: 'Business Law',\n  },\n];\n\nconst AttorneyCard = ({ initials, name, title, practice }) => (\n  <div className=\"bg-white border-slate-200 rounded-xl shadow-md p-6 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-xl\">\n    <div className=\"rounded-full bg-slate-200 w-20 h-20 flex items-center justify-center mb-4 text-4xl\">\n      <span className=\"text-slate-600\">{initials}</span>\n    </div>\n    <h3 className=\"font-display text-slate-900 text-xl mb-1\">{name}</h3>\n    <p className=\"text-slate-600 mb-2\">{title}</p>\n    <p className=\"text-slate-600\">{practice}</p>\n    <button className=\"bg-blue-900 hover:bg-blue-950 text-slate-600 rounded-xl px-4 py-2 mt-4 transition-all duration-200 active:scale-[0.97]\">\n      Book a Call\n    </button>\n  </div>\n);\n\nconst Attorneys = () => (\n  <section className=\"bg-white py-20\">\n    <div className=\"max-w-6xl mx-auto px-6\">\n      <h2 className=\"text-slate-900 text-4xl font-display font-bold mb-10 text-center\">Our Attorneys</h2>\n      <div className=\"grid grid-cols-1 md:grid-cols-3 gap-12\">\n        {attorneys.map((attorney, i) => (\n          <AttorneyCard key={i} {...attorney} />\n        ))}\n      </div>\n    </div>\n  </section>\n);\n\nexport default Attorneys;"
+    },
+    {
+      "path": "src/components/Faq.jsx",
+      "content": "import React, { useState } from \"react\";\n\nconst Faq = () => {\n  const [activeFaq, setActiveFaq] = useState(null);\n\n  const faqs = [\n    {\n      question: \"What is your return policy?\",\n      answer: \"Our return policy is simple: if you're not 100% satisfied with your purchase, we'll give you a full refund within 30 days of receiving your item. If you're not fully satisfied, just let us know and we'll do our best to help you.\",\n    },\n    // Add more FAQs as needed\n  ];\n\n  return (\n    <section className=\"bg-slate-50 pt-20 pb-12 px-6 max-w-6xl mx-auto\">\n      <h2 className=\"text-slate-900 font-display text-4xl mb-8\">FAQ</h2>\n      <div className=\"flex flex-col gap-8\">\n        {faqs.map((faq, index) => (\n          <div\n            key={index}\n            className={`border-slate-200 border-l-4 p-6 rounded-xl ${\n              activeFaq === index ? \"bg-white\" : \"bg-slate-50\"\n            }`}\n          >\n            <button\n              className=\"flex justify-between items-start w-full\"\n              onClick={() =>\n                activeFaq === index ? setActiveFaq(null) : setActiveFaq(index)\n              }\n            >\n              <h3 className=\"font-display text-slate-900 font-medium text-lg\">\n                {faq.question}\n              </h3>\n              <span\n                className={`transition-transform duration-300 ${\n                  activeFaq === index ? \"rotate-180\" : \"\"\n                }`}\n              >\n                ➔\n              </span>\n            </button>\n            <p\n              className={`mt-4 text-slate-600 ${\n                activeFaq !== index ? \"hidden\" : \"\"\n              }`}\n            >\n              {faq.answer}\n            </p>\n          </div>\n        ))}\n      </div>\n    </section>\n  );\n};\n\nexport default Faq;"
+    },
+    {
+      "path": "src/components/Testimonials.jsx",
+      "content": "// src/components/Testimonials.jsx\n\nimport { motion } from 'framer-motion';\nimport { Users, FileText, Landmark } from 'lucide-react';\n\nconst Testimonials = () => {\n  const testimonials = [\n    {\n      icon: <Users />,\n      quote: 'The service was excellent. The team was very professional and efficient. They helped me recover $1.2M.',\n      metric: '$1.2M recovered',\n      client: 'John Doe - CEO, XYZ Corp.',\n    },\n    {\n      icon: <FileText />,\n      quote: 'I was able to dismiss a case after consulting with the team. They were able to provide me with the right advice.',\n      metric: 'Case Dismissed',\n      client: 'Jane Smith - CFO, ABC Corp.',\n    },\n    {\n      icon: <Landmark />,\n      quote: 'I highly recommend RautLaw for any legal needs. They have a proven track record in my industry.',\n      metric: '5-star rating',\n      client: 'Bob Johnson - President, DEF Corp.',\n    },\n  ];\n\n  return (\n    <section className=\"bg-white border-slate-200 rounded-xl shadow-md p-8 max-w-6xl mx-auto transition-all duration-300 hover:-translate-y-1 hover:shadow-xl\">\n      <h2 className=\"text-slate-900 font-display text-4xl mb-8\">Testimonials</h2>\n      <div className=\"grid grid-cols-1 md:grid-cols-3 gap-12\">\n        {testimonials.map((testimonial, index) => (\n          <motion.div\n            key={index}\n            className=\"bg-white border-slate-200 rounded-xl p-8 shadow-md flex flex-col justify-between h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl\"\n            whileHover={{ y: -10 }}\n            transition={{ duration: 0.5 }}\n          >\n            <div className=\"mb-4\">\n              {testimonial.icon}\n              <p className=\"text-slate-600 mt-4\">{testimonial.quote}</p>\n            </div>\n            <div className=\"flex items-center\">\n              <div className=\"bg-blue-50 rounded-full w-12 h-12 flex justify-center items-center\">\n                {testimonial.icon}\n              </div>\n              <p className=\"text-slate-900 ml-4\">{testimonial.client}</p>\n            </div>\n          </motion.div>\n        ))}\n      </div>\n    </section>\n  );\n};\n\nexport default Testimonials;"
+    },
+    {
+      "path": "src/components/YourComponents.jsx",
+      "content": "// Auto-generated fallback component\nexport default function Placeholder({ title, children, ...props }) {\n  return (\n    <div className=\"p-4 rounded-xl border border-dashed border-slate-200 bg-white/[0.02] text-center text-xs text-slate-600 my-2 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl\">\n      {children || <span className=\"opacity-70\">{title || \"Component\"} (Auto-generated module)</span>}\n    </div>\n  );\n}\n"
+    },
+    {
+      "path": "src/index.css",
+      "content": ".font-display { font-family: 'Libre Baskerville', Georgia, serif; }\n.font-body { font-family: 'Source Sans 3', system-ui, sans-serif; }\nbody { font-family: 'Source Sans 3', system-ui, sans-serif; }\n\n@keyframes reveal-up { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }\n.reveal { opacity: 0; }\n.reveal-visible { animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }\n@media (prefers-reduced-motion: reduce) {\n  .reveal { opacity: 1; }\n  .reveal-visible { animation: none; }\n}\n@keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }\n.animate-fade-up { animation: fade-up 0.7s ease-out both; }\n@keyframes float-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }\n.animate-float-slow { animation: float-slow 5s ease-in-out infinite; }\n@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }\n.animate-marquee { animation: marquee 30s linear infinite; }\n"
+    },
+    {
+      "path": "src/main.jsx",
+      "content": "import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport './index.css';\nimport App from './App';\n\nReactDOM.createRoot(document.getElementById('root')).render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);"
+    }
+  ]
+}

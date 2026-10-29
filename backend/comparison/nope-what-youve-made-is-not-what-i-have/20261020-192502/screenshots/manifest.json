@@ -1,0 +1,38 @@
+{
+  "run": "20261020-192502",
+  "slug": "nope-what-youve-made-is-not-what-i-have",
+  "prompt": "nope what youve made is not what i have asked",
+  "wall_s": 9.9,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": "PASS",
+  "palette_adherence": 1.0,
+  "theme": "saas",
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.jsx",
+    "src/components/Attorneys.jsx",
+    "src/components/Faq.jsx",
+    "src/components/Fees.jsx",
+    "src/components/Hero.jsx",
+    "src/components/PracticeAreas.jsx",
+    "src/components/Testimonials.jsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 172686
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 63697
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

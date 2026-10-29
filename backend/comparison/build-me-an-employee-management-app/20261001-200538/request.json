@@ -1,0 +1,18 @@
+{
+  "prompt": "Build me an employee management app",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "",
+    "domain": "software product",
+    "subject": "",
+    "offerings": [],
+    "cta": "",
+    "person": false,
+    "facts": [],
+    "business_type": "business-app"
+  },
+  "app_name": "EmployeeManagement",
+  "archetype": "admin"
+}

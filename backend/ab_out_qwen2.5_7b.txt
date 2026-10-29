@@ -1,0 +1,21 @@
+```jsx
+`/src/components/Hero.jsx`
+```jsx
+import React from 'react';
+import './Hero.css'; // Make sure to create this CSS file for styling
+
+const Hero = () => {
+    return (
+        <section className="hero-section">
+            <div className="hero-content">
+                <h1>Rahul Sharma, Full Stack Developer</h1>
+                <p>Wanjhe ke ek gharwala, code ke ek expert.</p>
+                <a href="#about" className="hero-btn">Jannat ka Door</a>
+            </div>
+        </section>
+    );
+};
+
+export default Hero;
+```
+```

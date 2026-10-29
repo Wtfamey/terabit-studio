@@ -1,0 +1,21 @@
+{
+  "prompt": "Build a modern e-commerce store for premium coffee beans with product catalog, cart, checkout, reviews and subscription plans",
+  "business_type": "ecommerce",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "",
+    "domain": "restaurant",
+    "offerings": [
+      "product catalog",
+      "cart",
+      "checkout",
+      "reviews",
+      "subscription plans"
+    ],
+    "cta": "",
+    "business_type": "ecommerce"
+  },
+  "app_name": "EcommerceStore",
+  "archetype": "ecommerce"
+}

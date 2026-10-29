@@ -1,0 +1,19 @@
+{
+  "prompt": "build me a simple law firm landing page",
+  "business_type": "law firm",
+  "operation": "create",
+  "provider": "local",
+  "brief": {
+    "name": "",
+    "domain": "law firm",
+    "subject": "",
+    "offerings": [],
+    "cta": "",
+    "person": false,
+    "facts": [],
+    "business_type": "law firm",
+    "language": "English"
+  },
+  "app_name": "LawFirm",
+  "archetype": "landing"
+}

@@ -1,0 +1,6 @@
+[03:59:13] starting backend on :8151
+[03:59:17] backend healthy; serving model 'terabit-finetuned-v3'
+[03:59:18] ── case en_legal: Family law practice, Leeds (English)
+[preview] cache hit (376d6b7986a3)
+[04:19:51]    done in 1232.0s · files=5 · bundle=True · tier=tier1-bundled · expectations 2/5
+[04:19:54] ── case en_saas_console: SaaS analytics admin console (English)

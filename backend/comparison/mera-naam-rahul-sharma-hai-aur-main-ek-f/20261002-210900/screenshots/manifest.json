@@ -1,0 +1,38 @@
+{
+  "run": "20261002-210900",
+  "slug": "mera-naam-rahul-sharma-hai-aur-main-ek-f",
+  "prompt": "mera naam Rahul Sharma hai aur main ek full stack developer hu, 3 saal ka experience hai React aur Node me. Mera personal portfolio website banani hai dark theme me, mera kaam real time dashboards aur payment systems hai",
+  "wall_s": 1151.2,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": "PASS",
+  "palette_adherence": 1.0,
+  "theme": "portfolio",
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.tsx",
+    "src/components/About.jsx",
+    "src/components/Faq.jsx",
+    "src/components/Hero.tsx",
+    "src/components/Services.jsx",
+    "src/components/Testimonials.jsx",
+    "src/components/Work.tsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 38048
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 10812
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

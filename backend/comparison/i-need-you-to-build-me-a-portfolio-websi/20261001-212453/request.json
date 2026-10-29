@@ -1,0 +1,23 @@
+{
+  "prompt": "i need you to build me a portfolio website my name is Amey Chikane i am a computer science graduate specializing in ai and ml tasks i am an ai engineer and consultant i have uploaded my image you can use it in site and also as my logo",
+  "business_type": "portfolio",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "Amey Chikane",
+    "domain": "portfolio",
+    "subject": "",
+    "offerings": [
+      "also as my logo"
+    ],
+    "cta": "",
+    "person": true,
+    "facts": [
+      "computer science graduate specializing in ai and ml tasks",
+      "ai engineer and consultant"
+    ],
+    "business_type": "portfolio"
+  },
+  "app_name": "Amey Chikane",
+  "archetype": "landing"
+}

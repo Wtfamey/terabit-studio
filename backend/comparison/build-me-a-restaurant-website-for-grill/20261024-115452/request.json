@@ -1,0 +1,26 @@
+{
+  "prompt": "build me a restaurant website for grill house an chinese restaurat make sure it has cool animations and has menu and reservation form and site should follow restaurant",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "",
+    "domain": "restaurant",
+    "subject": "",
+    "offerings": [
+      "reservation form",
+      "chinese restaurat",
+      "grill house",
+      "follow",
+      "menu",
+      "sure"
+    ],
+    "cta": "",
+    "person": false,
+    "facts": [],
+    "business_type": "business-app",
+    "language": "English"
+  },
+  "app_name": "RestaurantGrill",
+  "archetype": "landing"
+}

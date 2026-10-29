@@ -1,0 +1,10 @@
+{
+  "captured": "20261001-173647",
+  "base": "http://localhost:5173",
+  "pages": {
+    "auth_login.jpg": true,
+    "home.jpg": true,
+    "builder.jpg": true
+  },
+  "email": "research@terabit.dev"
+}

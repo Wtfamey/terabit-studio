@@ -1,0 +1,38 @@
+{
+  "run": "20261004-215755",
+  "slug": "a-landing-page-for-a-small-bakery-called",
+  "prompt": "A landing page for a small bakery called Flour & Salt, with a hero, a menu of pastries, and a contact section.",
+  "wall_s": 814.6,
+  "bundle_ok": true,
+  "preview_tier": "tier1-bundled",
+  "design_gate": "PASS",
+  "palette_adherence": 0.996,
+  "theme": "restaurant",
+  "files": [
+    "index.html",
+    "package.json",
+    "src/App.tsx",
+    "src/components/Faq.tsx",
+    "src/components/Hero.tsx",
+    "src/components/Menu.jsx",
+    "src/components/Reservations.tsx",
+    "src/components/Story.tsx",
+    "src/components/Testimonials.tsx",
+    "src/index.css",
+    "src/main.jsx"
+  ],
+  "shots": {
+    "desktop": {
+      "path": "screenshots/desktop.jpg",
+      "viewport": "1440x2400",
+      "bytes": 134124
+    },
+    "mobile": {
+      "path": "screenshots/mobile.jpg",
+      "viewport": "390x1800",
+      "bytes": 51177
+    }
+  },
+  "preview_html": "preview.html",
+  "captured_with": "chrome.exe"
+}

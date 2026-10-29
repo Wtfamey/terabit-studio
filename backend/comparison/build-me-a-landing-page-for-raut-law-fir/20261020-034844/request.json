@@ -1,0 +1,25 @@
+{
+  "prompt": "build me a landing page for raut law firm and add scales of justice animation to the hero also make sure all the sections are there and use provided image as logo and site bg",
+  "business_type": "business-app",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "",
+    "domain": "law firm",
+    "subject": "",
+    "offerings": [
+      "use provided",
+      "scales",
+      "sure",
+      "justice",
+      "raut"
+    ],
+    "cta": "",
+    "person": false,
+    "facts": [],
+    "business_type": "business-app",
+    "language": "English"
+  },
+  "app_name": "RautLaw",
+  "archetype": "landing"
+}

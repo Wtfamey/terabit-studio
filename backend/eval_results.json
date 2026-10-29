@@ -1,0 +1,199 @@
+{
+  "mode": "scaffold",
+  "timestamp": "2026-09-17T14:29:25",
+  "summary": {
+    "n_runs": 10,
+    "s1_parse_success_pct": 100.0,
+    "s2_scaffold_completeness_pct": 100.0,
+    "s3_entry_point_valid_pct": 100.0,
+    "s4_import_resolution_avg": 1.0,
+    "s5_tier_distribution": {
+      "tier1-bundled": 10
+    },
+    "s6_tier1_build_pct": 100.0,
+    "s7_truncation_pct": 0.0,
+    "avg_wall_s": null
+  },
+  "results": [
+    {
+      "id": "saas-dashboard-01",
+      "archetype": "saas",
+      "n_files_final": 5,
+      "n_files_model": 5,
+      "s1_parse_success": true,
+      "s2_core_files": true,
+      "s7_truncated": false,
+      "s3_entry_valid": true,
+      "import_resolution": {
+        "total": 2,
+        "resolved": 2,
+        "rate": 1.0
+      },
+      "preview_tier": "tier1-bundled",
+      "tier1_build_ok": true,
+      "preview_build_ms": 2
+    },
+    {
+      "id": "saas-records-02",
+      "archetype": "saas",
+      "n_files_final": 5,
+      "n_files_model": 5,
+      "s1_parse_success": true,
+      "s2_core_files": true,
+      "s7_truncated": false,
+      "s3_entry_valid": true,
+      "import_resolution": {
+        "total": 2,
+        "resolved": 2,
+        "rate": 1.0
+      },
+      "preview_tier": "tier1-bundled",
+      "tier1_build_ok": true,
+      "preview_build_ms": 3
+    },
+    {
+      "id": "crm-pipeline-03",
+      "archetype": "crm",
+      "n_files_final": 5,
+      "n_files_model": 5,
+      "s1_parse_success": true,
+      "s2_core_files": true,
+      "s7_truncated": false,
+      "s3_entry_valid": true,
+      "import_resolution": {
+        "total": 2,
+        "resolved": 2,
+        "rate": 1.0
+      },
+      "preview_tier": "tier1-bundled",
+      "tier1_build_ok": true,
+      "preview_build_ms": 2
+    },
+    {
+      "id": "ecom-storefront-04",
+      "archetype": "ecommerce",
+      "n_files_final": 8,
+      "n_files_model": 8,
+      "s1_parse_success": true,
+      "s2_core_files": true,
+      "s7_truncated": false,
+      "s3_entry_valid": true,
+      "import_resolution": {
+        "total": 5,
+        "resolved": 5,
+        "rate": 1.0
+      },
+      "preview_tier": "tier1-bundled",
+      "tier1_build_ok": true,
+      "preview_build_ms": 3
+    },
+    {
+      "id": "kanban-05",
+      "archetype": "kanban",
+      "n_files_final": 5,
+      "n_files_model": 5,
+      "s1_parse_success": true,
+      "s2_core_files": true,
+      "s7_truncated": false,
+      "s3_entry_valid": true,
+      "import_resolution": {
+        "total": 2,
+        "resolved": 2,
+        "rate": 1.0
+      },
+      "preview_tier": "tier1-bundled",
+      "tier1_build_ok": true,
+      "preview_build_ms": 2
+    },
+    {
+      "id": "booking-06",
+      "archetype": "booking",
+      "n_files_final": 5,
+      "n_files_model": 5,
+      "s1_parse_success": true,
+      "s2_core_files": true,
+      "s7_truncated": false,
+      "s3_entry_valid": true,
+      "import_resolution": {
+        "total": 2,
+        "resolved": 2,
+        "rate": 1.0
+      },
+      "preview_tier": "tier1-bundled",
+      "tier1_build_ok": true,
+      "preview_build_ms": 2
+    },
+    {
+      "id": "analytics-07",
+      "archetype": "analytics",
+      "n_files_final": 5,
+      "n_files_model": 5,
+      "s1_parse_success": true,
+      "s2_core_files": true,
+      "s7_truncated": false,
+      "s3_entry_valid": true,
+      "import_resolution": {
+        "total": 2,
+        "resolved": 2,
+        "rate": 1.0
+      },
+      "preview_tier": "tier1-bundled",
+      "tier1_build_ok": true,
+      "preview_build_ms": 1084
+    },
+    {
+      "id": "crm-realestate-08",
+      "archetype": "crm",
+      "n_files_final": 5,
+      "n_files_model": 5,
+      "s1_parse_success": true,
+      "s2_core_files": true,
+      "s7_truncated": false,
+      "s3_entry_valid": true,
+      "import_resolution": {
+        "total": 2,
+        "resolved": 2,
+        "rate": 1.0
+      },
+      "preview_tier": "tier1-bundled",
+      "tier1_build_ok": true,
+      "preview_build_ms": 6
+    },
+    {
+      "id": "ecom-grocery-09",
+      "archetype": "ecommerce",
+      "n_files_final": 8,
+      "n_files_model": 8,
+      "s1_parse_success": true,
+      "s2_core_files": true,
+      "s7_truncated": false,
+      "s3_entry_valid": true,
+      "import_resolution": {
+        "total": 5,
+        "resolved": 5,
+        "rate": 1.0
+      },
+      "preview_tier": "tier1-bundled",
+      "tier1_build_ok": true,
+      "preview_build_ms": 4
+    },
+    {
+      "id": "kanban-bugs-10",
+      "archetype": "kanban",
+      "n_files_final": 5,
+      "n_files_model": 5,
+      "s1_parse_success": true,
+      "s2_core_files": true,
+      "s7_truncated": false,
+      "s3_entry_valid": true,
+      "import_resolution": {
+        "total": 2,
+        "resolved": 2,
+        "rate": 1.0
+      },
+      "preview_tier": "tier1-bundled",
+      "tier1_build_ok": true,
+      "preview_build_ms": 3
+    }
+  ]
+}

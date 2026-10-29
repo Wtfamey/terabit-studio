@@ -1,0 +1,21 @@
+{
+  "prompt": "mera naam Rahul Sharma hai aur main ek full stack developer hu, 3 saal ka experience hai React aur Node me. Mera personal portfolio website banani hai dark theme me, mera kaam real time dashboards aur payment systems hai",
+  "business_type": "portfolio",
+  "operation": "create",
+  "provider": "auto",
+  "brief": {
+    "name": "Rahul Sharma",
+    "domain": "portfolio",
+    "subject": "",
+    "offerings": [],
+    "cta": "",
+    "person": true,
+    "facts": [
+      "full stack developer"
+    ],
+    "business_type": "portfolio",
+    "language": "Hinglish (romanised Hindi)"
+  },
+  "app_name": "Rahul Sharma",
+  "archetype": "landing"
+}
