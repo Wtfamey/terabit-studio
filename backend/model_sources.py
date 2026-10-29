@@ -55,6 +55,7 @@ from typing import Callable, Optional
 from urllib import error as _urlerror
 from urllib import request as _urlrequest
 
+import model_service
 import paths
 
 # A model file smaller than this is a mis-click (a stray text file named
@@ -153,6 +154,25 @@ _BUILTIN: tuple[ModelSource, ...] = (
         recommended=False,
         url=_HF.format(repo="Qwen/Qwen2.5-Coder-3B-Instruct-GGUF",
                        file="qwen2.5-coder-3b-instruct-q4_k_m.gguf"),
+    ),
+    ModelSource(
+        id="deepseek-coder-6.7b",
+        label="DeepSeek Coder 6.7B (upstream, code-optimized)",
+        note="Not fine-tuned, but purpose-built for code. Better React/Tailwind "
+             "generation than the 7B fine-tune for complex pages. Fits 6 GB "
+             "VRAM with a small CPU spill.",
+        file_name="deepseek-coder-6.7b-instruct-q4_k_m.gguf",
+        bytes=4164804608,
+        sha256="",
+        params_b=6.7,
+        quant="Q4_K_M",
+        license="MIT",
+        min_vram_gb=6.0,
+        context=16384,
+        finetuned=False,
+        recommended=False,
+        ollama_tag="deepseek-coder:6.7b",
+        url="",
     ),
 )
 
@@ -422,6 +442,78 @@ def probe_ollama(base_url: Optional[str] = None, timeout: float = 2.0,
 def _ollama_has(tag: str, tags: list[str]) -> bool:
     want = tag.split(":")[0]
     return any(t == tag or t.split(":")[0] == want for t in tags)
+
+
+# Ollama IGNORES the `num_ctx` option sent through its OpenAI-compatible /v1
+# endpoint, so the only way to get a bigger context window is a tag with
+# `PARAMETER num_ctx` baked into its Modelfile (see backend/Modelfile.v3-ctx8k).
+# This pipeline sends 3-5k-token prompts; on a default-context tag Ollama
+# silently drops the middle of the prompt -- which is where the user's request
+# and the product brief live. So when an 8k variant of a tag is installed, use
+# it. The choice is sticky: flipping between two tags of the same weights
+# mid-run would load a second copy of the model into a 6 GB card.
+_CTX_VARIANTS = {
+    "terabit-finetuned-v3": "terabit-v3-ctx8k",
+    "deepseek-coder:6.7b": "deepseek-coder-ctx8k",
+}
+_ctx_choice: dict = {}   # base tag -> (chosen tag, decided_at, is_variant)
+_CTX_NEGATIVE_TTL_S = 60.0
+
+# Context-variant ids ("terabit-v3-ctx8k") name a base model at a specific
+# context window; resolving them to the base tag lets the _CTX_VARIANTS table
+# above pick the right context variant uniformly. Without this, an id that
+# bypassed the catalogue lookup (a hand-written .env value) never reached the
+# variant logic and was called verbatim.
+_TAG_ALIASES = {
+    "terabit-v3-ctx8k": "terabit-finetuned-v3",
+    "terabit-v3-ctx16k": "terabit-finetuned-v3",
+    "deepseek-coder-ctx8k": "deepseek-coder:6.7b",
+    "deepseek-coder-ctx16k": "deepseek-coder:6.7b",
+}
+
+
+def resolve_ollama_tag(model_id: str) -> str:
+    """Catalogue id / tag -> the Ollama tag to call, preferring an installed
+    8k-context variant of it (see _CTX_VARIANTS)."""
+    tag = _resolve_base_tag(model_id)
+    variant = _CTX_VARIANTS.get(tag)
+    if not variant:
+        return tag
+    now = time.monotonic()
+    cached = _ctx_choice.get(tag)
+    if cached and (cached[2] or now - cached[1] < _CTX_NEGATIVE_TTL_S):
+        return cached[0]
+    info = probe_ollama()
+    if not info.get("reachable"):
+        return cached[0] if cached else tag   # unreachable: decide nothing
+    has_variant = _ollama_has(variant, info.get("tags") or [])
+    chosen = variant if has_variant else tag
+    _ctx_choice[tag] = (chosen, now, has_variant)
+    if has_variant:
+        print(f"[model] using {variant} (8k-context variant of {tag})")
+    else:
+        print(f"[model] {variant} is not installed in Ollama; using {tag} at "
+              f"Ollama's default context (long prompts will be truncated). "
+              f"Create it from backend/Modelfile.* with `ollama create`.")
+    return chosen
+
+
+def _resolve_base_tag(model_id: str) -> str:
+    """Map a catalogue model ID to its Ollama tag.
+    
+    Catalogue IDs use hyphens (deepseek-coder-6.7b) but Ollama tags use colons (deepseek-coder:6.7b).
+    """
+    if model_id in _TAG_ALIASES:
+        return _TAG_ALIASES[model_id]
+    for source in effective_catalog():
+        if source.id == model_id and source.ollama_tag:
+            return source.ollama_tag
+    # Fallback: replace last hyphen with colon (deepseek-coder-6.7b -> deepseek-coder:6.7b)
+    if "-" in model_id and not ":" in model_id:
+        parts = model_id.rsplit("-", 1)
+        if parts[-1].replace(".", "").isdigit():
+            return parts[0] + ":" + parts[1]
+    return model_id
 
 
 # ────────────────────────────── manifest ──────────────────────────────
@@ -902,6 +994,9 @@ def activate(model_id: str, env_path: Optional[Path] = None) -> dict:
     values["TERABIT_ACTIVE_MODEL"] = model_id
     for key, value in values.items():
         os.environ[key] = value
+    # Switch the in-memory active model immediately so the running backend
+    # uses it for the very next generation -- no restart required.
+    model_service.set_active_model(model_id)
     env_file = env_path or paths.env_file()
     _write_env(env_file, values)
     warning = None

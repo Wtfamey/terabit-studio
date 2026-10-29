@@ -432,6 +432,20 @@ _FAMILIES: list[dict] = [
             "erp", "pos system", "point of sale", "point-of-sale",
             "billing system", "inventory system", "attendance system",
             "payroll system", "crm",
+            # Full-blown back-office systems: the "X management" family the
+            # user actually asked for. Without these, a brief like "employee
+            # management for my small business" or "hospital management system"
+            # fell through to the marketing-site shape and shipped a landing
+            # page instead of the management console the brief asked for.
+            "employee management", "staff management", "hr management",
+            "human resources", "hr system", "employee system", "staff system",
+            "workforce management", "clinic management", "patient management",
+            "hospital management", "medical management", "medical practice management",
+            "practice management", "doctor management", "physician management",
+            "dentist management", "school management", "college management",
+            "university management", "property management", "resource management",
+            "fleet management", "service management", "supplier management",
+            "partner management", "vendor management", "customer management",
         ),
         "verbs": (
             "manage", "managed", "managing", "management", "track",
@@ -471,8 +485,15 @@ _MARKETING_ARTIFACT = re.compile(
     r"\b(?:website|web\s?site|\bsite\b|webpage|web\s?page|homepage|"
     r"landing\s?page|one-?pager|marketing\s+(?:site|page))\b", re.IGNORECASE)
 
-_MARKETING_BLOCKERS = ("management system", "admin panel", "internal tool",
-                       "back office", "back-office", "backoffice", "crm")
+_MARKETING_BLOCKERS = ("management system", "management software", "management app",
+                       "management platform", "admin panel", "internal tool",
+                       "back office", "back-office", "backoffice", "crm",
+                       # A management-system brief is a system, never a marketing
+                       # site -- even when it also carries generic marketing words
+                       # ("...management portal", "...staffing website").
+                       "employee management", "staff management", "hr management",
+                       "hospital management", "patient management", "clinic management",
+                       "medical management", "practice management", "payroll system")
 
 
 def _brief_text(brief: dict | None) -> str:

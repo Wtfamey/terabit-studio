@@ -44,6 +44,7 @@ if os.environ.get("TERABIT_SKIP_DOTENV") != "1":
 from openai import OpenAI
 
 from context_budget import get_num_ctx
+import model_sources
 
 server_process: Optional[subprocess.Popen] = None
 
@@ -52,7 +53,58 @@ server_process: Optional[subprocess.Popen] = None
 # legitimately needs minutes for a full section, but nothing should ever
 # exceed this: without it a wedged ollama call hangs the generation/repair
 # loop indefinitely (observed: 22+ min stuck on one repair).
-REQUEST_TIMEOUT_S = int(os.environ.get("MODEL_REQUEST_TIMEOUT_S", "600"))
+#
+# 900s, not 600: a full multi-file section on the spilled-CPU config (the
+# measured 6 GB RTX 3050 running the 7B on CPU) regularly takes >10 min for a
+# single large file; the old ceiling turned those legitimate runs into hard
+# failures that read as "the model did not answer".
+REQUEST_TIMEOUT_S = int(os.environ.get("MODEL_REQUEST_TIMEOUT_S", "900"))
+
+# In-memory active model -- can be switched at runtime via set_active_model().
+# Falls back to MODEL_NAME env var if never set programmatically.
+_active_model: Optional[str] = None
+
+
+def set_active_model(model_id: str) -> None:
+    """Switch the active model at runtime without restarting the backend."""
+    global _active_model
+    _active_model = model_id
+
+
+def get_active_model() -> str:
+    """Return the active model id, falling back to MODEL_NAME env var."""
+    if _active_model:
+        return _active_model
+    return os.environ.get("MODEL_NAME", "qwen2.5:7b")
+
+# Model-specific generation parameters (measured per model)
+MODEL_GENERATION_CONFIG: dict[str, dict] = {
+    "deepseek-coder:6.7b": {
+        "temperature": 0.3,
+        "top_p": 0.9,
+        "max_tokens": 8000,
+    },
+    "terabit-v3-ctx8k": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "max_tokens": 7000,
+    },
+    "terabit-finetuned-v3": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "max_tokens": 7000,
+    },
+    "default": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "max_tokens": 7000,
+    },
+}
+
+
+def _model_config(model: str) -> dict:
+    """Return generation config for a specific model, falling back to default."""
+    return MODEL_GENERATION_CONFIG.get(model, MODEL_GENERATION_CONFIG["default"])
 
 
 def get_client() -> OpenAI:
@@ -177,7 +229,16 @@ def generate_response_with_status(
     finishing on its own, so they can request a continuation instead of
     silently shipping truncated code."""
     openai_client = get_client()
-    model = model or os.environ.get("MODEL_NAME", "qwen2.5:7b")
+    model = model or get_active_model()
+    # Map catalogue ID to Ollama tag (e.g., deepseek-coder-6.7b -> deepseek-coder:6.7b)
+    model = model_sources.resolve_ollama_tag(model)
+    cfg = _model_config(model)
+    if max_tokens is None:
+        max_tokens = cfg["max_tokens"]
+    if temperature is None:
+        temperature = cfg["temperature"]
+    if top_p is None:
+        top_p = cfg["top_p"]
     try:
         response = openai_client.chat.completions.create(
             model=model,
@@ -201,13 +262,22 @@ def generate_response_with_status(
 
 def generate_response_stream(
     messages: list,
-    max_tokens: int = 2048,
-    temperature: float = 0.7,
-    top_p: float = 0.9,
+    max_tokens: int | None = None,
+    temperature: float | None = None,
+    top_p: float | None = None,
     model: str = "",
 ):
     openai_client = get_client()
-    model = model or os.environ.get("MODEL_NAME", "qwen2.5:7b")
+    model = model or get_active_model()
+    # Map catalogue ID to Ollama tag (e.g., deepseek-coder-6.7b -> deepseek-coder:6.7b)
+    model = model_sources.resolve_ollama_tag(model)
+    cfg = _model_config(model)
+    if max_tokens is None:
+        max_tokens = cfg["max_tokens"]
+    if temperature is None:
+        temperature = cfg["temperature"]
+    if top_p is None:
+        top_p = cfg["top_p"]
     try:
         response = openai_client.chat.completions.create(
             model=model,

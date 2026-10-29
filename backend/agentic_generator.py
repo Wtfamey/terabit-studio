@@ -1848,7 +1848,7 @@ def inject_user_assets(files: dict, user_images: list[dict], logo_url: str = "")
     use. Never touches srcs that already reference the asset.
     """
     injected: list[str] = []
-    jsx_paths = [p for p in files if p.endswith((".jsx", ".tsx")) and "App." not in p]
+    jsx_paths = [p for p in files if p.endswith((".jsx", ".tsx"))]
     if not jsx_paths:
         return files, injected
 
@@ -1899,7 +1899,99 @@ def inject_user_assets(files: dict, user_images: list[dict], logo_url: str = "")
             injected.append(f"{url} -> {p} (injected)")
             used_files.add(p)
             break
+
+    # ── 2) Apply background image to hero section or body ─────────────────
+    bg_assets = [a for a in user_images if a.get("mime_type", "").startswith("image/")]
+    bg_url = bg_assets[0]["url"] if bg_assets else ""
+    if bg_url:
+        bg_present = any(bg_url in files[p] for p in files)
+        if not bg_present:
+            for p in ordered:
+                if p in used_files:
+                    continue
+                content = files[p]
+                hero_match = re.search(r'\b(hero|landing|banner|masthead)\b', content, re.I)
+                if hero_match:
+                    start = content.rfind("<", 0, hero_match.start())
+                    if start != -1:
+                        end = content.find(">", hero_match.start())
+                        if end != -1:
+                            tag = content[start:end + 1]
+                            bg_style = f'background-image: url("{bg_url}"); background-size: cover; background-position: center; '
+                            if 'style=' in tag:
+                                tag = tag.replace('style="', f'style="{bg_style}', 1)
+                            else:
+                                tag = tag.replace(">", f' style="{bg_style}" >', 1)
+                            files[p] = content[:start] + tag + content[end + 1:]
+                            injected.append(f"{bg_url} -> {p} (background)")
+                            used_files.add(p)
+                            break
+            if not any(bg_url in files[p] for p in files):
+                for p in ordered:
+                    if p in used_files:
+                        continue
+                    if "<body" in files[p]:
+                        files[p] = re.sub(
+                            r'<body[^>]*>',
+                            lambda m: m.group(0).replace(">", f' style="background-image: url("{bg_url}"); background-size: cover; background-position: center;" >', 1),
+                            files[p], count=1
+                        )
+                        injected.append(f"{bg_url} -> {p} (body background)")
+                        break
+
     return files, injected
+
+
+class ModelUnavailable(RuntimeError):
+    """The configured model could not answer at all.
+
+    Raised instead of carrying on: every model call that fails comes back from
+    model_service/providers as an `Error: ...` STRING with finish="error", and
+    the loop below treats a string with no code block as "model produced
+    nothing" -> skeleton -> curated scaffold. The result looks like a build
+    that only used a few keywords from the prompt, with no sign the model never
+    ran. A clear failure is better than that."""
+
+
+def _is_terabit_finetune(model: str) -> bool:
+    """True when the local model is the project's own fine-tune.
+
+    The per-file prompts were shaped around that fine-tune's trained
+    distribution (short directive line, generic context it learned to ignore).
+    An upstream instruct model such as DeepSeek Coder was never trained on that
+    shape, so it takes the generic context literally -- see the lean profile in
+    run_agent."""
+    try:
+        import model_service
+        import model_sources
+        name = model_sources.resolve_ollama_tag(model or model_service.get_active_model())
+    except Exception:  # noqa: BLE001
+        name = model or ""
+    return str(name).lower().startswith("terabit")
+
+
+def _model_error_message(raw: str) -> str:
+    raw = (raw or "").strip()
+    return (
+        f"The model did not answer ({raw[:300]}). Check that Ollama is running "
+        "(`ollama list`), that the tag in .env MODEL_NAME exists, and that the "
+        "GPU is not out of memory. Nothing was generated."
+    )
+
+
+def _preflight_model(provider: str, model: str, trace) -> None:
+    """One tiny call before the real work. Also loads the weights, so the first
+    real file does not pay (or time out on) the cold start."""
+    try:
+        text, finish = providers.chat(
+            [{"role": "user", "content": "Reply with the single word: ok"}],
+            max_tokens=8, temperature=0.0, provider=provider, model=model,
+        )
+    except Exception as e:  # noqa: BLE001
+        raise ModelUnavailable(_model_error_message(f"{type(e).__name__}: {e}")) from e
+    if finish == "error":
+        raise ModelUnavailable(_model_error_message(text))
+    trace.add("model-preflight", "model answered")
 
 
 def run_agent(req, prep: dict, progress=None, provider: str = "", model: str = "") -> dict:
@@ -1912,6 +2004,8 @@ def run_agent(req, prep: dict, progress=None, provider: str = "", model: str = "
     trace = Trace()
     provider = providers.resolve_provider(provider)
     trace.add("provider", provider)
+    emit("Checking the model is ready...")
+    _preflight_model(provider, model, trace)
 
     # Edit mode: the user sent an existing project (Builder's second+ turn).
     # The agent then plans the MINIMAL change set, sees the current content of
@@ -2003,6 +2097,27 @@ def run_agent(req, prep: dict, progress=None, provider: str = "", model: str = "
     design = design_system.apply_overrides(design, _prefs)
     if _prefs:
         trace.add("design-prefs", json.dumps(_prefs))
+
+    # Prompt profile for upstream instruct models (DeepSeek Coder, Qwen base,
+    # ...). The default project_ctx is the whole system prompt: a generic
+    # design checklist, "output every file incl. package.json" rules and a
+    # framer-motion mandate -- placed AFTER the brief and right before the final
+    # instruction, i.e. in the highest-recency slot. The fine-tune learned to
+    # ignore it; an instruct model obeys it and the user's actual request (names,
+    # business, sections, language) gets drowned out -> generic, template-like
+    # pages with the wrong names. For these models the context becomes the
+    # user's own words, verbatim, plus the brief, so what they asked for is the
+    # last thing read before writing. The fine-tune path is untouched.
+    if operation == "create" and provider == "local" and not _is_terabit_finetune(model):
+        project_ctx = (
+            "THE USER'S REQUEST, VERBATIM -- this is the source of truth. Its "
+            "business, names, language, sections, colours and tone override "
+            "anything generic. Use the exact names it gives; never invent a "
+            "different brand or a placeholder name.\n"
+            f"\"\"\"\n{str(user_prompt).strip()[:2500]}\n\"\"\"\n"
+            + brief_block
+        )
+        trace.add("prompt-profile", "instruct model: lean context, request last")
 
     # User-uploaded assets: served from /uploads/<filename>. The logo (or the
     # first image) brands the nav; EVERY image is listed for the model, and a
@@ -2118,11 +2233,37 @@ def run_agent(req, prep: dict, progress=None, provider: str = "", model: str = "
         # again -- 3 of 4 model sections were lost in one live run. The cap is
         # a ceiling, not a cost: clean completions stop at their closing fence.
         max_tokens = 4096 if is_main else 8192
+        # Never hand the model a budget the context window cannot honour:
+        # prompt + max_tokens past N_CTX is a hard kill on llama-server/Ollama,
+        # which used to surface as "the model did not answer" and stop the whole
+        # build mid-generation. Cap the ask to what actually fits.
+        max_tokens = max(
+            256, min(max_tokens, context_budget.output_cap(msgs[1]["content"] if len(msgs) > 1 else "")),
+        )
         # Local 7B drifts (never closes the fence) at high temperature on long
         # asks; keep each ask in the trained regime and the decoding tame.
         local_temp = min(req.temperature, 0.65) if provider == "local" else req.temperature
         text, finish = providers.chat(msgs, max_tokens=max_tokens,
                                       temperature=local_temp, provider=provider, model=model)
+        if finish == "error":
+            # Context overflow kills the completion server-side; shrink the ask
+            # and retry before spending a transient-retry round on it.
+            if context_budget.is_context_error(text) and max_tokens > 256:
+                emit(f"{path}: context window full; shrinking the token ask...")
+                trace.add("gen-context", f"{path}: {str(text)[:160]}; shrinking ask to {max(256, max_tokens // 2)}")
+                text, finish = providers.chat(msgs, max_tokens=max(256, max_tokens // 2),
+                                              temperature=local_temp, provider=provider, model=model)
+            if finish == "error":
+                # One retry for a transient hiccup (Ollama swapping/reloading the
+                # model); a second failure means the model is genuinely gone and
+                # continuing would silently ship a template.
+                import time as _time
+                trace.add("gen-error", f"{path}: {str(text)[:160]}; retrying once")
+                _time.sleep(5)
+                text, finish = providers.chat(msgs, max_tokens=max_tokens,
+                                              temperature=local_temp, provider=provider, model=model)
+                if finish == "error":
+                    raise ModelUnavailable(_model_error_message(text))
         content = _parse_single_file(text, path)
         # A 'length' finish with a healthy balanced block in hand is fine:
         # the model just kept drifting after closing its fence. Anything
@@ -2155,7 +2296,7 @@ def run_agent(req, prep: dict, progress=None, provider: str = "", model: str = "
                 "IMPORTANT: write compact single-line imports and keep the file "
                 "under 250 lines so it fits the response budget completely.\n\n" + msgs[1]["content"]
             )
-            text, finish = providers.chat(msgs, max_tokens=max_tokens + 2048,
+            text, finish = providers.chat(msgs, max_tokens=min(max_tokens + 2048, context_budget.output_cap(msgs[1]["content"] if len(msgs) > 1 else "")),
                                           temperature=local_temp, provider=provider, model=model)
             content = _parse_single_file(text, path)
         if not content:
@@ -2246,9 +2387,11 @@ def run_agent(req, prep: dict, progress=None, provider: str = "", model: str = "
                 "file under 220 lines so it fits the response budget "
                 "completely.\n\n" + msgs2[1]["content"]
             )
-            text2, _fin2 = providers.chat(msgs2, max_tokens=8192,
-                                          temperature=temp2, provider=provider,
-                                          model=model)
+            text2, _fin2 = providers.chat(
+                msgs2,
+                max_tokens=max(256, min(8192, context_budget.output_cap(
+                    msgs2[1]["content"] if len(msgs2) > 1 else ""))),
+                temperature=temp2, provider=provider, model=model)
             content2 = _parse_single_file(text2, spath)
             if content2:
                 content2, _unres2 = fix_imports(spath, content2)

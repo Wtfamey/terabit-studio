@@ -25,6 +25,7 @@ from model_service import (
     generate_response_with_status,
     start_server,
     warm_up_model_async,
+    get_active_model,
 )
 from rag_engine import rag_search, generate_business_system_prompt, retrieve_project_context
 import context_budget
@@ -1002,6 +1003,20 @@ def generate_complete_response(
             provider=provider,
             model=model,
         )
+        if finish_reason == "error":
+            # A context-length kill arrives here as a normal error string; it is
+            # not model output. Shrink the ask and retry while the context
+            # allows it -- running out of window mid-generation is a BUDGET bug,
+            # not a model bug (and used to be reported to the user as
+            # "the model did not answer ... GPU is not out of memory").
+            if context_budget.is_context_error(text) and round_tokens > 1500 and round_num < max_continuations:
+                round_tokens = max(1500, round_tokens // 2)
+                continue
+            raise RuntimeError(
+                f"The model did not answer ({str(text)[:300]}). Check that Ollama is "
+                "running (`ollama list`), that the tag in .env MODEL_NAME exists, and "
+                "that the GPU is not out of memory. Nothing was generated."
+            )
         full_text += text
         if finish_reason != "length" or round_num == max_continuations:
             break
@@ -1085,6 +1100,18 @@ def prepare_generation(req: GenerateRequest, operation: str) -> dict:
                 app_name = "".join(w[:1].upper() + w[1:] for w in words[:2]).replace("-", "")[:24]
 
     archetype = get_archetype_for_prompt(req.prompt, req.business_type)
+    # Task-level routing: the open-vocabulary classifier reads the brief for
+    # WHAT kind of system it is (a back-office console: CRM / HMS / EMS / HR /
+    # inventory / ... vs a marketing site vs a store). When it says console, the
+    # artifact is a management app -- not a marketing page wearing a dashboard
+    # costume. The prompt-keyword pass alone misses phrasings like "an app that
+    # manages my clinic's patients and staff", so the brief's own words decide.
+    try:
+        from task_understanding import infer_spec  # late import: no cycle at module load
+        if (infer_spec(brief).get("family") or "") == "console" and archetype in ("saas", "landing"):
+            archetype = "admin"
+    except Exception:  # noqa: BLE001 - routing must never break a build
+        pass
 
     # 1. Budgeted retrieval of existing project files. Edit mode grounds the
     #    model in the real code; the budget packs whole files by rank instead
@@ -1211,6 +1238,10 @@ async def generate(req: GenerateRequest, user: Optional[User] = Depends(get_curr
             if session and session.name == "New Chat":
                 session.name = f"{prep['app_name']} ({req.prompt[:30]})"
             db.commit()
+        # Ensure user assets (logo + background) are injected even on agentic path
+        result["files"] = imagery.upload_image_injection(
+            result["files"], brand=req.brand,
+            assets=[a.model_dump() for a in req.assets])
         return {
             "response": conversational_response,
             "files": result["files"],
@@ -1255,6 +1286,8 @@ async def generate(req: GenerateRequest, user: Optional[User] = Depends(get_curr
     final_files = inject_core_files(final_files)
     final_files = inject_images(final_files)
     final_files, _img_stats = imagery.enforce_imagery(final_files, _theme_key_for(req))
+    final_files = imagery.upload_image_injection(final_files, brand=req.brand,
+                                                   assets=[a.model_dump() for a in req.assets])
     final_files = validate_and_repair_files(final_files)
 
     if req.session_id and user:
@@ -1397,6 +1430,8 @@ async def generate_stream(req: GenerateRequest, request: Request):
         final_files = inject_core_files(final_files)
         final_files = inject_images(final_files)
         final_files, _img_stats = imagery.enforce_imagery(final_files, _theme_key_for(req))
+        final_files = imagery.upload_image_injection(final_files, brand=req.brand,
+                                                       assets=[a.model_dump() for a in req.assets])
         final_files = validate_and_repair_files(final_files)
 
         summary = f"🎉 **{app_name}** has been built successfully with {len(final_files)} project files! Live interactive preview is ready."
@@ -1423,10 +1458,18 @@ async def selftest(full: bool = False):
         port = os.environ.get("LLAMA_SERVER_PORT", "11434")
         with urllib.request.urlopen(f"http://{host}:{port}/api/tags", timeout=5) as resp:
             models = json.loads(resp.read()).get("models", [])
-        wanted = os.environ.get("MODEL_NAME", "")
+        # Resolve through the same alias table the generation path uses, so the
+        # check sees the tag Ollama is actually serving (a context-variant id
+        # like terabit-v3-ctx8k resolves to its base terabit-finetuned-v3).
+        wanted = ""
+        try:
+            import model_sources
+            wanted = model_sources.resolve_ollama_tag(os.environ.get("MODEL_NAME", "")) or ""
+        except Exception:  # noqa: BLE001
+            wanted = os.environ.get("MODEL_NAME", "")
         names = [m.get("name", "") for m in models]
         checks["model_server"] = (
-            True if not wanted or any(n.startswith(wanted) for n in names)
+            True if not wanted or any(n.startswith(wanted) or n.split(":")[0] == wanted.split(":")[0] for n in names)
             else f"fail: {wanted} not in ollama ({names})"
         )
     except Exception as e:  # noqa: BLE001
@@ -1589,7 +1632,7 @@ async def health():
         "status": "ok",
         "name": "TerabitStudio",
         "version": "1.1.0",
-        "model_name": os.environ.get("MODEL_NAME", "qwen2.5:7b"),
+        "model_name": get_active_model(),
         "model_path": os.environ.get("MODEL_PATH", ""),
         "lora_path": lora_path or None,
         "lora_configured": bool(lora_path and os.path.exists(lora_path)),
@@ -2279,8 +2322,10 @@ async def app_env():
             loaded = []
 
     def _has(name: str) -> bool:
-        return any(m == name or m.split(":")[0] == name.split(":")[0]
-                   for m in models)
+        # Compare base tags so a context-variant id (terabit-v3-ctx8k) matches
+        # the base tag (terabit-finetuned-v3) it was resolved from.
+        base = name.split(":")[0]
+        return any(m == name or m.split(":")[0] == base for m in models)
 
     data_dir = _paths.data_dir()
     try:

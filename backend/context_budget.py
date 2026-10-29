@@ -17,12 +17,46 @@ highest-ranked file.
 from __future__ import annotations
 
 import os
+import re
 from typing import Any
 
 
 def get_num_ctx() -> int:
     """The model context window, in tokens (single source of truth)."""
     return int(os.environ.get("N_CTX", "16384"))
+
+
+_CONTEXT_ERROR_RE = re.compile(
+    r"context|num_ctx|n_ctx|exceed|too long|max(imum)? context|truncat", re.IGNORECASE,
+)
+
+
+def is_context_error(text: str) -> bool:
+    """True when a model-server error means the REQUEST did not fit the window.
+
+    llama.cpp / Ollama kill the completion outright when prompt + requested
+    max_tokens run past the context (`context length exceeded`, `n_ctx`, ...).
+    The provider reports that as finish="error", which used to read to the
+    agent as "the model did not answer" and stop the whole generation -- even
+    though the model was fine and the ASK was simply too big.
+    """
+    t = re.sub(r"\s+", " ", str(text or "")).strip().lower()
+    if not t:
+        return False
+    return bool(_CONTEXT_ERROR_RE.search(t))
+
+
+def output_cap(prompt_text: str, num_ctx: int | None = None, safety: float = 0.85) -> int:
+    """Highest completion-token count that fits prompt + output in the window.
+
+    The usable window already reserves `safety` for chat-template overhead, KV
+    cache bookkeeping and sampling slack; subtracting the estimated prompt keeps
+    a completion from being handed a budget the window cannot honour.
+    """
+    window = usable_window(num_ctx)
+    prompt_tokens = estimate_tokens(prompt_text or "")
+    cap = int(window - prompt_tokens - 64)
+    return max(32, cap)
 
 
 def usable_window(num_ctx: int | None = None) -> int:
